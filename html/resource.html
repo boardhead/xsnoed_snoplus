@@ -1,0 +1,222 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.04 (Macintosh; I; PPC) [Netscape]">
+   <META NAME="Author" CONTENT="Phil Harvey">
+   <META NAME="Description" CONTENT="Sno Event Display user guide">
+   <LINK REL="Index" HREF="index.html">
+   <LINK REL="Start" HREF="xsnoed.html">
+   <LINK REL="Prev"  HREF="appendix.html">
+   <LINK REL="Next"  HREF="revisions.html">
+   <TITLE>XSNOED User Guide - Resource File</TITLE>
+   <SCRIPT language="javascript">
+      <!-- Hide the script from old browsers --
+      img1 = new Image(); img1.src = "next2.GIF";
+      img2 = new Image(); img2.src = "prev2.GIF";
+      img3 = new Image(); img3.src = "home2.GIF";
+      // --End Hiding Here -->
+   </SCRIPT>
+</HEAD>
+<BODY BACKGROUND="background.GIF">
+
+<A HREF="revisions.html"
+ ONMOUSEOVER="document.images['img1'].src='next2.GIF'" 
+ ONMOUSEOUT="document.images['img1'].src='next.GIF'">
+ <IMG NAME="img1" SRC="next.GIF" ALIGN=RIGHT BORDER=0 HSPACE=5 HEIGHT=28 WIDTH=63 ALT="Next Page"></A>
+<A HREF="appendix.html"
+ ONMOUSEOVER="document.images['img2'].src='prev2.GIF'" 
+ ONMOUSEOUT="document.images['img2'].src='prev.GIF'">
+ <IMG NAME="img2" SRC="prev.GIF" ALIGN=RIGHT BORDER=0 HSPACE=5 HEIGHT=28 WIDTH=63 ALT="Previous Page"></A>
+<A HREF="xsnoed.html"
+ ONMOUSEOVER="document.images['img3'].src='home2.GIF'" 
+ ONMOUSEOUT="document.images['img3'].src='home.GIF'">
+ <IMG NAME="img3" SRC="home.GIF" ALIGN=RIGHT BORDER=0 HSPACE=5 HEIGHT=28 WIDTH=63 ALT="First Page"></A>
+
+<H1>XSNOED Resource File</H1>
+<HR>
+
+<P>The first time you run XSNOED, the default resource file "XSnoed" is
+copied from the XSNOED directory to a settings file called ".XSnoed" in your home directory
+(unless you specified a different settings file name through the
+<A HREF="xsnoed.html#Running XSNOED">"-s" command line option</A>).
+This file is used to specify all XSNOED resources such as the colors of
+XSNOED windows and menus, as well as to save the current XSNOED settings.
+These settings are loaded automatically the next time you run XSNOED.
+
+<P>The resource section of the settings file can be edited with any word processor
+to change some basic XSNOED parameters.  The list below explains the particular
+XSNOED resources that can be changed in this way.
+
+<P>Note that any resource specified here can also be set on the command line
+when running XSNOED. For instance, to change the water level to 300 cm,
+run XSNOED with the command line "xsnoed -water_level 300".
+
+<P>When writing settings to the file, XSNOED
+preserves existing resources, and only overwrites an automatically
+generated section (not shown here) at the end of the settings file. 
+
+<P>Note that the <B>alternate</B> colors defined below specify settings for
+the <B>White Background</B> color set as selected in the
+<A HREF="display.html">Display menu</A> or <A HREF="file.html#Print Image">
+printer settings</A>.
+
+<P>Here is a list of the user-settable XSNOED resources:
+<PRE>hist_font:           -*-helvetica-medium-r-normal--12-*
+label_font:          -*-helvetica-medium-r-normal--12-*
+label_big_font:      -*-helvetica-medium-r-normal--24-*
+
+water_level:         900            !! light water level in cm (0=center) [1]
+light_speed:         22.45          !! speed of light for fitter (cm/ns)
+
+cal_file:            cal_default.dat !! calibration file name [2]
+oca_file:            oca_visual.bin !! optical calibration file name
+file_path:           /usr/local/ph;/usr/local/xsnoed !! support files path
+snodb_server:        localhost      !! SNO database server address
+help_url:            http://manhattan.sno.laurentian.ca/xsnoed/xsnoed.html
+password:            aPassword      !! password for DEMO_VERSION
+outfile1:            xsnoed_out1.zdab !! default Save1 filename
+outfile2:            xsnoed_out2.zdab !! default Save2 filename
+outfile3:            xsnoed_out3.zdab !! default Save3 filename
+outfile4:            xsnoed_out4.zdab !! default Save4 filename
+
+load_trigger_settings:   0          !! flag to load trigger settings at startup
+
+bkg_col:             Black          !! background in all image windows
+text_col:            White          !! color for text and labels
+hid_col:             Grey           !! color of PSUP back
+frame_col:           White          !! color of PSUP front
+axes_col:            ForestGreen    !! color of axes in 3-D window
+curcon_col:          Red            !! color of currently selected fit
+rcon_col:            SpringGreen    !! color of other fits
+grid_col:            Grey           !! color of grid in all map images
+sun_col:             Goldenrod1     !! color of sun vector
+water_col:           RoyalBlue      !! color of water level indicator
+scope0_col:          SkyBlue3       !! color of scope 0 trace
+scope1_col:          Chartreuse2    !! color of scope 1 trace
+mc_neutrino_col:     Aquamarine     !! monte carlo neutrino particle color
+mc_electron_col:     OrangeRed      !! monte carlo electron particle color
+mc_neutron_col:      Coral          !! monte carlo neutron particle color
+mc_gamma_col:        HotPink        !! monte carlo gamma particle color
+mc_photon_col:       IndianRed      !! monte carlo photon particle color
+mc_special_col:      Yellow         !! monte carlo special color
+mc_other_col:        Chartreuse2    !! monte carlo other particle color
+
+num_cols:            32             !! number of colors in color scale
+scale_under:         SkyBlue1       !! underscale color
+scale_col0:          RoyalBlue1     !! 0% scale color
+scale_col1:          LimeGreen      !! 25% scale color
+scale_col2:          Yellow         !! 50% scale color
+scale_col3:          Orange         !! 75% scale color
+scale_col4:          Red            !! 100% scale color
+scale_over:          Pink1          !! overscale color
+discarded_col:       Grey30         !! color of discarded hits
+
+ves_cols:            32             !! number of vessel colors to use
+vdark_col:           Grey40         !! dark vessel color
+vlit_col:            Grey80         !! light vessel color
+
+alt_bkg_col:         White          !! alt background in all image windows
+alt_text_col:        Black          !! alt color for text and labels
+alt_hid_col:         Grey35         !! alt color of PSUP back
+alt_frame_col:       Black          !! alt color of PSUP front
+alt_axes_col:        ForestGreen    !! alt color of axes in 3-D window
+alt_curcon_col:      Red            !! alt color of currently selected fit
+alt_rcon_col:        SpringGreen    !! alt color of other fits
+alt_grid_col:        Grey35         !! alt color of grid in all map images
+alt_sun_col:         Goldenrod2     !! alt color of sun vector
+alt_water_col:       RoyalBlue3     !! alt color of water level indicator
+alt_scope0_col:      SkyBlue3       !! alt color of scope 0 trace
+alt_scope1_col:      Chartreuse2    !! alt color of scope 1 trace
+alt_mc_neutrino_col: Aquamarine     !! alt monte carlo neutrino particle color
+alt_mc_electron_col: OrangeRed      !! alt monte carlo electron particle color
+alt_mc_neutron_col:  Coral          !! alt monte carlo neutron particle color
+alt_mc_gamma_col:    HotPink        !! alt monte carlo gamma particle color
+alt_mc_photon_col:   IndianRed      !! alt monte carlo photon particle color
+alt_mc_special_col:  Yellow         !! alt monte carlo special color
+alt_mc_other_col:    Chartreuse2    !! alt monte carlo other particle color
+
+alt_scale_under:     SkyBlue3       !! alt underscale color
+alt_scale_col0:      RoyalBlue3     !! alt 0% scale color
+alt_scale_col1:      SeaGreen       !! alt 25% scale color
+alt_scale_col2:      Goldenrod3     !! alt 50% scale color
+alt_scale_col3:      Orange         !! alt 75% scale color
+alt_scale_col4:      Red            !! alt 100% scale color
+alt_scale_over:      Pink3          !! alt overscale color
+alt_discarded_col:   Grey80         !! alt discarded hit color
+
+alt_vdark_col:       Grey40         !! alt dark vessel color
+alt_vlit_col:        Grey80         !! alt light vessel color
+
+tac_min:             1000           !! minimum for raw TAC scale
+tac_max:             3000           !! maximum for raw TAC scale
+qhs_min:             400            !! minimum for raw Qhs scale
+qhs_max:             800            !! maximum for raw Qhs scale
+qhl_min:             400            !! minimum for raw Qhl scale
+qhl_max:             800            !! maximum for raw Qhl scale
+qlx_min:             400            !! minimum for raw Qlx scale
+qlx_max:             800            !! maximum for raw Qlx scale
+qhl_qhs_min:         -400           !! minimum for raw Qhl-Qhs scale
+qhl_qhs_max:         400            !! maximum for raw Qhl-Qhs scale
+cmos_rates_min:      0              !! minimum for CMOS rates scale
+cmos_rates_max:      8000           !! maximum for CMOS rates scale
+delta_t_min:         -50            !! minimum for Time Diff scale (ns)
+delta_t_max:         150            !! maximum for Time Diff scale (ns)
+cal_tac_min:         -100           !! minimum for calibrated time (ns)
+cal_tac_max:         300            !! maximum for calibrated time (ns)
+cal_qhs_min:         -50            !! minimum for calibrated Qhs scale [3]
+cal_qhs_max:         350            !! maximum for calibrated Qhs scale [3]
+cal_qhl_min:         -50            !! minimum for calibrated Qhl scale [3]
+cal_qhl_max:         350            !! maximum for calibrated Qhl scale [3]
+cal_qlx_min:         -50            !! minimum for calibrated Qlx scale [3]
+cal_qlx_max:         350            !! maximum for calibrated Qlx scale [3]
+cal_qhl_qhs_min:     -200           !! minimum for calibrated Qhl-Qhs [3]
+cal_qhl_qhs_max:     200            !! maximum for calibrated Qhl-Qhs [3]
+cal_hits_min:        0              !! minimum for calibrated Hit Count [4]
+cal_hits_max:        2              !! maximum for calibrated Hit Count [4]
+extra_min:           -100           !! minimum for extra hit data [5]
+extra_max:           100            !! maximum for extra hit data [5]
+shaper_min:          0              !! minimum for NCD shaper value scale
+shaper_max:          100            !! maximum for NCD shaper value scale
+hist_bins:           80             !! number of histogram bins
+ncd_bins:            80             !! number of bins in NCD histogram
+
+caen0_label:         Channel 0      !! labels for CAEN scope traces [6]
+caen1_label:         Channel 1
+caen2_label:         Channel 2
+caen3_label:         Channel 3
+caen4_label:         Channel 4
+caen5_label:         Channel 5
+caen6_label:         Channel 6
+caen7_label:         Channel 7
+</PRE>
+
+<B>Notes</B>:
+
+<P>[1] This water level is ignored by the ROOT_FILE version which gets
+its water level information from the ROOT QWater object.
+
+<P>[2] Simplified linear calibration constants only.
+
+<P>[3] The calibrated charge values are expressed in channels. For PE (photoelectron)
+calibrated charge scales, these values are divided by 20 for Qhs (and Qhl-Qhs),
+40 for Qhl, and 2 for Qlx.
+
+<P>[4] Used by the OPTICAL_CAL version only.
+
+<P>[5] Used only by XSNOMAN and ROOT versions when extra hit data is available.
+
+<P>[6] Used by the SNOPLUS version only.
+
+<P><B><font color="#006000">Note:</font></B> Occasionally at the release of a new version of XSNOED, the
+version of the resource file will also be changed.  If this happens,
+XSNOED will print a message at startup indicating that your settings file
+is out of date.  Then your original settings file will be copied to a backup file
+(of the same name with a "~" added to the end), and a new settings file will be created.
+The new settings file will consist of the resources from the default XSnoed resource
+file and the settings from your original settings file.  At this point, any resources that you changed
+manually in the original settings file will have to be re-entered in the new settings file.
+
+<P>
+<HR>
+</BODY>
+</HTML>

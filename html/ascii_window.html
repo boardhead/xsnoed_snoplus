@@ -1,0 +1,108 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.04 (Macintosh; I; PPC) [Netscape]">
+   <META NAME="Author" CONTENT="Phil Harvey">
+   <META NAME="Description" CONTENT="Sno Event Display user guide">
+   <LINK REL="Index" HREF="index.html">
+   <LINK REL="Start" HREF="xsnoed.html">
+   <LINK REL="Prev"  HREF="event_times.html">
+   <LINK REL="Next"  HREF="anim_window.html">
+   <TITLE>XSNOED User Guide - ASCII Output Window</TITLE>
+   <SCRIPT language="javascript">
+      <!-- Hide the script from old browsers --
+      img1 = new Image(); img1.src = "next2.GIF";
+      img2 = new Image(); img2.src = "prev2.GIF";
+      img3 = new Image(); img3.src = "home2.GIF";
+      // --End Hiding Here -->
+   </SCRIPT>
+</HEAD>
+<BODY BACKGROUND="background.GIF">
+
+<A HREF="anim_window.html"
+ ONMOUSEOVER="document.images['img1'].src='next2.GIF'" 
+ ONMOUSEOUT="document.images['img1'].src='next.GIF'">
+ <IMG NAME="img1" SRC="next.GIF" ALIGN=RIGHT BORDER=0 HSPACE=5 HEIGHT=28 WIDTH=63 ALT="Next Page"></A>
+<A HREF="event_times.html"
+ ONMOUSEOVER="document.images['img2'].src='prev2.GIF'" 
+ ONMOUSEOUT="document.images['img2'].src='prev.GIF'">
+ <IMG NAME="img2" SRC="prev.GIF" ALIGN=RIGHT BORDER=0 HSPACE=5 HEIGHT=28 WIDTH=63 ALT="Previous Page"></A>
+<A HREF="xsnoed.html"
+ ONMOUSEOVER="document.images['img3'].src='home2.GIF'" 
+ ONMOUSEOUT="document.images['img3'].src='home.GIF'">
+ <IMG NAME="img3" SRC="home.GIF" ALIGN=RIGHT BORDER=0 HSPACE=5 HEIGHT=28 WIDTH=63 ALT="First Page"></A>
+
+<H1>ASCII Output Window</H1>
+<HR>
+
+<IMG SRC="ascii_window.GIF" BORDER=0 HEIGHT=201 WIDTH=332 HSPACE=10 VSPACE=10 ALIGN=RIGHT>
+
+<P>The ASCII Output window provides a convenient way to save ASCII-based event
+information to file.  This can be a very useful tool when manually classifying
+or recording information about a large number of events.
+
+<P>The <B>Filename</B> field is used to enter the full pathname of the output file.
+If the specified file already exists, new entries will be appended.
+Otherwise a new file will be created.  The filename field may be left
+blank, in which case output is written only to the console.
+
+<P><B><font color="#880000">Special feature:</font></B>
+Adding a plus sign (<B>+</B>) before the filename causes the event to be written
+to a ZDAB file at the same time as the comments are written.  The ZDAB file will
+have the same name as the ASCII output file, but with the extension ".zdab".
+
+<P>The <B>Label</B> field specifies the event information to be written.
+The format is exactly the same as the
+<A HREF="settings.html#Image Labels">image label setting</A> of the
+<A HREF="settings.html">Settings window</A>, except that the font specification
+(<B>%+</B>) and the newline feature (<B>%/</B>) are not allowed.  The default
+label is "<B>GTID: %gt Run: %rn</B>", which gives event GTID and run number.
+
+<P>The <B>Comment</B> field is provided to allow additional comments about
+the event to be saved.  After the comment is written to file,
+this text field is cleared to allow input of the next comment.  Previous
+comments can be recalled by scrolling through a history buffer using
+the Up and Down keys on the keyboard.  Note that the comment history is
+not saved like other text fields when this window is closed.  Also note that
+duplicate entries are removed from the history to reduce the amount of
+scrolling required to find the desired entry.
+
+<P>Pressing the <B>Write</B> button causes the event information and comments
+to be written to the specified file.  Alternatively, you can press the Return key
+when editing any of the text fields to perform the same function.  
+
+<P>The <B>Auto-Next</B> checkbox causes the next event to be automatically
+displayed after writing event information to a file.
+
+<P>Pressing <B>Done</B> closes the window.
+
+<P>
+<B><font color="#880000">Advanced feature:</font></B> To allow access to a set of standard event
+classification strings, a user-defined option menu may be added to the
+ASCII Output window by simply creating a file called "<B>ascii_window_menu.dat</B>"
+and placing it in any of the <A HREF="appendix.html#Search Path">XSNOED search directories</A>.
+The file should be standard ASCII format with one entry per line.  The first
+entry is used as a title for the menu, and the remaining entries are
+the menu items. The text from the currently selected menu item is added to the 
+event information when writing to file.  As well as the menu items read from
+file, XSNOED adds an additional menu item called "&lt;none>" to the top of the
+menu, allowing nothing extra to be written.
+
+<P>Below is a sample output from of a few events using the default event
+information (run number and GTID).  In this example, an option menu was used.
+The option menu selection appears in brackets after the event information
+and before the entered comments.
+
+<BLOCKQUOTE><FONT SIZE=+1>
+<PRE>
+Run: 11417 GTID: 1415830 (Muon) downward-going
+Run: 11417 GTID: 1415862 (Neck Flasher)
+Run: 11417 GTID: 1415878 (Neutrino) non-solar
+Run: 11417 GTID: 1415901 (Silent Flasher)
+Run: 11417 GTID: 1415906 (Retrigger) no charge
+</PRE>
+</FONT></BLOCKQUOTE>
+<P>
+<HR>
+</BODY>
+</HTML>

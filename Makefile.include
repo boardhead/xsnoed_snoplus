@@ -1,0 +1,349 @@
+#
+# Rules for building xsnoed files
+#
+# Phil Harvey - 12/2/98
+#
+
+.KEEP_STATE:
+
+QHDRS    = QSnoed.h QXsnoedSystem.h QDispatch.h QPmtEventRecord.h QZdabFile.h QEventReader.h\
+           QBufferedEventReader.h QRecordBuffer.h QListFile.h QSimpleCal.h QRootFile.h QSnoDBInterface.h QUtils.h
+
+PHDRS    = ImageData.h PImageCanvas.h PMapImage.h PScrollBar.h PWindow.h PImageWindow.h PScale.h\
+           PScrollingWindow.h PResourceManager.h PSpeaker.h PListener.h PHitInfoWindow.h PRecordInfoWindow.h\
+           PFitterWindow.h PProjImage.h PFlatImage.h PCrateImage.h PHistImage.h PEventInfoWindow.h\
+           PNCDInfoWindow.h PNCDHitInfoWindow.h PNCDScopeWindow.h PNCDScopeImage.h PScopeImage.h PNCDImage.h\
+           ScopeData.h PEventControlWindow.h PMonteCarloWindow.h PZdabFile.h PZdabWriter.h PSettingsWindow.h\
+           PEventHistogram.h PNCDHistogram.h PEventTimes.h PPrintWindow.h PNotifyRaised.h PMenu.h menu.h\
+           PUtils.h PLabel.h PExtraLabels.h PSharedString.h CUtils.h mozilla.h\
+           PDrawable.h PDrawXPixmap.h PDrawPostscriptFile.h PAsciiWindow.h PDumpDataWindow.h\
+           PAnimationWindow.h PCaenWindow.h SnoStr.h XSnoedResource.h XSnoedImage.h XSnoedWindow.h
+
+QOBJS    = QSnoed.o QXsnoedSystem.o QDispatch.o QPmtEventRecord.o QZdabFile.o QEventReader.o\
+           QBufferedEventReader.o QRecordBuffer.o QListFile.o QSimpleCal.o QRootFile.o QUtils.o QRchHist.o QSnoDBInterface.o\
+           q_PResourceManager.o q_XSnoedWindow.o q_xsnoedstream.o q_xsnoed.o
+           
+ROBJS    = PResourceManager.o XSnoedWindow.o xsnoedstream.o xsnoed.o
+
+QPOBJS   = getDataBaseFiles.o fileUtilities.o readTitles.o ecaCalibrate.o pcaCalibrate.o\
+           pMath.o utilities.o
+           
+OBJS     = $(OS_OBJS) ImageData.o SnoStr.o CUtils.o calibrate.o fitter.o matrix.o openfile.o mozilla.o\
+           PImageWindow.o PScrollingWindow.o PScrollBar.o PWindow.o PImageCanvas.o PScale.o\
+           PMapImage.o PSpeaker.o PListener.o PHitInfoWindow.o PRecordInfoWindow.o PFitterWindow.o\
+           PProjImage.o PFlatImage.o PCrateImage.o PHistImage.o PNCDImage.o PEventInfoWindow.o\
+           PNCDInfoWindow.o PNCDHitInfoWindow.o PNCDScopeWindow.o PNCDScopeImage.o PScopeImage.o PNCDHistogram.o\
+           PEventControlWindow.o PMonteCarloWindow.o PColourWindow.o PColourWheel.o PColourPicker.o\
+           PSettingsWindow.o PEventHistogram.o PEventTimes.o PPrintWindow.o PSharedString.o\
+           PZdabFile.o PZdabWriter.o PNotifyRaised.o PMenu.o PUtils.o PLabel.o PExtraLabels.o\
+           PCal.o PCalSimple.o PDrawXPixmap.o PDrawPostscriptFile.o PAsciiWindow.o PDumpDataWindow.o\
+           PAnimationWindow.o PCaenWindow.o PSnoDBWindow.o PSnoDBInterface.o XSnoedImage.o
+
+ROOTOBJS = $(OS_ROOTOBJS) QSnoed.o QXsnoedSystem.o QSnoed_Dict.o
+
+xsnoed: $(OBJS) $(ROBJS)
+	$(LDCC) $(LDFLAGS) $(OBJS) $(ROBJS) $(XLIBS) $(DISPLIBS) $(LIBS) -o xsnoed
+
+xsnoed.root: $(OBJS) $(QOBJS) QSnoed_Dict.o
+	$(LDCC) $(CXXFLAGS) $(LDFLAGS) $(OBJS) $(QOBJS) QSnoed_Dict.o $(QSNOLIBS) $(XLIBS) $(DISPLIBS) $(LIBS) -o xsnoed.root
+
+redispatch: redispatch.o PZdabFile.o PZdabWriter.o CUtils.o SnoStr.o
+	$(LDCC) $(CXXFLAGS) $(LDFLAGS) redispatch.o PZdabFile.o PZdabWriter.o CUtils.o SnoStr.o $(DISPLIBS) $(LIBS) -o redispatch
+
+libqsnoed: libqsnoed.so
+
+libqsnoed.so: $(OBJS) $(QOBJS) QSnoed_Dict.o
+	$(LDCC) $(CC_LD_FLAGS) -o libqsnoed.so \
+	$(OBJS) $(QOBJS) QSnoed_Dict.o
+
+root.exe: root.o
+	$(LDCC) $(CXXFLAGS) $(LIBS) $(XLIBS) -lqsnoed root.o $(QSNOLIBS) $(DISPLIBS) -o root.exe
+
+xsnoed.o: xsnoed.cxx xsnoed.h xsnoed_version.h matrix.h PCal.h PCalSimple.h $(PHDRS)
+	$(CCC) $(CXXFLAGS) $(INCLUDE) $(XFLAGS) -c xsnoed.cxx
+
+q_xsnoed.o: xsnoed.cxx xsnoed.h xsnoed_version.h matrix.h $(PHDRS)
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(QSNOFLAGS) $(INCLUDE) $(XFLAGS) -o q_xsnoed.o -c xsnoed.cxx
+
+xsnoedstream.o: xsnoedstream.cxx xsnoed.h ImageData.h XSnoedResource.h matrix.h $(PHDRS)
+	$(CCC) $(CXXFLAGS) $(DISPFLAGS) $(INCLUDE) $(XFLAGS) -c xsnoedstream.cxx
+
+q_xsnoedstream.o: xsnoedstream.cxx xsnoed.h ImageData.h XSnoedResource.h matrix.h $(PHDRS)
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(DISPFLAGS) $(INCLUDE) $(QSNOFLAGS) $(XFLAGS) -o q_xsnoedstream.o -c xsnoedstream.cxx
+
+ImageData.o: ImageData.cxx ImageData.h XSnoedResource.h
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) $(XFLAGS) -c ImageData.cxx
+
+root.o: root.cxx QXsnoedSystem.h
+	$(CCC) $(CXXFLAGS) $(INCLUDE) $(QSNOFLAGS) $(XFLAGS) -c root.cxx
+	
+QSnoed.o: QSnoed.cxx QSnoed.h xsnoed.h ImageData.h XSnoedResource.h xsnoedstream.h
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) $(QSNOFLAGS) $(XFLAGS) -c QSnoed.cxx
+
+QXsnoedSystem.o: QXsnoedSystem.cxx QXsnoedSystem.h xsnoed.h ImageData.h XSnoedResource.h xsnoedstream.h
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) $(QSNOFLAGS) $(XFLAGS) -c QXsnoedSystem.cxx
+
+QDispatch.o: QDispatch.cxx QDispatch.h
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) $(QSNOFLAGS) -c QDispatch.cxx
+
+QPmtEventRecord.o: QPmtEventRecord.cxx QPmtEventRecord.h
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) $(QSNOFLAGS) -c QPmtEventRecord.cxx
+
+QZdabFile.o: QZdabFile.cxx QZdabFile.h PZdabFile.h
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) $(QSNOFLAGS) -c QZdabFile.cxx
+
+QRootFile.o: QRootFile.cxx QRootFile.h PZdabFile.h
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) $(QSNOFLAGS) -c QRootFile.cxx
+
+QEventReader.o: QEventReader.cxx QEventReader.h
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) $(QSNOFLAGS) -c QEventReader.cxx
+
+QBufferedEventReader.o: QBufferedEventReader.cxx QBufferedEventReader.h
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) $(QSNOFLAGS) -c QBufferedEventReader.cxx
+
+QRecordBuffer.o: QRecordBuffer.cxx QRecordBuffer.h
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) $(QSNOFLAGS) -c QBufferedEventReader.cxx
+
+QListFile.o: QListFile.cxx QListFile.h
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) $(QSNOFLAGS) -c QListFile.cxx
+
+QRchHist.o: QRchHist.cxx QRchHist.h PHistImage.h
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) $(QSNOFLAGS) $(XFLAGS) -c QRchHist.cxx
+
+QUtils.o: QUtils.cxx QUtils.h
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) $(QSNOFLAGS) -c QUtils.cxx
+
+QSnoDBInterface.o: QSnoDBInterface.cxx QSnoDBInterface.h PSnoDBInterface.h
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) $(QSNOFLAGS) $(XFLAGS) -c QSnoDBInterface.cxx
+
+QSimpleCal.o: QSimpleCal.cxx QSimpleCal.h QSimpleCal.h calibrate.h
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) $(QSNOFLAGS) $(XFLAGS) -c QSimpleCal.cxx
+
+QSnoed_Dict.C: $(QHDRS) QSnoed_LinkDef.h
+	@echo "Generating dictionary ..."
+	rootcint -f QSnoed_Dict.C -c $(QSNOINCS) $(PROJFLAGS) $(QHDRS) QSnoed_LinkDef.h
+
+QSnoed_Dict.o: QSnoed_Dict.C
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) $(QSNOFLAGS) -c QSnoed_Dict.C
+	
+PWindow.o: PWindow.cxx PWindow.h
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) $(XFLAGS) -c PWindow.cxx
+
+PProjImage.o: PProjImage.cxx $(PHDRS)
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) $(XFLAGS) -c PProjImage.cxx
+
+PMapImage.o: PMapImage.cxx $(PHDRS)
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) $(XFLAGS) -c PMapImage.cxx
+
+PFlatImage.o: PFlatImage.cxx $(PHDRS)
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) $(XFLAGS) -c PFlatImage.cxx
+
+PCrateImage.o: PCrateImage.cxx $(PHDRS)
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) $(XFLAGS) -c PCrateImage.cxx
+
+PHistImage.o: PHistImage.cxx $(PHDRS)
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) $(XFLAGS) -c PHistImage.cxx
+
+PNCDImage.o: PNCDImage.cxx $(PHDRS)
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) $(XFLAGS) -c PNCDImage.cxx
+
+PScopeImage.o: PScopeImage.cxx $(PHDRS)
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) $(XFLAGS) -c PScopeImage.cxx
+	
+PEventHistogram.o: PEventHistogram.cxx $(PHDRS)
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) $(XFLAGS) -c PEventHistogram.cxx
+
+PNCDHistogram.o: PNCDHistogram.cxx $(PHDRS)
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) $(XFLAGS) -c PNCDHistogram.cxx
+
+PEventTimes.o: PEventTimes.cxx $(PHDRS)
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) $(XFLAGS) -c PEventTimes.cxx
+
+PPrintWindow.o: PPrintWindow.cxx $(PHDRS)
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) $(XFLAGS) -c PPrintWindow.cxx
+
+PColourWindow.o: PColourWindow.cxx $(PHDRS) PColourWindow.h PColourWheel.h PColourPicker.h
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) $(XFLAGS) -c PColourWindow.cxx
+
+PColourWheel.o: PColourWheel.cxx $(PHDRS) PColourWheel.h PColourWindow.h
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) $(XFLAGS) -c PColourWheel.cxx
+
+PColourPicker.o: PColourPicker.cxx $(PHDRS) PColourPicker.h PColourWindow.h
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) $(XFLAGS) -c PColourPicker.cxx
+
+PNotifyRaised.o: PNotifyRaised.cxx $(PHDRS)
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) $(XFLAGS) -c PNotifyRaised.cxx
+
+PImageWindow.o: PImageWindow.cxx $(PHDRS)
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) $(XFLAGS) -c PImageWindow.cxx
+
+PImageCanvas.o: PImageCanvas.cxx $(PHDRS)
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) $(XFLAGS) -c PImageCanvas.cxx
+
+PScrollingWindow.o: PScrollingWindow.cxx $(PHDRS)
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) $(XFLAGS) -c PScrollingWindow.cxx
+
+PScrollBar.o: PScrollBar.cxx $(PHDRS)
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) $(XFLAGS) -c PScrollBar.cxx
+
+PScale.o: PScale.cxx $(PHDRS)
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) $(XFLAGS) -c PScale.cxx
+
+PResourceManager.o: PResourceManager.cxx xsnoed_version.h $(PHDRS)
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) $(XFLAGS) -c PResourceManager.cxx
+
+q_PResourceManager.o: PResourceManager.cxx xsnoed_version.h $(PHDRS)
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) $(XFLAGS) $(QSNOFLAGS) -o q_PResourceManager.o -c PResourceManager.cxx
+
+PListener.o: PListener.cxx PListener.h PSpeaker.h
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) $(XFLAGS) -c PListener.cxx
+
+PSpeaker.o: PSpeaker.cxx PSpeaker.h PListener.h
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) $(XFLAGS) -c PSpeaker.cxx
+
+PHitInfoWindow.o: PHitInfoWindow.cxx $(PHDRS)
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) $(XFLAGS) -c PHitInfoWindow.cxx
+
+PRecordInfoWindow.o: PRecordInfoWindow.cxx $(PHDRS)
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) $(XFLAGS) -c PRecordInfoWindow.cxx
+
+PFitterWindow.o: PFitterWindow.cxx $(PHDRS)
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) $(XFLAGS) -c PFitterWindow.cxx
+
+PEventInfoWindow.o: PEventInfoWindow.cxx $(PHDRS)
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) $(XFLAGS) -c PEventInfoWindow.cxx
+
+PNCDInfoWindow.o: PNCDInfoWindow.cxx $(PHDRS)
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) $(XFLAGS) -c PNCDInfoWindow.cxx
+
+PNCDHitInfoWindow.o: PNCDHitInfoWindow.cxx $(PHDRS)
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) $(XFLAGS) -c PNCDHitInfoWindow.cxx
+
+PNCDScopeWindow.o: PNCDScopeWindow.cxx $(PHDRS)
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) $(XFLAGS) -c PNCDScopeWindow.cxx
+
+PCaenWindow.o: PCaenWindow.cxx $(PHDRS)
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) $(XFLAGS) -c PCaenWindow.cxx
+
+PNCDScopeImage.o: PNCDScopeImage.cxx $(PHDRS)
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) $(XFLAGS) -c PNCDScopeImage.cxx
+
+PEventControlWindow.o: PEventControlWindow.cxx $(PHDRS)
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) $(XFLAGS) -c PEventControlWindow.cxx
+
+PSettingsWindow.o: PSettingsWindow.cxx $(PHDRS)
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) $(XFLAGS) -c PSettingsWindow.cxx
+
+POpticalWindow.o: POpticalWindow.cxx $(PHDRS)
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) $(XFLAGS) -c POpticalWindow.cxx
+	
+PMonteCarloWindow.o: PMonteCarloWindow.cxx $(PHDRS)
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) $(XFLAGS) -c PMonteCarloWindow.cxx
+	
+PAsciiWindow.o: PAsciiWindow.cxx $(PHDRS)
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) $(XFLAGS) -c PAsciiWindow.cxx
+	
+PAnimationWindow.o: PAnimationWindow.cxx $(PHDRS)
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) $(XFLAGS) -c PAnimationWindow.cxx
+	
+PDumpDataWindow.o: PDumpDataWindow.cxx $(PHDRS)
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) $(XFLAGS) -c PDumpDataWindow.cxx
+	
+PSnoDBWindow.o: PSnoDBWindow.cxx PSnoDBWindow.h PWindow.h ImageData.h PSnoDBInterface.h
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) $(XFLAGS) -c PSnoDBWindow.cxx
+
+PSnoDBInterface.o: PSnoDBInterface.cxx PSnoDBInterface.h
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) $(XFLAGS) -c PSnoDBInterface.cxx
+
+PMenu.o: PMenu.cxx $(PHDRS)
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) $(XFLAGS) -c PMenu.cxx
+
+PCal.o: PCal.cxx $(PHDRS)
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) -c PCal.cxx
+
+PCalSimple.o: PCalSimple.cxx $(PHDRS)
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) -c PCalSimple.cxx
+
+PCalTitles.o: PCalTitles.cxx $(PHDRS)
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) -c PCalTitles.cxx
+
+PUtils.o: PUtils.cxx PUtils.h CUtils.h
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) $(XFLAGS) -c PUtils.cxx
+
+PLabel.o: PLabel.cxx PLabel.h PUtils.h CUtils.h
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) $(XFLAGS) -c PLabel.cxx
+
+PExtraLabels.o: PExtraLabels.cxx PExtraLabels.h PLabel.h PUtils.h CUtils.h
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) $(XFLAGS) -c PExtraLabels.cxx
+
+PDrawXPixmap.o: PDrawXPixmap.cxx PDrawXPixmap.h PDrawable.h
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) $(XFLAGS) -c PDrawXPixmap.cxx
+
+PDrawPostscriptFile.o: PDrawPostscriptFile.cxx PDrawPostscriptFile.h PDrawable.h
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) $(XFLAGS) -c PDrawPostscriptFile.cxx
+
+XSnoedImage.o: XSnoedImage.cxx $(PHDRS)
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) $(XFLAGS) -c XSnoedImage.cxx
+
+XSnoedWindow.o: XSnoedWindow.cxx xsnoed_version.h PColourWindow.h $(PHDRS)
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) $(XFLAGS) -c XSnoedWindow.cxx
+
+q_XSnoedWindow.o: XSnoedWindow.cxx xsnoed_version.h $(PHDRS)
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) $(XFLAGS) $(QSNOFLAGS) -o q_XSnoedWindow.o -c XSnoedWindow.cxx
+
+PZdabFile.o: PZdabFile.cxx PZdabFile.h
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) -c PZdabFile.cxx
+
+PZdabWriter.o: PZdabWriter.cxx PZdabWriter.h
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) -c PZdabWriter.cxx
+
+PSharedString.o: PSharedString.cxx PSharedString.h
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) -c PSharedString.cxx
+
+SnoStr.o: SnoStr.cxx SnoStr.h
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) -c SnoStr.cxx
+
+CUtils.o: CUtils.cxx CUtils.h
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) -c CUtils.cxx
+
+openfile.o: openfile.cxx openfile.h
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) -c openfile.cxx
+
+calibrate.o: calibrate.cxx PZdabFile.h
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) -c calibrate.cxx
+
+getDataBaseFiles.o: qplib/getDataBaseFiles.cxx qplib/getDataBaseFiles.h
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) -c qplib/getDataBaseFiles.cxx
+
+fileUtilities.o: qplib/fileUtilities.cxx qplib/fileUtilities.h
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) -c qplib/fileUtilities.cxx
+
+readTitles.o: qplib/readTitles.cxx qplib/readTitles.h
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) -c qplib/readTitles.cxx
+
+ecaCalibrate.o: qplib/ecaCalibrate.cxx qplib/ecaCalibrate.h
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) -c qplib/ecaCalibrate.cxx
+
+pcaCalibrate.o: qplib/pcaCalibrate.cxx qplib/pcaCalibrate.h
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) -c qplib/pcaCalibrate.cxx
+
+pMath.o: qplib/pMath.cxx qplib/pMath.h
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) -c qplib/pMath.cxx
+
+utilities.o: qplib/utilities.cxx qplib/utilities.h
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) -c qplib/utilities.cxx
+
+fitter.o: fitter.cxx
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) -c fitter.cxx
+
+matrix.o: matrix.cxx matrix.h
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) -c matrix.cxx
+
+oca.o: oca.cxx oca.h
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) -c oca.cxx
+	
+mozilla.o: mozilla.cxx mozilla.h
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) $(XFLAGS) -c mozilla.cxx
+
+redispatch.o: redispatch.cxx Makefile
+	$(CCC) $(CXXFLAGS) $(PICFLAG) $(INCLUDE) $(DISPFLAGS) -c redispatch.cxx

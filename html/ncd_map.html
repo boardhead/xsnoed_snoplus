@@ -1,0 +1,61 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.04 (Macintosh; I; PPC) [Netscape]">
+   <META NAME="Author" CONTENT="Phil Harvey">
+   <META NAME="Description" CONTENT="Sno Event Display user guide">
+   <LINK REL="Index" HREF="index.html">
+   <LINK REL="Start" HREF="xsnoed.html">
+   <LINK REL="Prev"  HREF="ncd_histogram.html">
+   <LINK REL="Next"  HREF="ncd_scope.html">
+   <TITLE>XSNOED User Guide - NCD Map Window</TITLE>
+   <SCRIPT language="javascript">
+      <!-- Hide the script from old browsers --
+      img1 = new Image(); img1.src = "next2.GIF";
+      img2 = new Image(); img2.src = "prev2.GIF";
+      img3 = new Image(); img3.src = "home2.GIF";
+      // --End Hiding Here -->
+   </SCRIPT>
+</HEAD>
+<BODY BACKGROUND="background.GIF">
+
+<A HREF="ncd_scope.html"
+ ONMOUSEOVER="document.images['img1'].src='next2.GIF'" 
+ ONMOUSEOUT="document.images['img1'].src='next.GIF'">
+ <IMG NAME="img1" SRC="next.GIF" ALIGN=RIGHT BORDER=0 HSPACE=5 HEIGHT=28 WIDTH=63 ALT="Next Page"></A>
+<A HREF="ncd_histogram.html"
+ ONMOUSEOVER="document.images['img2'].src='prev2.GIF'" 
+ ONMOUSEOUT="document.images['img2'].src='prev.GIF'">
+ <IMG NAME="img2" SRC="prev.GIF" ALIGN=RIGHT BORDER=0 HSPACE=5 HEIGHT=28 WIDTH=63 ALT="Previous Page"></A>
+<A HREF="xsnoed.html"
+ ONMOUSEOVER="document.images['img3'].src='home2.GIF'" 
+ ONMOUSEOUT="document.images['img3'].src='home.GIF'">
+ <IMG NAME="img3" SRC="home.GIF" ALIGN=RIGHT BORDER=0 HSPACE=5 HEIGHT=28 WIDTH=63 ALT="First Page"></A>
+
+<H1>NCD Map Window</H1>
+<HR>
+
+<IMG SRC="ncd_map.GIF" BORDER=0 HEIGHT=429 WIDTH=412 HSPACE=10 VSPACE=10 ALIGN=RIGHT>
+
+<P>The NCD Map window shows an X-Y display of the NCD tube locations.  The tube colors
+represent the value of the currently displayed NCD data type.  The colors are determined
+by the X scale of the <a href="ncd_histogram.html">NCD Histogram</a>, and the displayed data
+type is set using the <a href="data.html">Data menu</a>.
+
+<P>The X-Y positions, string names and electronics channels are obtained from
+the NCDTubeMap.dat file.  This file must exist in the XSNOED directory and be
+current to properly display the NCD hits in this window.
+
+<P>NCD tubes which are not hit, or which are cut from being displayed based on the
+hit mask set in the <a href="display.html">Display menu</a> show up as empty white or
+grey circles respectively in this window.
+
+<P>The NCD tube map for this window is loaded dynamically depending on the run number
+of the data being viewed, so the tube positions may not appear exactly as pictured.
+Specifically, two spare counters (S1 and S2) and a random pulser (RP) may appear when
+viewing data for some runs.  These counters do not exist physically in the detector,
+but they appear in this map for convenience.
+<BR CLEAR=ALL><P>
+<HR>
+</BODY>
+</HTML>

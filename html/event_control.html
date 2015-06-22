@@ -1,0 +1,353 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.04 (Macintosh; I; PPC) [Netscape]">
+   <META NAME="Author" CONTENT="Phil Harvey">
+   <META NAME="Description" CONTENT="Sno Event Display user guide">
+   <LINK REL="Index" HREF="index.html">
+   <LINK REL="Start" HREF="xsnoed.html">
+   <LINK REL="Prev"  HREF="windows.html">
+   <LINK REL="Next"  HREF="settings.html">
+   <TITLE>XSNOED User Guide - Event Control Window</TITLE>
+   <SCRIPT language="javascript">
+      <!-- Hide the script from old browsers --
+      img1 = new Image(); img1.src = "next2.GIF";
+      img2 = new Image(); img2.src = "prev2.GIF";
+      img3 = new Image(); img3.src = "home2.GIF";
+      // --End Hiding Here -->
+   </SCRIPT>
+</HEAD>
+<BODY BACKGROUND="background.GIF">
+
+<A HREF="settings.html"
+ ONMOUSEOVER="document.images['img1'].src='next2.GIF'" 
+ ONMOUSEOUT="document.images['img1'].src='next.GIF'">
+ <IMG NAME="img1" SRC="next.GIF" ALIGN=RIGHT BORDER=0 HSPACE=5 HEIGHT=28 WIDTH=63 ALT="Next Page"></A>
+<A HREF="windows.html"
+ ONMOUSEOVER="document.images['img2'].src='prev2.GIF'" 
+ ONMOUSEOUT="document.images['img2'].src='prev.GIF'">
+ <IMG NAME="img2" SRC="prev.GIF" ALIGN=RIGHT BORDER=0 HSPACE=5 HEIGHT=28 WIDTH=63 ALT="Previous Page"></A>
+<A HREF="xsnoed.html"
+ ONMOUSEOVER="document.images['img3'].src='home2.GIF'" 
+ ONMOUSEOUT="document.images['img3'].src='home.GIF'">
+ <IMG NAME="img3" SRC="home.GIF" ALIGN=RIGHT BORDER=0 HSPACE=5 HEIGHT=28 WIDTH=63 ALT="First Page"></A>
+
+<H1>Event Control Window</H1>
+<HR>
+
+<IMG SRC="event_control.GIF" BORDER=0 HEIGHT=336 WIDTH=362 HSPACE=10 VSPACE=10 ALIGN=RIGHT>
+
+<P>The Event Control window allows you to control the events displayed.
+
+<P>This window pops up automatically when an event file is opened or a
+dispatcher connection is made. It can also be selected through the
+<A HREF="file.html">File Menu</A>.
+
+<P>Clicking on <B>Next</B> causes the next event matching the filter settings
+to be displayed. Events are read from the file or dispatcher until a matching
+event is found. If the end of file is reached, the event control automatically
+switches to <B>Off</B> and file is rewound to the beginning. (Note: When reading
+SNO ZDAB data, XSNOED will read across sub-run files and will only rewind to
+sub-run 000 if no more sub-runs are available). Clicking on <B>Continuous</B>
+causes the display to be continuously updated with new events at the interval
+specified by the <B>Period</B> slider. With <B>Continuous</B> selected,
+XSNOED either suspends reading of the input file, or discards incoming dispatcher
+data for the specified period after displaying each event. An exception is
+when summing events. In sum mode, XSNOED reads and sums events as quickly as
+possible, but only updates the display at the specified interval.
+
+<P>The <A HREF="#nhit_thresh">NHIT Threshold</A>, <A HREF="#trigger_mask">Trigger Mask</A>
+and <A HREF="#pmt_ncd">PMT/NCD</A> settings are used to determine
+which events to display. These settings are explained later in this section.
+
+<BR>
+<H4><B>History</B></H4>
+The history controls allow you to look back at events before the displayed
+event. There are 3 separate 100-event history buffers. The first buffer
+contains the previously displayed 100 events (the "cut" history). This buffer is active when
+<B>Cut</B> is selected. With <B>Cut</B> deselected, you are able to scan through
+the uncut history of the previous 100 events read from the file or dispatcher. These buffers
+don't necessarily contain the same events if an NHIT threshold was used
+to filter events for display. The final buffer is the "future" buffer, and
+is a forward extension of the uncut history, giving a look ahead into the next
+100 events that will be read from disk or dispatcher.
+
+<P>To maintain this "future" buffer, XSNOED continues to read events from the
+file or dispatcher until the future buffer is full. Any messages generated while
+reading ahead in a file are queued and displayed as the corresponding event is
+read from the future buffer. The <A HREF="event_times.html">Event Times window</A>
+displays the status of the events in this (as well as the "uncut") buffer by plotting
+their 50 MHz clock times in histogram form.
+
+<P>The <B>-1</B> and <B>-10</B> buttons step backward through the "cut" or "uncut"
+histories by one and ten events respectively, to a limit of -100 events.
+When viewing the "cut" history, the <B>+1</B> and <B>+10</B> buttons step forward
+until the most recent event, History(0), is displayed.  Beyond this, the next available
+event from file or dispatcher is displayed as if <B>Next</B> had been pressed.
+The "uncut" history maintains a buffer of up to 100 future events that are
+displayed if the <B>+1</B> or <B>+10</B> buttons are used to view events
+after History[0].
+
+<P><B><font color="#006000">Note:</font></B> The brackets around the index of the event in the history buffer are
+round () when viewing the "cut" history, and square [] when viewing the "uncut" history.
+
+<BR>
+<H4><A NAME="nhit_thresh"><B>NHIT Threshold</B></A></H4>
+When a non-zero number is entered into the <B>NHIT Thresh:</B> text field, only
+events with NHIT greater than or equal to this number are displayed. You
+can also specify hit types and logic operations using <B>></B>, <B>&lt;</B>,
+<B>>=</B>, <B>&lt;=</B> and <B>&lt;></B>. Operations can be combined to allow display
+of events within a range of NHITs for different tube types. If no tube type is specified, <B>NHIT</B> is assumed.
+Valid types are given in the following table:
+
+<BR CLEAR=ALL><BLOCKQUOTE>
+<TABLE CELLSPACING=0 CELLPADDING=0 NOSAVE >
+<TR NOSAVE>
+<TD WIDTH="150" NOSAVE><B>NHIT</B></TD><TD>Any type of PMT hit</TD></TR>
+<TD WIDTH="150" NOSAVE><B>Normal</B></TD><TD>Normal PMT</TD></TR>
+<TD WIDTH="150" NOSAVE><B>OWL</B></TD><TD>Outward looking PMT</TD></TR>
+<TD WIDTH="150" NOSAVE><B>LG</B></TD><TD>Low gain PMT</TD></TR>
+<TD WIDTH="150" NOSAVE><B>Neck</B></TD><TD>PMT in vessel neck</TD></TR>
+<TD WIDTH="150" NOSAVE><B>BUTTS</B></TD><TD>PMT on Berkeley sled</TD></TR>
+<TD WIDTH="150" NOSAVE><B>FECD</B></TD><TD>FECD channel</TD></TR>
+<TD WIDTH="150" NOSAVE><B>Shaper</B></TD><TD>NCD Shaper channel</TD></TR>
+<TD WIDTH="150" NOSAVE><B>MUX</B></TD><TD>NCD MUX channel</TD></TR>
+<TD WIDTH="150" NOSAVE><B>Scope</B></TD><TD>NCD Scope channel</TD></TR>
+<TD WIDTH="150" NOSAVE><B>General</B></TD><TD>General NCD record</TD></TR>
+</TABLE>
+</BLOCKQUOTE>
+
+If no operator or value are specified, <b>> 0</b> is assumed. If no operator is specified but a value is given,
+<B>>=</B> is assumed.  If more than one expression is used, a logical <B>and</B> is assumed, unless
+<B>or</B> is specified. The <B>or</B> operator takes precidence over <B>and</B>.  The use
+of brackets is not supported. The changes take effect when you press Return, or click on the
+<B>Continuous</B> or <B>Next</B> buttons. All blanks and unrecognized characters
+in the text field are ignored.  Pressing the Tab key causes the current input to be converted
+to standard form.
+
+<P>Here are some examples of possible NHIT threshold settings:
+<BR CLEAR=ALL><BLOCKQUOTE>
+<TABLE CELLSPACING=0 CELLPADDING=0 NOSAVE >
+<TR NOSAVE>
+<TD WIDTH="150" NOSAVE><B><U><FONT SIZE=+1>NHIT Thresh</FONT></U></B></TD>
+
+<TD NOSAVE><B><U><FONT SIZE=+1>Displays Events With...</FONT></U></B></TD>
+</TR>
+
+<TR NOSAVE>
+<TD NOSAVE><B>50</B></TD>
+<TD>NHIT >= 50</TD>
+</TR>
+
+<TR NOSAVE>
+<TD NOSAVE><B>>30</B></TD>
+<TD>NHIT > 30</TD>
+</TR>
+
+<TR NOSAVE>
+<TD NOSAVE><B>>=20,&lt;200</B></TD>
+<TD>NHIT >= 20 and NHIT &lt; 200</TD>
+</TR>
+
+<TR NOSAVE>
+<TD NOSAVE><B>&lt;=20 or >200</B></TD>
+<TD>NHIT &lt;= 20 or NHIT > 200</TD>
+</TR>
+
+<TR NOSAVE>
+<TD NOSAVE><B>&lt;>100</B></TD>
+<TD>NHIT not equal to 100</TD>
+</TR>
+
+<TR NOSAVE>
+<TD NOSAVE><B>Owl>20</B></TD>
+<TD>Greater than 20 OWL tubes</TD>
+</TR>
+
+<TR NOSAVE>
+<TD NOSAVE><B>>45,Neck=0</B></TD>
+<TD>NHIT > 45 and no Neck tubes</TD>
+</TR>
+
+<TR NOSAVE>
+<TD NOSAVE><B>30,Owl>0 or Neck>0</B></TD>
+<TD>NHIT >= 30 and at least one Owl or Neck tube</TD>
+</TR>
+
+<TR NOSAVE>
+<TD NOSAVE><B>Scope</B></TD>
+<TD>At least one NCD scope fired (same as <b>scope > 0</b>)</TD>
+</TR>
+
+<TR NOSAVE>
+<TD NOSAVE><B>Scope,MUX</B></TD>
+<TD>Events where both NCD MUX and scope fired</TD>
+</TR>
+
+<TR NOSAVE>
+<TD NOSAVE><B>Shaper&gt;2</B></TD>
+<TD>Events where more than 2 NCD shapers fired</TD>
+</TR>
+
+</TABLE>
+</BLOCKQUOTE>
+
+Note that tube type names may be abbreviated by specifying only enough characters
+to unambiguously identify them (i.e. <B>B</B> for BUTTS, or <B>NE</B> for Neck).
+Also, the symbol <B>|</B> may be used in place of <B>or</B>.
+
+<H4><A NAME="trigger_mask"><B>Trigger Mask</B></A></H4>
+This text field allows you to type in the names of the triggers for events
+to be displayed. If a number of triggers are specified, events will be
+displayed if any of the specified trigger bits are set. You can specify
+that a particular trigger bit must be set by placing a plus sign (<B>+</B>) before the trigger
+name, or that a particular bit must be off by placing a minus sign (<B>-</B>) before the
+name.  In addition, a star (<B>*</B>) before the trigger name forces the event
+to be displayed regardless of the NHIT threshold setting.
+
+<BLOCKQUOTE>
+<TABLE NOSAVE>
+<TR NOSAVE><TD WIDTH="150" NOSAVE><B><U><FONT SIZE=+1>Example</FONT></U></B></TD><TD><B><U><FONT SIZE=+1>Displays events with...</FONT></U></B></TD></TR>
+<TR><TD><B>+100L -100H</B></TD><TD>NHIT100LO on, and NHIT100HI off</TD></TR>
+<TR><TD><B>100L -100H</B></TD><TD>NHIT100LO on, or NHIT100HI off</TD></TR>
+<TR><TD><B>OWLEL OWLEH OWLN</B></TD><TD>at least one of OWLELO, OWLEHI or OWLN is on</TD></TR>
+<TR><TD><B>ORPHAN</B></TD><TD>only orphan events</TD></TR>
+<TR><TD><B>-ORPHAN</B></TD><TD>only non-orphan events</TD></TR>
+<TR><TD><B>*HYDRO</B></TD><TD>always display HYDRO events, regardless of NHIT settings</TD></TR>
+</TABLE>
+</BLOCKQUOTE>
+
+Pressing the Tab key converts the trigger string to standard form,
+and any incomplete or ambiguous trigger bit names are converted to the
+closest valid name.  Note that this is also done automatically
+when a new trigger is applied.
+
+<BLOCKQUOTE>
+<A NAME="Trigger bit names"></A><B>Valid trigger bit names:</B>
+<P>
+<TABLE CELLSPACING=0 CELLPADDING=0 NOSAVE >
+<TR NOSAVE><TD WIDTH="150" NOSAVE><B>OWLEL</B></TD><TD>outward looking tubes energy low</TD></TR>
+<TR><TD><B>OWLEH</B></TD><TD>outward looking tubes energy high</TD></TR>
+<TR><TD><B>PULGT</B></TD><TD>pulse global trigger</TD></TR>
+<TR><TD><B>PRESCL</B></TD><TD>prescaled NHIT 100 low</TD></TR>
+<TR><TD><B>PED</B></TD><TD>pedestal</TD></TR>
+<TR><TD><B>PONG</B></TD><TD>GPS time pong signal</TD></TR>
+<TR><TD><B>SYNC</B></TD><TD>GPS time sync signal</TD></TR>
+<TR><TD><B>EXTA</B></TD><TD>external asynchronous trigger</TD></TR>
+<TR><TD><B>HYDRO</B></TD><TD>hydrophone</TD></TR>
+<TR><TD><B>EXT3</B></TD><TD>external 3</TD></TR>
+<TR><TD><B>EXT4</B></TD><TD>external 4</TD></TR>
+<TR><TD><B>EXT5</B></TD><TD>external 5</TD></TR>
+<TR><TD><B>EXT6</B></TD><TD>external 6</TD></TR>
+<TR><TD><B>NCDSHAP</B> <SUP>1</SUP></TD><TD>NCD shaper trigger</TD></TR>
+<TR><TD><B>EXT8</B></TD><TD>external 8</TD></TR>
+<TR><TD><B>SRAW</B></TD><TD>special raw</TD></TR>
+<TR><TD><B>NCDMUX</B> <SUP>1</SUP></TD><TD>NCD MUX trigger</TD></TR>
+<TR><TD><B>SOFGT</B></TD><TD>software global trigger</TD></TR>
+<TR><TD><B>MISS</B></TD><TD>missed event flag</TD></TR>
+<TR><TD><B>ORPHAN</B></TD><TD>whole MTC word zero (synthesized trigger bit)</TD></TR>
+<TR><TD><B>NONE</B></TD><TD>all trigger bits zero (synthesized trigger bit)</TD></TR>
+<TR><TD><B>CAEN</B> <SUP>2</SUP></TD><TD>event has CAEN digitized triggers data (synthesized trigger bit)</TD></TR>
+<TR><TD><B>100L</B></TD><TD>NHIT 100 low</TD></TR>
+<TR><TD><B>100M</B></TD><TD>NHIT 100 medium</TD></TR>
+<TR><TD><B>100H</B></TD><TD>NHIT 100 high</TD></TR>
+<TR><TD><B>20</B></TD><TD>NHIT 20</TD></TR>
+<TR><TD><B>20LB</B></TD><TD>NHIT 20 look back</TD></TR>
+<TR><TD><B>ESUML</B></TD><TD>energy sum low</TD></TR>
+<TR><TD><B>ESUMH</B></TD><TD>energy sum high</TD></TR>
+<TR><TD><B>OWLN</B></TD><TD>outward looking tubes NHIT</TD></TR>
+</TABLE>
+</BLOCKQUOTE>
+
+<B><font color="#880000">Special feature:</font></B> The trigger name <B>NCD</B> can be used
+as a short form for the NCD triggers: <B>NCDSHAP,NCDMUX</B>.<SUP>1</SUP>
+
+<BLOCKQUOTE><SUP>1</SUP> SNO version only<br>
+<SUP>2</SUP> SNO+ version only</BLOCKQUOTE>
+
+<H4><A NAME="pmt_ncd"><B>PMT/NCD</B></A></H4>
+This field allows you to specify individual PMT's or NCD's for the events to be displayed.
+The PMT and/or NCD names entered are used to filter events in exactly the same way as the
+<B>Trigger Mask</B>.  You can even use a plus sign (+), a minus sign (-) or a star (*)
+before the PMT or NCD name to indicate tubes that must exist, can't exist, or should
+always be displayed as with the <B>Trigger Mask</B> logic operations explained above.
+
+<P>PMT's may be specified either by barcode in the form PXXX, or by electronics channel
+number in the form P(####).  NCD's may be specified by string name in the form X##, or string number
+in the form N(##).  Note that low gain PMT's <b>must</b> be specified by electronics channel, since
+their barcode is used to specify the associated <i>normal</i> PMT channel for these tubes.
+
+<BLOCKQUOTE>
+<TABLE NOSAVE>
+<TR NOSAVE><TD WIDTH="150" NOSAVE><B><U><FONT SIZE=+1>Example</FONT></U></B></TD>
+<TD><B><U><FONT SIZE=+1>Displays events in which...</FONT></U></B></TD></TR>
+<TR><TD><B>PADZ</B></TD><TD>PMT PADZ fired</TD></TR>
+<TR><TD><B>P(4844)</B></TD><TD>PMT electronics channel 4844 fired (this is PADZ in the current tube map)</TD></TR>
+<TR><TD><B>K7</B></TD><TD>NCD K7 fired</TD></TR>
+<TR><TD><B>N(8)</B></TD><TD>NCD string number 8 fired (this is K7 in the original NCD layout)</TD></TR>
+<TR><TD><B>-P(9207)</B></TD><TD>PMT channel 9207 didn't fire (ie. events without the FECD)</TD></TR>
+<TR><TD><B>+J12 -PADZ</B></TD><TD>NCD J12 fired and PMT PADZ didn't fire</TD></TR>
+<TR><TD><B>*M8</B></TD><TD>NCD M8 has fired, regardless of NHIT settings</TD></TR>
+</TABLE>
+</BLOCKQUOTE>
+
+For convenience, when the PMT/NCD cuts are applied the names in this field are converted
+to a standard form where both the name and number are displayed.  For instance, "PADZ" is
+converted to "PADZ(4844)", and "N(8)" becomes "K7(8)".
+
+<H4>
+<B>Goto GTID/Run/Time</B></H4>
+This feature is used to search for a specific event in a file
+by GTID, run number or time.  The popup menu beside the Goto
+button allows selection of GTID, Run or Time.
+
+<P>With <B>GTID</B> selected, the Goto button will go to the event with the specified GTID in a file.
+If an exact match isn't found the event with the next greater
+GTID will be displayed unless XSNOED detects that the events in the file
+are non-sequential, in which case an exact match is required.
+Click the Goto button or press return after typing
+the GTID to begin the search.
+
+<P><B><font color="#880000">Special feature:</font></B> The GTID can be entered in either decimal or hexadecimal,
+independent of the display setting for GTIDs. Hexadecimal numbers are
+distinguished by a leading '0x' (ie. 0x100 hex is 256 decimal).
+
+<P>With <B>Run</B> selected, XSNOED will search for the next available
+event in the specified run.  There are two different search strategies
+depending on the type of file open:
+
+<OL>
+<LI>If a standard SNO run file is open and the format of the filename conforms to
+the SNO standard (SNO_##########_###.zdab), then Goto Run will open a new file for
+the specified run and load the first event.</LI>
+<LI>Otherwise, XSNOED will assume the file is a summary file containing events from
+many different runs and it will scan the file looking for the first event
+from the specified run.</LI>
+</OL>
+
+<P>With <B>Time</B> selected, XSNOED will search for the next event with the
+specified 10MHz timestamp (in the currently selected time zone).  The time
+must be entered in the format "mm/dd/yyyy hh:mm:ss".  The time is optional,
+and if not provided will default to 00:00:00.  Seconds need not be specified.
+
+<P>In all cases, Goto will read across ZDAB sub-run files to find the specified event.
+
+<H4><B>Saving Events</B></H4>
+The <B>Save</B> buttons cause the currently displayed event to be appended to
+the specified ZDAB file. Currently, Monte Carlo and fit data are not saved with
+the event. All unique PMT hits (whether visible or not) are saved.
+The output ZDAB file remains open until an event is written to another file,
+or XSNOED is quit. Note: Because of the block-formatted nature of ZDAB files,
+saved events may not actually be written to file until it is closed.
+If necessary, a quick way to force an output file to be closed is to clear the
+filename and press the associated <B>Save</B> button.<P>
+
+The Event Control window can be extended downwards to reveal three more sets
+of <B>Save</B> buttons and filenames, thus allowing four output files to be open
+concurrently. The default file name for each output ZDAB file can be specified
+in the <A HREF="resource.html">XSnoed resource file</A>.
+
+<P>
+<HR>
+</BODY>
+</HTML>

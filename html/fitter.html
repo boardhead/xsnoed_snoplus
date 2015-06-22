@@ -1,0 +1,141 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.04 (Macintosh; I; PPC) [Netscape]">
+   <META NAME="Author" CONTENT="Phil Harvey">
+   <META NAME="Description" CONTENT="Sno Event Display user guide">
+   <LINK REL="Index" HREF="index.html">
+   <LINK REL="Start" HREF="xsnoed.html">
+   <LINK REL="Prev"  HREF="caen_scope.html">
+   <LINK REL="Next"  HREF="optical.html">
+   <TITLE>XSNOED User Guide - Fitter Window</TITLE>
+   <SCRIPT language="javascript">
+      <!-- Hide the script from old browsers --
+      img1 = new Image(); img1.src = "next2.GIF";
+      img2 = new Image(); img2.src = "prev2.GIF";
+      img3 = new Image(); img3.src = "home2.GIF";
+      // --End Hiding Here -->
+   </SCRIPT>
+</HEAD>
+<BODY BACKGROUND="background.GIF">
+
+<A HREF="optical.html"
+ ONMOUSEOVER="document.images['img1'].src='next2.GIF'" 
+ ONMOUSEOUT="document.images['img1'].src='next.GIF'">
+ <IMG NAME="img1" SRC="next.GIF" ALIGN=RIGHT BORDER=0 HSPACE=5 HEIGHT=28 WIDTH=63 ALT="Next Page"></A>
+<A HREF="caen_scope.html"
+ ONMOUSEOVER="document.images['img2'].src='prev2.GIF'" 
+ ONMOUSEOUT="document.images['img2'].src='prev.GIF'">
+ <IMG NAME="img2" SRC="prev.GIF" ALIGN=RIGHT BORDER=0 HSPACE=5 HEIGHT=28 WIDTH=63 ALT="Previous Page"></A>
+<A HREF="xsnoed.html"
+ ONMOUSEOVER="document.images['img3'].src='home2.GIF'" 
+ ONMOUSEOUT="document.images['img3'].src='home.GIF'">
+ <IMG NAME="img3" SRC="home.GIF" ALIGN=RIGHT BORDER=0 HSPACE=5 HEIGHT=28 WIDTH=63 ALT="First Page"></A>
+
+<H1>Fitter Window</H1>
+<HR>
+
+<IMG SRC="fitter.GIF" BORDER=0 HEIGHT=344 WIDTH=296 HSPACE=10 VSPACE=10 ALIGN=RIGHT>
+
+<P>The Fitter window gives information about the currently selected fit,
+and allows some fit parameters to be set manually.
+At the bottom of the window are three buttons:
+
+<P>The <B>Do Fit</B> button runs the Online fitter on the current event.
+If the current event already has an Online fit, the new fit will overwrite
+the existing Online fit.
+
+<P>The <B>Next Fit</B> button cycles through the available fits if the event has more than one fit.
+Note that the water levels are displayed as special types of fits, so displaying
+a 'Water' or 'D2O' fit will give information about the corresponding water
+level.
+
+<P>The <B>Manual Fit</B> button
+adds a new fit at position (0,0,0) with direction (0,0,1) and time 0 to the event.
+This gives you a starting point for performing a Manual fit.<P>
+
+The fit parameters can be then changed by either typing them into the Fitter window,
+or by dragging/rotating the fit in the main image window. After changing a fit,
+the fit name is changed to <B>Manual</B> (if not already a Manual fit), and the
+<B>Radius</B> and <B>Sigma</B> (the mean time difference) for the new fit are calculated
+and displayed.
+
+<P>The quantities displayed in the fit window are explained in
+the following table:
+<BR CLEAR=ALL><BLOCKQUOTE>
+<TABLE CELLSPACING=0 CELLPADDING=2 WIDTH="85%" NOSAVE >
+<TR NOSAVE>
+<TD VALIGN=TOP WIDTH="100" NOSAVE><B>Fitter</B></TD>
+
+<TD>Name identifying the fitter that was run. XSnoed generates three
+special fitter names: <B>Manual</B>, <B>Online</B>, <B>Water</B>, and <B>D2O</B>.
+The number in brackets after the fitter name is the index of the fit for the
+event (starting at zero for the first fit).</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>Position</B></TD>
+
+<TD>The x,y,z position of the fit vertex in detector coordinates, expressed
+in centimeters.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>Radius</B></TD>
+
+<TD>The distance from the center of the detector to the fit vertex in centimeters.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>Time</B></TD>
+
+<TD>The fitted event time in nanoseconds.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>Direction</B></TD>
+
+<TD>The x,y,z cosines of the fitted event direction.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>Cone Angle</B></TD>
+
+<TD>The half angle of the Cherenkov cone displayed for this fit, displayed
+in degrees. The default cone angle is 41.40 degrees. The intersection
+of the Cherenkov cone with the PSUP is shown in the image windows.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>Chisq</B></TD>
+
+<TD>The chi-squared of the fit for the Online fitter. For a Manual fit,
+this displays the <B>Sigma</B> of the hits from the fit time. For other
+fit types, this displays the <B>Quality</B> of the fit. The meaning of this
+value is specific to the fitter type.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>Fit Hits</B></TD>
+
+<TD>The number of hits that participated in the fit. This will be
+the number of hits in the event minus the discarded hits and the hits that
+were thrown out by the fitter.  To avoid long calculation delays, XSNOED
+will only pass a maximum of 400 hits to the fitter for any given event.
+It does this by sending every Nth hit to the fitter, where NHIT/N &lt;= 400.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>NHITW</B></TD>
+
+<TD>The number of hits within a fixed-width window relative to the fitted
+event times. Only valid for the <B>Online</B> fitter. This window
+width is usually +-10 nanoseconds, and is specified in the fitter configuration
+file, fitter.dat.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+
+<HR>
+</BODY>
+</HTML>

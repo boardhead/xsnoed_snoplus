@@ -1,0 +1,120 @@
+#ifndef __PHistImage_h__
+#define __PHistImage_h__
+
+#include "PImageCanvas.h"
+
+enum {
+	GRAB_X			= 0x01,
+	GRAB_Y			= 0x02,
+	GRAB_X_ACTIVE	= 0x10,
+	GRAB_Y_ACTIVE	= 0x20,
+	GRABS_ACTIVE	= (GRAB_X_ACTIVE | GRAB_Y_ACTIVE)
+};
+
+enum EHistStyle {
+	kHistStyleBars,
+	kHistStyleSteps
+};
+
+class PScale;
+struct ImageData;
+
+class PHistImage : public PImageCanvas {
+public:
+	PHistImage(PImageWindow *owner, Widget canvas=0, int createCanvas=1);
+	virtual ~PHistImage();
+	
+	virtual void	DrawSelf();
+	virtual void	Resize();
+	virtual void	HandleEvents(XEvent *event);
+	virtual void	SetCursorForPos(int x, int y);
+	
+	virtual void	DoGrab(float xmin, float xmax);
+	virtual void    DoGrabY(double ymin, double ymax);
+	virtual void	DoneGrab()					{ }
+	
+	virtual void	ResetGrab(int do_update)	{ mGrabFlag = 0; }
+
+	virtual void	MakeHistogram()				{ }
+	virtual void	SetHistogramLabel() 		{ }
+	
+	void			UpdateScaleInfo();
+	void			CreateScaleWindow();
+	
+	void			SetLabel(char *str);
+	char		  *	GetLabel()					{ return mLabel; }
+	
+	virtual float	GetScaleMin()				{ return mXMin; }
+	virtual float	GetScaleMax()				{ return mXMax; }
+	
+	virtual void	SetScaleMin(float xmin)		{ mXMin = xmin; }
+	virtual void	SetScaleMax(float xmax)		{ mXMax = xmax; }
+	
+	long            GetYMin()                   { return mYMin; }
+	long			GetYMax()			        { return mYMax; }
+	
+	void            SetYMin(long ymin)          { mYMin = ymin; }
+	void			SetYMax(long ymax)			{ mYMax = ymax; }
+	
+	void			SetUnderscale(long num)		{ mUnderscale = num; }
+	void			SetOverscale(long num)		{ mOverscale = num; }
+	void			SetStyle(EHistStyle style)	{ mStyle = style; }
+	void			SetLog(int on);
+	
+	void			CreateData(int numbins);
+	void            CreateOverlay(int numbins);
+	void            SetFixedBins(int on=1)      { mFixedBins = on; }
+	long		  *	GetDataPt()					{ return mHistogram; }
+	long          * GetOverlayPt()              { return mOverlay; }
+	int				GetNumBins()				{ return mNumBins; }
+	int				GetGrabFlag()				{ return mGrabFlag; }
+	
+	virtual void	SetScaleLimits()			{ }
+	void			SetScaleLimits(float min, float max, float min_rng);
+	void			SetIntegerXScale(int is_int);
+	
+	void            SetPlotCol(int col)         { mPlotCol = col; }
+	void            SetOverlayCol(int col)      { mOverlayCol = col; }
+	
+protected:
+	void			ReadScaleValues();
+	void			CheckScaleRange();
+
+	long		  *	mHistogram;		// pointer to histogram array
+	long		  *	mOverlay;		// pointer to overlay array
+	double			mOverlayScale;	// scaling factor for overlay plot
+	long			mOverscale;		// number of overscale entries
+	long			mUnderscale;	// number of underscale entries
+	int				mNumBins;		// number of histogram bins
+	int			  *	mHistCols;		// colours for drawing histogram (underscale,regular,overscale)
+	int             mPlotCol;       // plot color for kHistStyleLines
+	int				mOverlayCol;	// pixel value for overlay colour
+	int				mNumCols;		// number of histogram colours
+	char		  *	mLabel;			// histogram label
+	PScale		  *	mXScale;		// pointer to X scale object
+	PScale		  *	mYScale;		// pointer to Y scale object
+	float			mXMin;			// x scale minimum
+	float			mXMax;			// x scale maximum
+	long			mYMin;			// y scale minimum
+	long			mYMax;			// y scale maximum (set by MakeHistogram())
+	float			mXMinMin;		// minimum x scale minimum
+	float			mXMaxMax;		// maximum x scale maximum
+	float			mXMinRng;		// minimum x scale range
+	Boolean			mIsLog;			// true if Y scale is logarithmic
+	int				mXScaleFlag;	// flag for x scale type
+	EHistStyle		mStyle;			// style for drawing histogram
+	int				mGrabFlag;		// flag for current grab
+	int             mFixedBins;     // false if data is rebinned on x scale change
+	Widget			sp_log, sp_min, sp_max;	// widgets for scale window
+	Widget          sp_ymin, sp_ymax;
+	
+private:
+	static void		ScaleAutoProc(Widget w, PHistImage *hist, caddr_t call_data);
+	static void		ScaleFullProc(Widget w, PHistImage *hist, caddr_t call_data);
+	static void		ScaleOKProc(Widget w, PHistImage *hist, caddr_t call_data);
+	static void		ApplyProc(Widget w, PHistImage *hist, caddr_t call_data);
+	static void		CancelProc(Widget w, Widget aShell, caddr_t call_data);
+
+};
+
+#endif // __PHistImage_h__

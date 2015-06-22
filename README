@@ -1,0 +1,102 @@
+
+X-Windows SNO Event Display by Phil Harvey, Queen's University
+--------------------------------------------------------------
+Before attempting to compile XSNOED, make sure you have a recent
+version of Motif (or Lesstif) installed on your system (Linux users
+can download Open Motif from http://www.motifzone.net/download/).
+Then follow these steps to compile XSNOED:
+
+ 1) Make a directory for the xsnoed source code, and copy
+    "xsnoed.tar.gz" into this directory.
+    
+ 2) Type "gunzip xsnoed.tar.gz" and "tar -xf xsnoed.tar" in the
+    xsnoed directory to extract the source code.
+    
+ 3) If you do NOT require XSNOED to be able to read live dispatched
+    data go to step 8), otherwise continue with step 4).
+    
+ 4) [Compiling for dispatcher] -- Copy the file "disp.tar.gz"
+    (available from surf:/usr/local/ph) into the parent directory of
+    the xsnoed source code.
+ 
+ 5) Type "gunzip disp.tar.gz" and "tar -xf disp.tar" to extract
+    the dispatcher libraries.  This will create a directory called
+    "disp" parallel to the xsnoed source code directory.
+    
+ 6) In the "disp" directory, change the "lib" soft link to point
+    to the library directory for your specific OS type.
+    
+ 7) Change back to the xsnoed source code directory, and advance
+    to step 9).
+ 
+ 8) [No dispatcher] -- Edit "Makefile.$OSTYPE_$MACHTYPE" for your
+    specific OS/machine type, and make the following changes:
+    
+    a) Add "-DNO_DISPATCH" to the "PROJFLAGS".
+    b) Remove "-lconthost" from the "DISPLIBS" definition.
+    
+ 9) Type "make".
+ 
+With any luck, you will now be the proud owner of a freshly compiled
+XSNOED -- type "./xsnoed" to run it.
+
+Note:  On some newer Linux versions you may get an error saying
+that "errno" is not defined when linking with the dispatcher library.
+To fix this, download and install the updated dispatcher library from
+surf:/usr/local/ph/disp.tar.gz.
+
+--------------------------------------------------------------
+Environment variables used in XSNOED make:
+
+XSNOED_OPTIONS - Allows you to specify xsnoed compiler options.
+                 (see html/appendix.html for details)
+
+XSNOED_MAKE_VER - Specifies specific versions of the makefile to
+                  use for different systems.  Currently supported
+                  make versions are:
+  
+    .lesstif - Use this if you are running Linux i386 with the
+               Lesstif libraries instead of Motif.
+             
+    .old - For Solaris sparc systems running the older compilers.
+  
+Examples:
+
+  - Type "setenv XSNOED_OPTIONS -DDEMO_VERSION" before making XSNOED
+    to compile the demo version.
+
+  - Type "setenv XSNOED_MAKE_VER .lesstif" before making XSNOED if
+    you are using Linux Lesstif instead of Motif.
+
+--------------------------------------------------------------
+Motif for Linux:
+
+If you are running Linux, I suggest that you use Motif instead
+of Lesstif.  You can download the Open Group Motif free from
+http://www.motifzone.net/download/.
+
+--------------------------------------------------------------
+Compiling XSNOED for ROOT:
+
+ 1) Be sure you have QSNO and ROOT installed.
+
+ 2) Type "make libqsnoed" to make libqsnoed.so. 
+ 
+ 3) Type "make root" to make the special version of root.exe that
+    supports the QSnoed graphics interface.
+
+   (or type "make install" to make both libqsnoed.so and root.exe,
+    and install them in the proper QSNO directories)
+
+ 4) Type "make clean", then "make xsnoed.root" to make the ROOT
+    version of xsnoed.
+ 
+Note: Between builds of different versions, you must type "make clean"
+to erase all old object files (this is not necessary between builds of
+libqsnoed.so and root.exe).
+
+--------------------------------------------------------------
+Full, up-to-date XSNOED documentation can be found at:
+
+    http://manhattan.sno.laurentian.ca/xsnoed/xsnoed.html
+

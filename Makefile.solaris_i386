@@ -1,0 +1,51 @@
+#
+# Solaris system-specific definitions for xsnoed Makefile
+#
+# Note: VERFLAGS must be defined externally
+#
+# Phil Harvey - 12/2/98
+#
+BASE          = .
+DISPBASE      = /usr/local/dispatcher
+
+PROJFLAGS     = -DSWAP_BYTES $(VERFLAGS)
+
+INCLUDE       = -I$(BASE)
+
+CFLAGS        = -g -xO0 -xCC -D_BSD=43 $(PROJFLAGS)
+CXXFLAGS      = -compat -g -xO0 $(PROJFLAGS)
+PICFLAG       = -KPIC
+
+LDFLAGS       = -g 
+LIBS          = -L/opt/SUNWspro/lib -lm -lposix4 -lgen -ldl -lsunmath -lC
+
+CCC           = CC
+CC            = cc
+LD            = ld
+LDCC          = CC
+LDCC_SHARED   = CC
+LDSO_FLAGS    = -G
+CC_LD_FLAGS   = -compat -G
+
+XINCS         = -I/usr/openwin/include/X11
+XFLAGS        = $(XINCS)
+XLIBS         = -L/usr/openwin/lib -lXm -lXmu -lXt -lX11 \
+                -L/opt/SUNWspro/WS4.0/user_widgets/obj
+
+ROOTINCS      = -I$(ROOTSYS)/include
+ROOTFLAGS     = $(ROOTINCS)
+ROOTLIBS      = $(shell root-config --libs) -lMinuit
+
+QSNOINCS      = -I../include
+QSNOFLAGS     = $(ROOTFLAGS) $(QSNOINCS)
+QSNOLIBS      = -L../lib -lqtree $(ROOTLIBS) -lF77 -lM77
+
+DISPINCS      = -I$(DISPBASE)/include -I./include
+DISPFLAGS     = $(DISPINCS)
+DISPLIBS      = -L$(DISPBASE)/lib -lconthost -lnsl -lsocket
+
+OBJS          =
+
+ROOTOBJS      =
+
+include         Makefile.include

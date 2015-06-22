@@ -1,0 +1,136 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.04 (Macintosh; I; PPC) [Netscape]">
+   <META NAME="Author" CONTENT="Phil Harvey">
+   <META NAME="Description" CONTENT="Sno Event Display user guide">
+   <LINK REL="Index" HREF="index.html">
+   <LINK REL="Start" HREF="xsnoed.html">
+   <LINK REL="Prev"  HREF="ncd_info.html">
+   <LINK REL="Next"  HREF="ncd_histogram.html">
+   <TITLE>XSNOED User Guide - NCD Hit Window</TITLE>
+   <SCRIPT language="javascript">
+      <!-- Hide the script from old browsers --
+      img1 = new Image(); img1.src = "next2.GIF";
+      img2 = new Image(); img2.src = "prev2.GIF";
+      img3 = new Image(); img3.src = "home2.GIF";
+      // --End Hiding Here -->
+   </SCRIPT>
+</HEAD>
+<BODY BACKGROUND="background.GIF">
+
+<A HREF="ncd_histogram.html"
+ ONMOUSEOVER="document.images['img1'].src='next2.GIF'" 
+ ONMOUSEOUT="document.images['img1'].src='next.GIF'">
+ <IMG NAME="img1" SRC="next.GIF" ALIGN=RIGHT BORDER=0 HSPACE=5 HEIGHT=28 WIDTH=63 ALT="Next Page"></A>
+<A HREF="ncd_info.html"
+ ONMOUSEOVER="document.images['img2'].src='prev2.GIF'" 
+ ONMOUSEOUT="document.images['img2'].src='prev.GIF'">
+ <IMG NAME="img2" SRC="prev.GIF" ALIGN=RIGHT BORDER=0 HSPACE=5 HEIGHT=28 WIDTH=63 ALT="Previous Page"></A>
+<A HREF="xsnoed.html"
+ ONMOUSEOVER="document.images['img3'].src='home2.GIF'" 
+ ONMOUSEOUT="document.images['img3'].src='home.GIF'">
+ <IMG NAME="img3" SRC="home.GIF" ALIGN=RIGHT BORDER=0 HSPACE=5 HEIGHT=28 WIDTH=63 ALT="First Page"></A>
+
+<H1>NCD Hit Window</H1>
+<HR>
+
+<IMG SRC="ncd_hit.GIF" BORDER=0 HEIGHT=466 WIDTH=228 HSPACE=10 VSPACE=10 ALIGN=RIGHT>
+
+<P>The NCD Hit window displays details about individual NCD hits. It
+is used in conjunction with any image window that displays NCD tubes,
+and displays information about the NCD nearest the cursor.
+If there is no NCD near the current cursor location, no information is shown.
+The following list describes the quantities displayed for each NCD.
+
+<P><B>NCD</B>
+
+<BLOCKQUOTE>The NCD string name, with the string number in brackets.
+</BLOCKQUOTE>
+
+<B>Mux Hits</B>
+
+<BLOCKQUOTE>The number of times a Mux fired for this NCD in the event.  Usually this number
+will be either 0 or 1 unless events are being summed.
+</BLOCKQUOTE>
+
+<B>Shaper Hits</B>
+
+<BLOCKQUOTE>The number of times a shaper fired for this NCD.
+</BLOCKQUOTE>
+
+<B>Scope Hits</B>
+
+<BLOCKQUOTE>The number of scope traces associated with this NCD.
+</BLOCKQUOTE>
+
+<B>Shaper Val</B>
+
+<BLOCKQUOTE>The shaper ADC value.  This will be zero unless the shaper fired.
+If summing events, this is the average shaper value for all summed events.
+</BLOCKQUOTE>
+
+<B>Mux Bus</B>
+
+<BLOCKQUOTE>The Mux bus number for this NCD.
+</BLOCKQUOTE>
+
+<B>Mux Box</B>
+
+<BLOCKQUOTE>The Mux box number for this NCD.
+</BLOCKQUOTE>
+
+<B>Mux Chan</B>
+
+<BLOCKQUOTE>The Mux channel associated with the NCD.
+</BLOCKQUOTE>
+
+<B>HV Supply</B>
+
+<BLOCKQUOTE>The HV supply number for this NCD.
+</BLOCKQUOTE>
+
+<B>Shaper Slot</B>
+
+<BLOCKQUOTE>The Shaper Slot number.
+</BLOCKQUOTE>
+
+<B>Shaper Addr</B>
+
+<BLOCKQUOTE>The shaper hardware address.
+</BLOCKQUOTE>
+
+<B>Shaper Chan</B>
+
+<BLOCKQUOTE>The shaper channel number.
+</BLOCKQUOTE>
+
+<B>Scope Chan</B>
+
+<BLOCKQUOTE>The scope channel number associated with this NCD.
+</BLOCKQUOTE>
+
+<B>Preamp</B>
+
+<BLOCKQUOTE>The preamp serial number for this NCD.
+</BLOCKQUOTE>
+
+<B>PDS Board, PDS Channel</B>
+
+<BLOCKQUOTE>The PDS board and channel numbers.
+</BLOCKQUOTE>
+
+<B>Counters</B>
+
+<BLOCKQUOTE>The names of all counters in the NCD string.  NCD strings consist
+of 3 or 4 separate proportional counters that are joined together.
+</BLOCKQUOTE>
+
+<B>X, Y</B>
+
+<BLOCKQUOTE>The X,Y position of the NCD tube in the detector (in cm).
+</BLOCKQUOTE>
+
+<HR>
+</BODY>
+</HTML>

@@ -1,0 +1,56 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.04 (Macintosh; I; PPC) [Netscape]">
+   <META NAME="Author" CONTENT="Phil Harvey">
+   <META NAME="Description" CONTENT="Sno Event Display user guide">
+   <LINK REL="Index" HREF="index.html">
+   <LINK REL="Start" HREF="xsnoed.html">
+   <LINK REL="Prev"  HREF="monte_carlo.html">
+   <LINK REL="Next"  HREF="ascii_window.html">
+   <TITLE>XSNOED User Guide - Event Times Window</TITLE>
+   <SCRIPT language="javascript">
+      <!-- Hide the script from old browsers --
+      img1 = new Image(); img1.src = "next2.GIF";
+      img2 = new Image(); img2.src = "prev2.GIF";
+      img3 = new Image(); img3.src = "home2.GIF";
+      // --End Hiding Here -->
+   </SCRIPT>
+</HEAD>
+<BODY BACKGROUND="background.GIF">
+
+<A HREF="ascii_window.html"
+ ONMOUSEOVER="document.images['img1'].src='next2.GIF'" 
+ ONMOUSEOUT="document.images['img1'].src='next.GIF'">
+ <IMG NAME="img1" SRC="next.GIF" ALIGN=RIGHT BORDER=0 HSPACE=5 HEIGHT=28 WIDTH=63 ALT="Next Page"></A>
+<A HREF="monte_carlo.html"
+ ONMOUSEOVER="document.images['img2'].src='prev2.GIF'" 
+ ONMOUSEOUT="document.images['img2'].src='prev.GIF'">
+ <IMG NAME="img2" SRC="prev.GIF" ALIGN=RIGHT BORDER=0 HSPACE=5 HEIGHT=28 WIDTH=63 ALT="Previous Page"></A>
+<A HREF="xsnoed.html"
+ ONMOUSEOVER="document.images['img3'].src='home2.GIF'" 
+ ONMOUSEOUT="document.images['img3'].src='home.GIF'">
+ <IMG NAME="img3" SRC="home.GIF" ALIGN=RIGHT BORDER=0 HSPACE=5 HEIGHT=28 WIDTH=63 ALT="First Page"></A>
+
+<H1>Event Times Window</H1>
+<HR>
+
+<IMG SRC="event_times.GIF" BORDER=0 HEIGHT=210 WIDTH=284 HSPACE=10 VSPACE=10 ALIGN=RIGHT>
+
+<P>The Event Times window is a histogram of the 50 MHz clock value for events in the
+uncut history buffer. The currently viewed event is shown in red if it exists
+in the buffer. Times are given in seconds with respect to the zeroth entry
+of the history buffer (the most recent event read).
+
+<P>Note that orphan events will not be displayed in this window because they
+have no associated trigger time stamp.
+
+<P>The scales for the window can be changed by clicking or dragging with the mouse
+like the <A HREF="histogram.html">Histogram window</A>. Once the scales
+have been changed, they will no longer automatically scale as new events come in.
+A quick click in histogram plot area restores the automatic scaling.
+
+<BR CLEAR=ALL><P>
+<HR>
+</BODY>
+</HTML>

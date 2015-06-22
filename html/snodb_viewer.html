@@ -1,0 +1,78 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.04 (Macintosh; I; PPC) [Netscape]">
+   <META NAME="Author" CONTENT="Phil Harvey">
+   <META NAME="Description" CONTENT="Sno Event Display user guide">
+   <LINK REL="Index" HREF="index.html">
+   <LINK REL="Start" HREF="xsnoed.html">
+   <LINK REL="Prev"  HREF="dump_window.html">
+   <LINK REL="Next"  HREF="rch_window.html">
+   <TITLE>XSNOED User Guide - SNODB Viewer Window</TITLE>
+   <SCRIPT language="javascript">
+      <!-- Hide the script from old browsers --
+      img1 = new Image(); img1.src = "next2.GIF";
+      img2 = new Image(); img2.src = "prev2.GIF";
+      img3 = new Image(); img3.src = "home2.GIF";
+      // --End Hiding Here -->
+   </SCRIPT>
+</HEAD>
+<BODY BACKGROUND="background.GIF">
+
+<A HREF="rch_window.html"
+ ONMOUSEOVER="document.images['img1'].src='next2.GIF'" 
+ ONMOUSEOUT="document.images['img1'].src='next.GIF'">
+ <IMG NAME="img1" SRC="next.GIF" ALIGN=RIGHT BORDER=0 HSPACE=5 HEIGHT=28 WIDTH=63 ALT="Next Page"></A>
+<A HREF="dump_window.html"
+ ONMOUSEOVER="document.images['img2'].src='prev2.GIF'" 
+ ONMOUSEOUT="document.images['img2'].src='prev.GIF'">
+ <IMG NAME="img2" SRC="prev.GIF" ALIGN=RIGHT BORDER=0 HSPACE=5 HEIGHT=28 WIDTH=63 ALT="Previous Page"></A>
+<A HREF="xsnoed.html"
+ ONMOUSEOVER="document.images['img3'].src='home2.GIF'" 
+ ONMOUSEOUT="document.images['img3'].src='home.GIF'">
+ <IMG NAME="img3" SRC="home.GIF" ALIGN=RIGHT BORDER=0 HSPACE=5 HEIGHT=28 WIDTH=63 ALT="First Page"></A>
+
+<H1>SNODB Viewer Window</H1>
+<HR>
+
+<IMG SRC="snodb_viewer.GIF" BORDER=0 HEIGHT=289 WIDTH=412 HSPACE=10 VSPACE=10 ALIGN=RIGHT>
+
+<P>The SNODB Viewer window provides an interface for using the event display
+to view certain parameters derived from the SNODB.
+
+<P>The <B>SNODB Server</B> field specifies the IP address of the computer running
+the QSNODB program, or "localhost" if running on the same computer
+as XSNOED.  The QSNODB program must be running for the SNODB Viewer to function.
+
+<P>The first <B>Date</B> and <B>Time</B> fields specify the time of the parameter
+to be loaded using the <B>Load (1)</B> button.  The second date/time fields must
+also be completed to take a difference using the <B>Diff (1-2)</B> button.  The
+formats are YYYYMMDD for the date, and HHMMSSCC for the time (CC is centiseconds).
+Times are specified in UTC.
+
+<P>The <B>Raw Data Value</B> specifies the hardware ADC value that is used for calculating
+calibrated times and charges.  By default, the TAC value is set to 2250 (which roughly
+corresponds to the peak in the timing distribution), and the charge values are set
+to 620 (which roughly corresponds to one PE).
+
+<P><B>CMOS Cell Num</B> gives the hardware CMOS cell number for the constants to be loaded,
+and must be in the range 0 to 15.
+
+<P>The loaded <B>Parameter</B> can be selected from a pop-up menu containing the following entries:
+
+<UL>
+<LI><B>Calibrated Times</B> - Loads the ECA time calibrated TAC data for the specified raw data value.  (No time walk applied.)
+<LI><B>Calibrated Charges</B> - Loads the pedestal-corrected QHS, QHL and QLX data for the specified raw data value.
+<LI><B>Charge Pedestals</B> - Loads the QHS, QHL and QLX charge pedestals.
+</UL>
+
+<P>Press <B>Load (1)</B> to load the selected parameter for the first date/time,
+or <B>Diff (1-2)</B> to calculate the difference in the parameters between the two specified times. 
+The derived values are loaded into the "precalibrated" data for the event, so Data/Precalibrated must be
+selected from the menus to view the results.  (This is done automatically when the data is loaded.)
+Pressing <B>Done</B> closes the SNODB Viewer window.
+
+<P>
+<HR>
+</BODY>
+</HTML>

@@ -1,0 +1,156 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.04 (Macintosh; I; PPC) [Netscape]">
+   <META NAME="Author" CONTENT="Phil Harvey">
+   <META NAME="Description" CONTENT="Sno Event Display user guide">
+   <LINK REL="Index" HREF="index.html">
+   <LINK REL="Start" HREF="xsnoed.html">
+   <LINK REL="Prev"  HREF="move.html">
+   <LINK REL="Next"  HREF="data.html">
+   <TITLE>XSNOED User Guide - Display Menu</TITLE>
+   <SCRIPT language="javascript">
+      <!-- Hide the script from old browsers --
+      img1 = new Image(); img1.src = "next2.GIF";
+      img2 = new Image(); img2.src = "prev2.GIF";
+      img3 = new Image(); img3.src = "home2.GIF";
+      // --End Hiding Here -->
+   </SCRIPT>
+</HEAD>
+<BODY BACKGROUND="background.GIF">
+
+<A HREF="data.html"
+ ONMOUSEOVER="document.images['img1'].src='next2.GIF'" 
+ ONMOUSEOUT="document.images['img1'].src='next.GIF'">
+ <IMG NAME="img1" SRC="next.GIF" ALIGN=RIGHT BORDER=0 HSPACE=5 HEIGHT=28 WIDTH=63 ALT="Next Page"></A>
+<A HREF="move.html"
+ ONMOUSEOVER="document.images['img2'].src='prev2.GIF'" 
+ ONMOUSEOUT="document.images['img2'].src='prev.GIF'">
+ <IMG NAME="img2" SRC="prev.GIF" ALIGN=RIGHT BORDER=0 HSPACE=5 HEIGHT=28 WIDTH=63 ALT="Previous Page"></A>
+<A HREF="xsnoed.html"
+ ONMOUSEOVER="document.images['img3'].src='home2.GIF'" 
+ ONMOUSEOUT="document.images['img3'].src='home.GIF'">
+ <IMG NAME="img3" SRC="home.GIF" ALIGN=RIGHT BORDER=0 HSPACE=5 HEIGHT=28 WIDTH=63 ALT="First Page"></A>
+
+<H1>Display Menu</H1>
+<HR>
+
+<P>The Display menu provides control over various aspects of the display.
+A description of all Display menu items is given below.
+
+<A NAME="Hits"></A><H3>Hits Submenu</H3>
+<BLOCKQUOTE>The hits submenu is used to specify the types of PMT and NCD hits to display.
+A PMT will be displayed only if ALL of its corresponding attributes are selected in
+this menu.  (ie. A normal PMT with an overscale value will be displayed only if both <B>Normal</B>
+and <B>Overscale</B> are selected in the menu.)  The logic is different for NCD's however, where
+an NCD will be displayed if ANY of its attributes are selected.</BLOCKQUOTE>
+<B>Hits/All</B>
+<BLOCKQUOTE>Turns on display of basic PMT (Normal, Owl, Low Gain, Neck, BUTTS and FECD) 
+and NCD (NCD Shaper, NCD MUX and NCD Scope) hit types.</BLOCKQUOTE>
+<B>Hits/None</B>
+<BLOCKQUOTE>Turns off display of all basic PMT and NCD hit types.</BLOCKQUOTE>
+<B>Hits/PMT Only</B>
+<BLOCKQUOTE>Turns on display of PMT hits, and turns off display of NCD hits.</BLOCKQUOTE>
+<B>Hits/NCD Only</B>
+<BLOCKQUOTE>Turns on display of NCD hits, and turns off display of PMT hits.</BLOCKQUOTE>
+<B>Hits/Normal</B>
+<BLOCKQUOTE>Toggles on and off display of normal PMT's.  When </BLOCKQUOTE>
+<B>Hits/Owl</B>
+<BLOCKQUOTE>Toggles on and off display of outward looking PMT's. Outward
+looking PMT's are drawn in the location of their corresponding vertex on
+the PSUP for the purposes of display.</BLOCKQUOTE>
+<B>Hits/Low Gain</B>
+<BLOCKQUOTE>Toggles on and off display of low gain PMT's.</BLOCKQUOTE>
+<B>Hits/Neck</B>
+<BLOCKQUOTE>Toggles on and off display of neck PMT's (PMT's located
+in the neck of the acrylic vessel).  Neck PMTs are displayed in the 3-D image
+and the crate view, but are not shown in other projections.</BLOCKQUOTE>
+<B>Hits/BUTTS</B>
+<BLOCKQUOTE>Toggles on and off display of BUTTS (Berkeley Underwater Tube Testing
+Sled) tubes. BUTTS PMTs are displayed in the 3-D image and the crate view,
+but are not shown in other projections.</BLOCKQUOTE>
+<B>Hits/FECD</B>
+<BLOCKQUOTE>Toggles on and off display of hits which occurred on channels
+with no PMT connected (Front End Card Digitizer channels). FECD hits are
+only displayed in the crate view.</BLOCKQUOTE>
+<B>Hits/NCD Shaper</B>
+<BLOCKQUOTE>Toggles on and off display of NCD hits where an NCD shaper fired.  When on,
+causes NCD's to be displayed if the corresponding shaper fired, regardless of other
+attributes.</BLOCKQUOTE>
+<B>Hits/NCD MUX</B>
+<BLOCKQUOTE>Toggles on and off display of NCD hits where an NCD MUX fired.  When on,
+causes NCD's to be displayed if the corresponding MUX fired, regardless of other
+attributes.</BLOCKQUOTE>
+<B>Hits/NCD Scope</B>
+<BLOCKQUOTE>Toggles on and off display of NCD hits where NCD scope data was available.  When on,
+causes NCD's to be displayed if scope data exists, regardless of other attributes.</BLOCKQUOTE>
+<B>Hits/Discarded</B>
+<BLOCKQUOTE>Toggles on and off display of discarded PMT hits. Hits may
+be marked as discarded by using the center mouse button in any image window.</BLOCKQUOTE>
+<B>Hits/Underscale</B>
+<BLOCKQUOTE>Sets the display of PMT hits that are below the minimum histogram x scale.</BLOCKQUOTE>
+<B>Hits/Overscale</B>
+<BLOCKQUOTE>Sets the display of PMT hits that are above the maximum of the histogram scale.</BLOCKQUOTE>
+
+<A NAME="Vessel"></A><B>Vessel</B>
+<BLOCKQUOTE>Toggles on and off display of acrylic vessel in the 3-D image
+window.</BLOCKQUOTE>
+
+<A NAME="Hit Lines"></A><B>Hit Lines</B>
+<BLOCKQUOTE>Toggles on and off display of hit lines in the 3-D image window.
+Hit lines are drawn from the current fit vertex to each PMT hit. The color
+of each line corresponds to the current hit color scale. If no fit is available,
+hit lines are drawn from (0,0,0).</BLOCKQUOTE>
+
+<A NAME="Fit Lines"></A><B>Fit Lines</B>
+<BLOCKQUOTE>Toggles on and off display of lines drawn from the fit vertex
+along the Cherenkov cone. Has no effect if a fit is not available.</BLOCKQUOTE>
+
+<A NAME="Water Level"></A><B>Water Level(s)</B> - plural for ROOT_FILE version only
+<BLOCKQUOTE>Toggles the light water level display. Also toggles display
+of heavy water level for the ROOT_FILE version. The light water level is
+shown by a line drawn where it intersects the PSUP. The water level is
+taken from the water_level setting of the <A HREF="resource.html">XSnoed resource file</A> for non-ROOT
+versions, and from the water level database for the ROOT_FILE version.
+The water level is implemented in the display by adding a special fit of
+type "Water" for light water, and "D2O" for heavy water. As such, any fit
+display options also apply to the water level display. Note that both water
+levels only appear in the 3-D display (of the ROOT_FILE version), the other
+projections show the light water level but not the heavy water level.</BLOCKQUOTE>
+
+<A NAME="Geodesic"></A><B>3D Geodesic</B>
+<BLOCKQUOTE>Displays the 3-D SNO PSUP support frame view in the main image
+window.</BLOCKQUOTE>
+
+<A NAME="3D Polar"></A><B>3D Polar</B>
+<BLOCKQUOTE>Displays a 3-D polar coordinate view in the main image window.</BLOCKQUOTE>
+
+<A NAME="3D No Frame"></A><B>3D No Frame</B>
+<BLOCKQUOTE>Displays a 3-D view with no detector wire frame in the main image window.</BLOCKQUOTE>
+
+<A NAME="Flat Map"></A><B>Flat Map</B>
+<BLOCKQUOTE>Displays the unfolded, flat PSUP view in the main image window.</BLOCKQUOTE>
+
+<A NAME="Crate Map"></A><B>Crate Map</B>
+<BLOCKQUOTE>Displays the crate map in the main image window.</BLOCKQUOTE>
+
+<A NAME="Projection"></A><B>Projection</B>
+<BLOCKQUOTE>Displays the map projection in the main image window. When
+this item is selected, and new <B>Projection</B> menu appears in the main
+menu bar. The <B>Projection</B> menu is described in more detail
+in the section on the <A HREF="projection.html">Projection window</A>.</BLOCKQUOTE>
+
+<A NAME="NCD Map"></A><B>NCD Map</B>
+<BLOCKQUOTE>Displays the NCD Map image in the main window.</BLOCKQUOTE>
+
+<A NAME="White Backgnd"></A><B>White Backgnd</B>
+<BLOCKQUOTE>Selects the color set with a white background (the alternate colors) for all image windows.
+</BLOCKQUOTE>
+
+<A NAME="Greyscale"></A><B>Greyscale</B>
+<BLOCKQUOTE>Selects the greyscale color scheme for all image windows.
+</BLOCKQUOTE>
+
+<HR>
+</BODY>
+</HTML>

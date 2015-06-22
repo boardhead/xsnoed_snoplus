@@ -1,0 +1,110 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.04 (Macintosh; I; PPC) [Netscape]">
+   <META NAME="Author" CONTENT="Phil Harvey">
+   <META NAME="Description" CONTENT="Sno Event Display user guide">
+   <LINK REL="Index" HREF="index.html">
+   <LINK REL="Start" HREF="xsnoed.html">
+   <LINK REL="Prev"  HREF="anim_window.html">
+   <LINK REL="Next"  HREF="snodb_viewer.html">
+   <TITLE>XSNOED User Guide - Dump Data Window</TITLE>
+   <SCRIPT language="javascript">
+      <!-- Hide the script from old browsers --
+      img1 = new Image(); img1.src = "next2.GIF";
+      img2 = new Image(); img2.src = "prev2.GIF";
+      img3 = new Image(); img3.src = "home2.GIF";
+      // --End Hiding Here -->
+   </SCRIPT>
+</HEAD>
+<BODY BACKGROUND="background.GIF">
+
+<A HREF="snodb_viewer.html"
+ ONMOUSEOVER="document.images['img1'].src='next2.GIF'" 
+ ONMOUSEOUT="document.images['img1'].src='next.GIF'">
+ <IMG NAME="img1" SRC="next.GIF" ALIGN=RIGHT BORDER=0 HSPACE=5 HEIGHT=28 WIDTH=63 ALT="Next Page"></A>
+<A HREF="anim_window.html"
+ ONMOUSEOVER="document.images['img2'].src='prev2.GIF'" 
+ ONMOUSEOUT="document.images['img2'].src='prev.GIF'">
+ <IMG NAME="img2" SRC="prev.GIF" ALIGN=RIGHT BORDER=0 HSPACE=5 HEIGHT=28 WIDTH=63 ALT="Previous Page"></A>
+<A HREF="xsnoed.html"
+ ONMOUSEOVER="document.images['img3'].src='home2.GIF'" 
+ ONMOUSEOUT="document.images['img3'].src='home.GIF'">
+ <IMG NAME="img3" SRC="home.GIF" ALIGN=RIGHT BORDER=0 HSPACE=5 HEIGHT=28 WIDTH=63 ALT="First Page"></A>
+
+<H1>Dump Data Window</H1>
+<HR>
+
+<IMG SRC="dump_window.GIF" BORDER=0 HEIGHT=194 WIDTH=332 HSPACE=10 VSPACE=10 ALIGN=RIGHT>
+
+<P>The Dump Data window allows you to dump ASCII-formatted PMT data from the currently
+displayed event (or sum of events) to file.
+
+<P>The <B>Filename</B> field is used to enter the full pathname of the output file.
+If the specified file already exists, output will be appended to
+the file if <B>Append</B> is selected, or will overwrite the old file
+if <B>Overwrite</B> is selected.  The filename field may be left
+blank, in which case output is written to the console.
+
+<P>The <B>Comment</B> field is provided to allow additional comments about
+the event to be saved.  After the comment is written to file,
+this text field is cleared to allow input of the next comment.  Previous
+comments can be recalled by scrolling through a history buffer using
+the Up and Down keys on the keyboard.  Note that the comment history is
+not saved like the filename when this window is closed.  Also note that
+duplicate entries are removed from the history to reduce the amount of
+scrolling required to find the desired entry.
+
+<P>Pressing the <B>Write</B> button causes the event information, comments
+and PMT data to be written to the specified file.  Alternatively, you can press
+the Return key when editing any of the text fields to perform the same function.  
+
+<P>Pressing <B>Done</B> closes the window.
+
+<P>Below is a sample output from one event.  The comment, GTID, number of hits,
+and data type are written to the first lines of the file (these lines all
+begin with "#" to allow them to be skipped easily if this file is processed
+later).  The GTID is always written in decimal, regardless of the current settings.
+The remaining lines give the crate, card, channel and data value for each PMT
+currently displayed.  The data type is the same as currently displayed,
+and is selected through the <A HREF="data.html">Data menu</A>.
+
+<BLOCKQUOTE><FONT SIZE=+1>
+<PRE>
+# -----------------------------------
+# Comment: Test event dump
+# Event GTID: 991040
+# Hits displayed: 26
+# Data: Qhs (raw)
+ 0  8 30 625
+ 0 15 27 875
+ 1  1 19 634
+ 1  3 23 700
+ 1  5  2 618
+ 1 13 21 805
+ 2  8  5 586
+ 2 13 30 672
+ 2 14 20 585
+ 3  0 29 608
+ 3  3  1 652
+ 3 10  6 816
+ 3 14  5 556
+ 4  4 16 692
+ 4 12 22 671
+ 4 15 25 695
+ 5  5  9 582
+ 6  4 21 610
+ 7 15  8 625
+ 9 10  1 687
+10  0 23 569
+12  2 10 682
+12  4 21 591
+13 11 15 561
+17  4  8 611
+18 13 27 638
+</PRE>
+</FONT></BLOCKQUOTE>
+<P>
+<HR>
+</BODY>
+</HTML>

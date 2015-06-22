@@ -1,0 +1,47 @@
+#
+# HPUX system-specific definitions for xsnoed Makefile
+#
+# Note: VERFLAGS must be defined externally
+#
+# S Bryce by way of N Tagg - 11/8/99
+#
+# This version will compile at washington's HPUX machine.
+# It uses X11R6 and the std Motif
+
+BASE          = .
+DISPBASE      = /usr/local/disp
+
+PROJFLAGS     = -DNO_DISPATCH -DUSE_FTIME $(VERFLAGS)
+
+CFLAGS        = -g $(PROJFLAGS) -I$(BASE)
+CXXFLAGS      = -g $(PROJFLAGS) -I$(BASE)
+LDFLAGS       = -g
+LIBS          = -lm
+
+CCC           = g++
+CC            = gcc
+LD            = ld
+LDCC          = gcc
+LDCC_SHARED   = g++ -elf
+
+XINCS         = -I/usr/include/X11R6 -I/usr/include/Motif1.2
+XFLAGS        = $(XINCS) 
+XLIBS         = -L/usr/lib/X11R6 -L/usr/lib/Motif1.2_R6 -L/usr/local/lib \
+                -lXm -lXmu -lXt -lX11 
+
+ROOTINCS      = -I$(ROOTSYS)/include
+ROOTFLAGS     = -O $(ROOTINCS)
+ROOTLIBS      = -L$(ROOTSYS)/lib -lNew -lBase -lCint -lClib -lCont -lFunc\
+                -lGraf -lGraf3d -lHist -lHtml -lMatrix -lMeta -lRint -lMinuit -lNet\
+                -lPostscript -lProof -lTree -lUnix -lZip -lGpad -lGui -lGX11 -lX3d
+
+QSNOINCS      = -I../include
+QSNOFLAGS     = $(ROOTFLAGS) $(QSNOINCS)
+QSNOLIBS      = -L../lib -lqsno -lqtree $(ROOTLIBS)
+
+OBJS          =
+
+ROOTOBJS      =
+
+
+include         Makefile.include

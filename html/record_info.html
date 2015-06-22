@@ -1,0 +1,110 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.04 (Macintosh; I; PPC) [Netscape]">
+   <META NAME="Author" CONTENT="Phil Harvey">
+   <META NAME="Description" CONTENT="Sno Event Display user guide">
+   <LINK REL="Index" HREF="index.html">
+   <LINK REL="Start" HREF="xsnoed.html">
+   <LINK REL="Prev"  HREF="color_window.html">
+   <LINK REL="Next"  HREF="event_info.html">
+   <TITLE>XSNOED User Guide - Record Info Window</TITLE>
+   <SCRIPT language="javascript">
+      <!-- Hide the script from old browsers --
+      img1 = new Image(); img1.src = "next2.GIF";
+      img2 = new Image(); img2.src = "prev2.GIF";
+      img3 = new Image(); img3.src = "home2.GIF";
+      // --End Hiding Here -->
+   </SCRIPT>
+</HEAD>
+<BODY BACKGROUND="background.GIF">
+
+<A HREF="event_info.html"
+ ONMOUSEOVER="document.images['img1'].src='next2.GIF'" 
+ ONMOUSEOUT="document.images['img1'].src='next.GIF'">
+ <IMG NAME="img1" SRC="next.GIF" ALIGN=RIGHT BORDER=0 HSPACE=5 HEIGHT=28 WIDTH=63 ALT="Next Page"></A>
+<A HREF="color_window.html"
+ ONMOUSEOVER="document.images['img2'].src='prev2.GIF'" 
+ ONMOUSEOUT="document.images['img2'].src='prev.GIF'">
+ <IMG NAME="img2" SRC="prev.GIF" ALIGN=RIGHT BORDER=0 HSPACE=5 HEIGHT=28 WIDTH=63 ALT="Previous Page"></A>
+<A HREF="xsnoed.html"
+ ONMOUSEOVER="document.images['img3'].src='home2.GIF'" 
+ ONMOUSEOUT="document.images['img3'].src='home.GIF'">
+ <IMG NAME="img3" SRC="home.GIF" ALIGN=RIGHT BORDER=0 HSPACE=5 HEIGHT=28 WIDTH=63 ALT="First Page"></A>
+
+<H1>Record Info Window</H1>
+<HR>
+
+<IMG SRC="record_info.GIF" BORDER=0 HEIGHT=153 WIDTH=310 HSPACE=10 VSPACE=10 ALIGN=RIGHT>
+
+<P>The Record Info window gives information about header records in the data.
+This information is obtained from records received from the dispatcher or 
+read from a ZDAB file.<P>
+
+This window can display information about the following types of records:<P>
+
+<UL>
+<LI>Run Record (RHDR)</LI>
+<LI>Trigger Record (TRIG)</LI>
+<LI>ECA Record (EPED)</LI>
+<LI>Calibration Source (CAST)</LI>
+<LI>AV Position (CAAC)</LI>
+<LI>Laser Status (SOSL)</LI>
+</UL>
+
+The displayed record type is selected from the menu at the top of the Record Info window.
+Note that because of the way XSNOED reads ahead of the currently displayed event, the
+information in this window may lead the displayed events.  This is a particular problem
+if you want to analyze the sequence of EPED records.  Perhaps a future version of XSNOED
+will cache these records and display them in the proper sequence with respect to the events.<P>
+
+Here is a description of the displayed fields for the <B>Run Record</B> type:<P>
+
+<B>Run Number</B> is the number of the current run.<P>
+
+<B>Start Time</B> is the SHaRC start time for the run.<P>
+
+<B>Run Type</B> gives a list of the conditions for the run (see table below for a
+complete list of definitions).<P>
+
+<B>Sources</B> gives a list of sources deployed for the run.<P>
+
+<B>Crate Mask</B> lists the crates which were masked into the global trigger for the run.<P>
+
+<BLOCKQUOTE>
+<A NAME="Run Types"></A><U><B>Run Type Definitions</B></U><P>
+<TABLE CELLSPACING=0 CELLPADDING=0 NOSAVE >
+<TR NOSAVE><TD WIDTH="120" NOSAVE><B>Neutrino</B></TD><TD>standard neutrino run</TD></TR>
+<TR><TD><B>Source</B></TD><TD>a source is deployed</TD></TR>
+<TR><TD><B>Calib</B></TD><TD>calibration run</TD></TR>
+<TR><TD><B>NCD</B></TD><TD>neutral current detector run</TD></TR>
+<TR><TD><B>Salt</B></TD><TD>salt fill run</TD></TR>
+<TR><TD><B>Poison</B></TD><TD>poison run</TD></TR>
+<TR><TD><B>Partial</B></TD><TD>partial fill run</TD></TR>
+<TR><TD><B>Air</B></TD><TD>air (no fill) run</TD></TR>
+<TR><TD><B>D2O</B></TD><TD>D2O fill run</TD></TR>
+<TR><TD><B>H2O</B></TD><TD>H2O fill run</TD></TR>
+<TR><TD><B>UC</B></TD><TD>unusual circumstances during this run</TD></TR>
+<TR><TD><B>Trans</B></TD><TD>transitional run -- detector configuration changing</TD></TR>
+<TR><TD><B>Src Moving</B></TD><TD>source moving run</TD></TR>
+<TR><TD><B>Coils</B></TD><TD>magnetic compensation coils are on</TD></TR>
+<TR><TD><B>ECA</B></TD><TD>electronics calibration run</TD></TR>
+<TR><TD><B>Diag</B></TD><TD>diagnostic run</TD></TR>
+<TR><TD><B>Supernova</B></TD><TD>supernova run (trigger levels higher than standard neutrino run)</TD></TR>
+<TR><TD><B>Maint</B></TD><TD>PMT hardware maintenance run</TD></TR>
+<TR><TD><B>PCA</B></TD><TD>phototube calibration run</TD></TR>
+<TR><TD><B>Expt</B></TD><TD>experimental run conditions</TD></TR>
+<TR><TD><B>D2O Circ</B></TD><TD>the heavy water is circulating</TD></TR>
+<TR><TD><B>Bubbler</B></TD><TD>the bubbler system is active</TD></TR>
+<TR><TD><B>SL Assay</B></TD><TD>an SL assay is being performed</TD></TR>
+<TR><TD><B>NCD Maint</B></TD><TD>NCD hardware maintenance run</TD></TR>
+<TR><TD><B>PMT Off</B></TD><TD>the PMT system is not taking data</TD></TR>
+<TR><TD><B>NCD Off</B></TD><TD>the NCD system is not taking data</TD></TR>
+<TR><TD><B>NCD ECA</B></TD><TD>NCD electronics calibration run</TD></TR>
+<TR><TD><B>&lt;##></B></TD><TD>unknown run type bit number ## is set</TD></TR>
+</TABLE>
+</BLOCKQUOTE>
+
+<HR>
+</BODY>
+</HTML>

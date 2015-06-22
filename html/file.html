@@ -1,0 +1,237 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.04 (Macintosh; I; PPC) [Netscape]">
+   <META NAME="Author" CONTENT="Phil Harvey">
+   <META NAME="Description" CONTENT="Sno Event Display user guide">
+   <LINK REL="Index" HREF="index.html">
+   <LINK REL="Start" HREF="xsnoed.html">
+   <LINK REL="Prev"  HREF="menu.html">
+   <LINK REL="Next"  HREF="move.html">
+   <TITLE>XSNOED User Guide - File Menu</TITLE>
+   <SCRIPT language="javascript">
+      <!-- Hide the script from old browsers --
+      img1 = new Image(); img1.src = "next2.GIF";
+      img2 = new Image(); img2.src = "prev2.GIF";
+      img3 = new Image(); img3.src = "home2.GIF";
+      // --End Hiding Here -->
+   </SCRIPT>
+</HEAD>
+<BODY BACKGROUND="background.GIF">
+
+<A HREF="move.html"
+ ONMOUSEOVER="document.images['img1'].src='next2.GIF'" 
+ ONMOUSEOUT="document.images['img1'].src='next.GIF'">
+ <IMG NAME="img1" SRC="next.GIF" ALIGN=RIGHT BORDER=0 HSPACE=5 HEIGHT=28 WIDTH=63 ALT="Next Page"></A>
+<A HREF="menu.html"
+ ONMOUSEOVER="document.images['img2'].src='prev2.GIF'" 
+ ONMOUSEOUT="document.images['img2'].src='prev.GIF'">
+ <IMG NAME="img2" SRC="prev.GIF" ALIGN=RIGHT BORDER=0 HSPACE=5 HEIGHT=28 WIDTH=63 ALT="Previous Page"></A>
+<A HREF="xsnoed.html"
+ ONMOUSEOVER="document.images['img3'].src='home2.GIF'" 
+ ONMOUSEOUT="document.images['img3'].src='home.GIF'">
+ <IMG NAME="img3" SRC="home.GIF" ALIGN=RIGHT BORDER=0 HSPACE=5 HEIGHT=28 WIDTH=63 ALT="First Page"></A>
+<H1>File Menu</H1>
+<HR>
+
+<P>The File menu contains items which are in general associated
+with input/output and event control.  The File menu items are explained below.
+
+<P>
+<A NAME="Dispatcher"></A><B>Dispatcher...</B>
+<BLOCKQUOTE>Displays the dialog for connecting to the SNO dispatcher, allowing
+real-time viewing of online events. In the dispatcher dialog, enter the
+name of the SNO dispatcher, then click <B>Connect</B>. If the connection
+is successful, live events will continuously displayed and the
+<A HREF="event_control.html">Event Control window</A> will be
+opened.</BLOCKQUOTE>
+
+<A NAME="Open File"></A><B>Open File...</B>
+<BLOCKQUOTE>Displays the file open dialog box for opening event files. Currently,
+the standard version of XSNOED only reads ZDAB format files. The ROOT_FILE
+version of XSNOED has the added capability of being able to read
+ROOT event files.</BLOCKQUOTE>
+
+<A NAME="Open Rch File"></A><B>Open Rch File...</B> (ROOT_FILE version only)
+<BLOCKQUOTE>Displays the file open dialog box for opening Rch files.
+Rch files contain a set of singles histograms which are displayed
+in the <A HREF="rch_window.html">Rch windows</A>. The <B>Close</B> menu item
+will close this file as well as the input event file.</BLOCKQUOTE>
+
+<A NAME="Close"></A><B>Close</B>
+<BLOCKQUOTE>Closes the current file or dispatcher connection, and the Rch file if open.</BLOCKQUOTE>
+
+<A NAME="Print Image"><B>Print Image...</B></A>
+<BLOCKQUOTE><IMG SRC="print_window.GIF" BORDER=0 HEIGHT=209 WIDTH=332 HSPACE=10 VSPACE=10 ALIGN=RIGHT>Prints a high-quality vector image to a postscript printer or file.
+After selecting this menu item, a dialog box will appear allowing the print
+settings to be configured. To send the output to a printer, select <B>Printer</B>
+in the dialog, and enter the print command.  On most systems, the command "<B>lpr</B>" will print
+to the default printer, or "<B>lpr -P&lt;printer name></B>" will print to a specific printer.
+To write the image to file, select <B>File</B> and enter a
+filename. If the specified file already exists, it will be overwritten.
+Use an extension of <B>.ps</B> for a standard postscript file, or <B>.eps</B>
+for an encapsulated postscript file to include in another document. 
+<P>The <B>Label</B> checkbox turns on image labels for printing. See the <A HREF="settings.html">Settings
+window</A> section for more information about image labels. The <B>White Bkg</B> checkbox sets a white
+background for printed images, and <B>Greyscale</B> prints the image in greyscale.
+<P>After specifying the print settings, press the <B>Print</B> button. You are then
+prompted to select an image for printing.  Click with the mouse on any image window
+to select it for printing.
+<P><B>Print Image</B> can only be used to print the graphics of an image window, unlike
+<B>Print Window</B> which can be used to print any window or area of the screen.
+<P><B><font color="#006000">Note:</font></B> When writing to printer or .ps file, the image is enlarged to fill a
+standard letter-sized page. When writing to a .eps file, the image size is
+left unchanged. Wide images can be printed larger in landscape mode
+by specifying "-landscape" along with the print command or filename (i.e. "<B>lpr -landscape</B>"
+will print in landscape mode to the default printer).  This landscape feature
+is not supported by <B>Print Window</B>.
+<P>There are many settings that can be adjusted to change the appearance of the output image.  Here
+are a few relevant settings that are easily overlooked:
+<UL>
+<LI>The printed line width and font sizes can be scaled relative to the image size by
+changing the size of the window before printing. (The bigger the window, the smaller the
+relative line width and font size.)</LI>
+<LI>The font sizes can be changed independently through settings in the
+<A HREF="resource.html">XSnoed resource file</A>. (Although the printed font type
+is Helvetica, which can't be changed.)
+<LI>The rotation angle display can be changed or removed through the <A HREF="settings.html">Settings window</A>.</LI>
+<LI>The size of the hits can be changed through the <A HREF="settings.html">Settings window</A>.</LI>
+<LI>All colors (and the grayscale values they map into) can be changed
+through settings in the <A HREF="color_window.html">Colors window</A>.</LI>
+</UL>
+</BLOCKQUOTE>
+
+<A NAME="Print Window"></A><B>Print Window...</B> (not available in VAX version)
+<BLOCKQUOTE>Prints any window or portion of the screen in raster format
+to a postscript printer or various types of image files. After selecting
+this menu item, a dialog box will appear allowing the print settings
+to be configured. To send the output to a printer, select <B>Printer</B>
+in the dialog, and enter the print command.  On most systems, the command "<B>lpr</B>" will print
+to the default printer, or "<B>lpr -P&lt;printer name></B>" will print to a specific printer.
+To write the image to file, select <B>File</B> and enter a
+filename. If the specified file already exists, it will be overwritten.
+Commonly used extensions are <B>.gif</B> (GIF image), <B>.jpg</B> (JPEG image), <B>.ps</B>
+(postscript) and <B>.eps</B> (encapsulated postscript -- for inclusion in
+another document), although many other image formats are supported.
+See the "convert" man page for a full list of supported formats.
+<P>The <B>Label</B> checkbox turns on image labels for printing. See the <A HREF="settings.html">Settings
+window</A> section for more information about image labels. The <B>White Bkg</B> checkbox sets a white
+background for printed images, and <B>Greyscale</B> prints the image in greyscale.
+<P>After specifying the print settings, press the <B>Print</B>
+button. The cursor then changes to a cross, and the desired window
+is selected by clicking with the mouse. Optionally, you can click and
+drag the mouse to print an area of the screen.
+</BLOCKQUOTE>
+
+<A NAME="Event Control"></A><B>Event Control...</B>
+<BLOCKQUOTE>Opens the <A HREF="event_control.html">Event Control
+window</A>, allowing you to step forward and backward through the event
+file or specify cuts for events to be displayed. See the section on the
+<A HREF="event_control.html">Event Control window</A> for more information.</BLOCKQUOTE>
+
+<A NAME="Next Event"></A><B>Next Event</B>
+<BLOCKQUOTE>Steps to the next event in the file, or displays the next event
+from the dispatcher. This is the same as <B>History: Fwd</B> in the
+<A HREF="event_control.html">Event Control window</A>. Note that the exact
+behaviour of this command depends on setting of the Event Control <B>Uncut</B>
+checkbox.</BLOCKQUOTE>
+
+<A NAME="Prev Event"></A><B>Prev Event</B>
+<BLOCKQUOTE>Displays the previous event from the file or dispatcher. This
+is the same as <B>History: Back</B> in the Event Control window. Note that the
+exact behaviour of this command depends on the setting of the <B>Uncut</B> checkbox
+in the Event Control window.</BLOCKQUOTE>
+
+<A NAME="Clear Event"></A><B>Clear Event</B>
+<BLOCKQUOTE>Clears the event from the display. This also resets the sum
+if event summing is turned on.</BLOCKQUOTE>
+
+<A NAME="Sum Events"></A><B>Sum Events</B>
+<BLOCKQUOTE>Toggles an option which causes events that would be displayed
+to be summed together. When in <B>Sum</B> mode, the Tac, Qhs, Qhl and Qlx values
+displayed are the average over all summed events. The <B>Hit Cnt</B> value gives
+the number of times a tube was hit across all events. In the Event Info
+window, the <B>Evt Num</B> gives the number of events summed. In this mode,
+clicking on <B>Continuous</B> in the Event Control window will cause all cut
+events in the remainder of the file to be summed, with intermediate results
+being displayed at the update rate specified in the <A HREF="event_control.html">
+Event Control window</A>.
+
+<P>When using the calibrated version of XSNOED, raw ADC values are summed
+for each channel and the calibrations for cell zero are applied to the
+summed data for display. Note that this may cause inaccuracies in the displayed
+sum data if the cell-to-cell variations are significant within a channel.
+
+<P>Sum mode also sums NCD data for events.  The NCD shaper value then becomes
+an average of all summed events, and the NCD hit counters give the number
+of times the Shaper, MUX and Scope fired for each NCD tube.  In sum mode,
+the NCD scope window displays the most recent scope trace for each channel.</BLOCKQUOTE>
+
+<A NAME="Fit Events"></A><B>Fit Events</B> (FITTR version only)
+<BLOCKQUOTE>Causes new events to be automatically fitted with the online
+fitter before being displayed. Note: Will only run the fitter automatically
+for NHIT&lt;800 events. For higher NHIT events, fit the event manually
+from the Fitter window. See the section on the <A HREF="fitter.html">Fitter
+window</A> for more information about the fit.</BLOCKQUOTE>
+
+<A NAME="Settings"></A><B>Settings/General...</B>
+<BLOCKQUOTE>Opens the <A HREF="settings.html">Settings window</A>, allowing
+you to change general XSNOED settings.</BLOCKQUOTE>
+
+<A NAME="Colors"></A><B>Settings/Colors...</B>
+<BLOCKQUOTE>Opens the <A HREF="color_window.html">Colors window</A>, allowing
+customization of the XSNOED image colors.</BLOCKQUOTE>
+
+<A NAME="Save Settings"></A><B>Save Settings</B>
+<BLOCKQUOTE>Saves the current XSNOED settings, window locations, and image colors to the
+<A HREF="resource.html">XSnoed resource file</A> in the user's home directory. The next time XSNOED is run, these
+settings are automatically loaded. There is an option in the <A HREF="settings.html">Settings window</A>
+to cause these settings to be saved automatically when XSNOED is quit.</BLOCKQUOTE>
+
+<A NAME="About XSNOED"></A><B>About XSNOED...</B>
+<BLOCKQUOTE>Opens the XSNOED About box, which directs the user to this
+file for help about XSNOED features.</BLOCKQUOTE>
+
+<A NAME="User Guide"></A><B>User Guide...</B> (not available in VAX version)
+<BLOCKQUOTE>Runs Netscape to display this user guide.</BLOCKQUOTE>
+
+<A NAME="Extras"></A><B>Extras/New Event Display</B>
+<BLOCKQUOTE>Opens an auxiliary "SNO Event Display" window. This is effectively
+like running two copies of XSNOED with the restriction that only one version
+may be connected to the dispatcher. Auxiliary displays may be closed
+without causing XSNOED to quit.</BLOCKQUOTE>
+<B>Extras/Load Uniform Distribution</B>
+<BLOCKQUOTE>Loads a synthesized event with uniform ADC values for every
+PMT. The values used are Tac=1500, Qhs=Qhl=Qlx=750, with one hit per tube.
+This option is useful for checking the calibration constants used for calibrated
+displays.</BLOCKQUOTE>
+<B>Extras/Dump Record Info</B>
+<BLOCKQUOTE>When reading events from the dispatcher or a ZDAB file, this option causes
+information about records other than PMT event records to be printed
+to the console output. Note that because of the way XSNOED reads ahead
+of the currently displayed event, the output may show records which come after the event
+being viewed. However, the output gives the GTID of the event immediately
+preceeding the record, allowing the position of the record in the
+file to be determined.</BLOCKQUOTE>
+<B>Extras/Echo Main Display</B> (auxiliary displays only)
+<BLOCKQUOTE>Causes all events shown in main display to be echoed to this
+auxiliary XSNOED display.  Auxiliary displays are opened through
+the <B>File/Extras/New Event Display</B> menu item.</BLOCKQUOTE>
+
+<A NAME="Protect"></A><B>Protect</B> (DEMO_VERSION only)
+<BLOCKQUOTE>Disables certain XSNOED menu items and features, and prevents windows from
+closing.  When protected, this menu item changes to <B>Unprotect</B>, allowing the user
+to enter a password to re-enable the disabled XSNOED features.</BLOCKQUOTE>
+
+<A NAME="Close Display"></A><B>Close Display</B> (auxiliary displays only)
+<BLOCKQUOTE>Closes this auxiliary display.  Auxiliary displays are opened through the <B>File/Extras/New Event
+Display</B> menu item.</BLOCKQUOTE>
+
+<A NAME="Quit"></A><B>Quit</B>
+<BLOCKQUOTE>Quits XSNOED. Settings will be saved automatically when you quit
+if the <B>Save Settings on Quit</B> checkbox of the <A HREF="settings.html">
+Settings window</A> is selected.</BLOCKQUOTE>
+
+<HR>
+</BODY>
+</HTML>

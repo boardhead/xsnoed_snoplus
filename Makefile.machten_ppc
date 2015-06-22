@@ -1,0 +1,286 @@
+#
+# MachTen system-specific definitions for xsnoed Makefile
+#
+# Note: VERFLAGS must be defined externally
+#
+# Phil Harvey - 11/14/99
+#
+BASE          = .
+
+PROJFLAGS     = -DNO_DISPATCH -DUSE_FTIME $(VERFLAGS)
+
+CFLAGS        = -g -D_BSD=43 $(PROJFLAGS) -I$(BASE)
+CXXFLAGS      = -g $(PROJFLAGS) -I$(BASE)
+LDFLAGS       = -g
+LIBS          = -lm 
+
+CCC           = g++
+CC            = cc
+LD            = ld
+LDCC          = g++
+LDCC_SHARED   = g++ -elf
+
+XINCS         = -I/usr/X11R5/include/X11/ -I/usr/X11R5/include
+XFLAGS        = $(XINCS)
+XLIBS         = -L/usr/X11R5/lib -lMrm -lXm -lXt -lX11
+
+ROOTINCS      = -I$(ROOTSYS)/include
+ROOTFLAGS     = -O -Wall -fno-rtti -fPIC $(ROOTINCS)
+ROOTLIBS      = -L$(ROOTSYS)/lib -lNew -lBase -lCint -lClib -lCont -lFunc\
+                -lGraf -lGraf3d -lHist -lHtml -lMatrix -lMeta -lMinuit -lNet\
+                -lPostscript -lProof -lTree -lUnix -lZip
+
+QSNOINCS      = -I../include
+QSNOFLAGS     = $(ROOTFLAGS) $(QSNOINCS)
+QSNOLIBS      = -L../lib -lqtree $(ROOTLIBS)
+
+DISPINCS      = -I$(BASE)/../disp/include -I./include
+DISPFLAGS     = $(DISPINCS)
+DISPLIBS      =
+#DISPLIBS      = -L$(BASE)/../disp/lib -lconthost -lc
+
+OS_OBJS       =
+
+OS_ROOTOBJS   =
+
+#include         Makefile.include
+
+#
+# Rules for building xsnoed files
+#
+# Phil Harvey - 12/2/98
+#
+
+.KEEP_STATE:
+
+QHDRS    = QSnoed.h QXsnoedSystem.h QDispatch.h QPmtEventRecord.h QZdabFile.h QEventReader.h\
+           QListFile.h QSimpleCal.h QRootFile.h QUtils.h
+
+PHDRS    = ImageData.h PImageCanvas.h PMapImage.h PScrollBar.h PWindow.h PImageWindow.h PScale.h\
+           PScrollingWindow.h PResourceManager.h PSpeaker.h PListener.h PHitInfoWindow.h\
+           PFitterWindow.h PProjImage.h PFlatImage.h PCrateImage.h PHistImage.h PEventInfoWindow.h\
+           PEventControlWindow.h POpticalWindow.h PMonteCarloWindow.h PZdabFile.h PZdabWriter.h\
+           PSettingsWindow.h PEventHistogram.h PEventTimes.h PMenu.h PUtils.h PLabel.h CUtils.h\
+           mozilla.h PDrawable.h PDrawXPixmap.h PDrawPostscriptFile.h XSnoedResource.h\
+           XSnoedImage.h XSnoedWindow.h
+
+QOBJS    = QSnoed.o QXsnoedSystem.o QDispatch.o QPmtEventRecord.o QZdabFile.o QEventReader.o\
+           QListFile.o QSimpleCal.o QRootFile.o QUtils.o QRchHist.o\
+           q_PResourceManager.o q_XSnoedWindow.o q_xsnoedstream.o q_xsnoed.o
+           
+ROBJS    = PResourceManager.o XSnoedWindow.o xsnoedstream.o xsnoed.o
+
+OBJS     = $(OS_OBJS) ImageData.o  CUtils.o calibrate.o fitter.o matrix.o\
+           openfile.o oca.o mozilla.o PImageWindow.o PScrollingWindow.o PScrollBar.o PWindow.o\
+           PImageCanvas.o PScale.o PMapImage.o PSpeaker.o PListener.o PHitInfoWindow.o\
+           PFitterWindow.o PProjImage.o PFlatImage.o PCrateImage.o PHistImage.o PEventInfoWindow.o\
+           PEventControlWindow.o POpticalWindow.o PMonteCarloWindow.o PZdabFile.o PZdabWriter.o\
+           PSettingsWindow.o PEventHistogram.o PEventTimes.o PMenu.o PUtils.o PLabel.o\
+           PDrawXPixmap.o PDrawPostscriptFile.o XSnoedImage.o
+
+ROOTOBJS = $(OS_ROOTOBJS) QSnoed.o QXsnoedSystem.o QSnoed_Dict.o
+
+xsnoed: $(OBJS) $(ROBJS)
+	$(LDCC) $(LDFLAGS) $(OBJS) $(ROBJS) $(XLIBS) $(DISPLIBS) $(LIBS) -o xsnoed
+
+xsnoed.root: $(OBJS) $(QOBJS) QSnoed_Dict.o
+	$(LDCC) $(LDFLAGS) $(OBJS) $(QOBJS) QSnoed_Dict.o $(QSNOLIBS) $(XLIBS) $(DISPLIBS) $(LIBS) -o xsnoed.root
+
+redispatch: redispatch.o PZdabFile.o CUtils.o
+	$(CCC) $(LDFLAGS) redispatch.o PZdabFile.o CUtils.o $(DISPLIBS) $(LIBS) -o redispatch
+
+libqsnoed: libqsnoed.so
+
+libqsnoed.so: $(OBJS) $(QOBJS) QSnoed_Dict.o
+	$(LDCC_SHARED) $(LDFLAGS) $(OBJS) $(QOBJS) QSnoed_Dict.o $(LIBS) $(QSNOLIBS) $(DISPLIBS) $(XLIBS)\
+	-shared -o libqsnoed.so
+
+root.exe: root.o
+	$(LDCC) $(LDFLAGS) $(LIBS) $(XLIBS) -lqsnoed root.o $(QSNOLIBS) $(DISPLIBS) -o root.exe
+
+xsnoed.o: xsnoed.cxx xsnoed.h xsnoed_version.h matrix.h $(PHDRS)
+	$(CCC) $(CXXFLAGS) $(XFLAGS) -c xsnoed.cxx
+
+q_xsnoed.o: xsnoed.cxx xsnoed.h xsnoed_version.h matrix.h $(PHDRS)
+	$(CCC) $(CXXFLAGS) $(QSNOFLAGS) $(XFLAGS) -o q_xsnoed.o -c xsnoed.cxx
+
+xsnoedstream.o: xsnoedstream.cxx xsnoed.h ImageData.h XSnoedResource.h matrix.h $(PHDRS)
+	$(CCC) $(CXXFLAGS) $(DISPFLAGS) $(XFLAGS) -c xsnoedstream.cxx
+
+q_xsnoedstream.o: xsnoedstream.cxx xsnoed.h ImageData.h XSnoedResource.h matrix.h $(PHDRS)
+	$(CCC) $(CXXFLAGS) $(DISPFLAGS) $(QSNOFLAGS) $(XFLAGS) -o q_xsnoedstream.o -c xsnoedstream.cxx
+
+ImageData.o: ImageData.cxx ImageData.h XSnoedResource.h
+	$(CCC) $(CXXFLAGS) $(XFLAGS) -c ImageData.cxx
+
+root.o: root.cxx QXsnoedSystem.h
+	$(CCC) $(CXXFLAGS) $(QSNOFLAGS) $(XFLAGS) -c root.cxx
+	
+QSnoed.o: QSnoed.cxx QSnoed.h xsnoed.h ImageData.h XSnoedResource.h xsnoedstream.h
+	$(CCC) $(CXXFLAGS) $(QSNOFLAGS) $(XFLAGS) -c QSnoed.cxx
+
+QXsnoedSystem.o: QXsnoedSystem.cxx QXsnoedSystem.h xsnoed.h ImageData.h XSnoedResource.h xsnoedstream.h
+	$(CCC) $(CXXFLAGS) $(QSNOFLAGS) $(XFLAGS) -c QXsnoedSystem.cxx
+
+QDispatch.o: QDispatch.cxx QDispatch.h
+	$(CCC) $(CXXFLAGS) $(QSNOFLAGS) -c QDispatch.cxx
+
+QPmtEventRecord.o: QPmtEventRecord.cxx QPmtEventRecord.h
+	$(CCC) $(CXXFLAGS) $(QSNOFLAGS) -c QPmtEventRecord.cxx
+
+QZdabFile.o: QZdabFile.cxx QZdabFile.h PZdabFile.h
+	$(CCC) $(CXXFLAGS) $(QSNOFLAGS) -c QZdabFile.cxx
+
+QRootFile.o: QRootFile.cxx QRootFile.h PZdabFile.h
+	$(CCC) $(CXXFLAGS) $(QSNOFLAGS) -c QRootFile.cxx
+
+QEventReader.o: QEventReader.cxx QEventReader.h
+	$(CCC) $(CXXFLAGS) $(QSNOFLAGS) -c QEventReader.cxx
+
+QListFile.o: QListFile.cxx QListFile.h
+	$(CCC) $(CXXFLAGS) $(QSNOFLAGS) -c QListFile.cxx
+
+QRchHist.o: QRchHist.cxx QRchHist.h PHistImage.h
+	$(CCC) $(CXXFLAGS) $(QSNOFLAGS) $(XFLAGS) -c QRchHist.cxx
+
+QUtils.o: QUtils.cxx QUtils.h
+	$(CCC) $(CXXFLAGS) $(QSNOFLAGS) -c QUtils.cxx
+
+QSimpleCal.o: QSimpleCal.cxx QSimpleCal.h QSimpleCal.h calibrate.h
+	$(CCC) $(CXXFLAGS) $(QSNOFLAGS) $(XFLAGS) -c QSimpleCal.cxx
+
+QSnoed_Dict.C: $(QHDRS) QSnoed_LinkDef.h
+	@echo "Generating dictionary ..."
+	rootcint -f QSnoed_Dict.C -c $(QSNOINCS) $(QHDRS) QSnoed_LinkDef.h
+
+QSnoed_Dict.o: QSnoed_Dict.C
+	$(CCC) $(CXXFLAGS) $(QSNOFLAGS) -c QSnoed_Dict.C
+	
+PWindow.o: PWindow.cxx PWindow.h
+	$(CCC) $(CXXFLAGS) $(XFLAGS) -c PWindow.cxx
+
+PProjImage.o: PProjImage.cxx $(PHDRS)
+	$(CCC) $(CXXFLAGS) $(XFLAGS) -c PProjImage.cxx
+
+PMapImage.o: PMapImage.cxx $(PHDRS)
+	$(CCC) $(CXXFLAGS) $(XFLAGS) -c PMapImage.cxx
+
+PFlatImage.o: PFlatImage.cxx $(PHDRS)
+	$(CCC) $(CXXFLAGS) $(XFLAGS) -c PFlatImage.cxx
+
+PCrateImage.o: PCrateImage.cxx $(PHDRS)
+	$(CCC) $(CXXFLAGS) $(XFLAGS) -c PCrateImage.cxx
+
+PHistImage.o: PHistImage.cxx $(PHDRS)
+	$(CCC) $(CXXFLAGS) $(XFLAGS) -c PHistImage.cxx
+
+PEventHistogram.o: PEventHistogram.cxx $(PHDRS)
+	$(CCC) $(CXXFLAGS) $(XFLAGS) -c PEventHistogram.cxx
+
+PEventTimes.o: PEventTimes.cxx $(PHDRS)
+	$(CCC) $(CXXFLAGS) $(XFLAGS) -c PEventTimes.cxx
+
+PImageWindow.o: PImageWindow.cxx $(PHDRS)
+	$(CCC) $(CXXFLAGS) $(XFLAGS) -c PImageWindow.cxx
+
+PImageCanvas.o: PImageCanvas.cxx $(PHDRS)
+	$(CCC) $(CXXFLAGS) $(XFLAGS) -c PImageCanvas.cxx
+
+PScrollingWindow.o: PScrollingWindow.cxx $(PHDRS)
+	$(CCC) $(CXXFLAGS) $(XFLAGS) -c PScrollingWindow.cxx
+
+PScrollBar.o: PScrollBar.cxx $(PHDRS)
+	$(CCC) $(CXXFLAGS) $(XFLAGS) -c PScrollBar.cxx
+
+PScale.o: PScale.cxx $(PHDRS)
+	$(CCC) $(CXXFLAGS) $(XFLAGS) -c PScale.cxx
+
+PResourceManager.o: PResourceManager.cxx xsnoed_version.h $(PHDRS)
+	$(CCC) $(CXXFLAGS) $(XFLAGS) -c PResourceManager.cxx
+
+q_PResourceManager.o: PResourceManager.cxx xsnoed_version.h $(PHDRS)
+	$(CCC) $(CXXFLAGS) $(XFLAGS) $(QSNOFLAGS) -o q_PResourceManager.o -c PResourceManager.cxx
+
+PListener.o: PListener.cxx PListener.h PSpeaker.h
+	$(CCC) $(CXXFLAGS) $(XFLAGS) -c PListener.cxx
+
+PSpeaker.o: PSpeaker.cxx PSpeaker.h PListener.h
+	$(CCC) $(CXXFLAGS) $(XFLAGS) -c PSpeaker.cxx
+
+PHitInfoWindow.o: PHitInfoWindow.cxx $(PHDRS)
+	$(CCC) $(CXXFLAGS) $(XFLAGS) -c PHitInfoWindow.cxx
+
+PFitterWindow.o: PFitterWindow.cxx $(PHDRS)
+	$(CCC) $(CXXFLAGS) $(XFLAGS) -c PFitterWindow.cxx
+
+PEventInfoWindow.o: PEventInfoWindow.cxx $(PHDRS)
+	$(CCC) $(CXXFLAGS) $(XFLAGS) -c PEventInfoWindow.cxx
+
+PEventControlWindow.o: PEventControlWindow.cxx $(PHDRS)
+	$(CCC) $(CXXFLAGS) $(XFLAGS) -c PEventControlWindow.cxx
+
+PSettingsWindow.o: PSettingsWindow.cxx $(PHDRS)
+	$(CCC) $(CXXFLAGS) $(XFLAGS) -c PSettingsWindow.cxx
+
+POpticalWindow.o: POpticalWindow.cxx $(PHDRS)
+	$(CCC) $(CXXFLAGS) $(XFLAGS) -c POpticalWindow.cxx
+	
+PMonteCarloWindow.o: PMonteCarloWindow.cxx $(PHDRS)
+	$(CCC) $(CXXFLAGS) $(XFLAGS) -c PMonteCarloWindow.cxx
+	
+PMenu.o: PMenu.cxx $(PHDRS)
+	$(CCC) $(CXXFLAGS) $(XFLAGS) -c PMenu.cxx
+
+PUtils.o: PUtils.cxx PUtils.h CUtils.h
+	$(CCC) $(CXXFLAGS) $(XFLAGS) -c PUtils.cxx
+
+PLabel.o: PLabel.cxx PLabel.h PUtils.h CUtils.h
+	$(CCC) $(CXXFLAGS) $(XFLAGS) -c PLabel.cxx
+
+PDrawXPixmap.o: PDrawXPixmap.cxx PDrawXPixmap.h PDrawable.h
+	$(CCC) $(CXXFLAGS) $(XFLAGS) -c PDrawXPixmap.cxx
+
+PDrawPostscriptFile.o: PDrawPostscriptFile.cxx PDrawPostscriptFile.h PDrawable.h
+	$(CCC) $(CXXFLAGS) $(XFLAGS) -c PDrawPostscriptFile.cxx
+
+XSnoedImage.o: XSnoedImage.cxx $(PHDRS)
+	$(CCC) $(CXXFLAGS) $(XFLAGS) -c XSnoedImage.cxx
+
+XSnoedWindow.o: XSnoedWindow.cxx xsnoed_version.h $(PHDRS)
+	$(CCC) $(CXXFLAGS) $(XFLAGS) -c XSnoedWindow.cxx
+
+q_XSnoedWindow.o: XSnoedWindow.cxx xsnoed_version.h $(PHDRS)
+	$(CCC) $(CXXFLAGS) $(XFLAGS) $(QSNOFLAGS) -o q_XSnoedWindow.o -c XSnoedWindow.cxx
+
+PZdabFile.o: PZdabFile.cxx PZdabFile.h
+	$(CCC) $(CXXFLAGS) -c PZdabFile.cxx
+
+PZdabWriter.o: PZdabWriter.cxx PZdabWriter.h
+	$(CCC) $(CXXFLAGS) -c PZdabWriter.cxx
+
+CUtils.o: CUtils.c CUtils.h
+	$(CC) $(CFLAGS) -c CUtils.c
+
+openfile.o: openfile.c openfile.h
+	$(CC) $(CFLAGS) -c openfile.c
+
+calibrate.o: calibrate.cxx PZdabFile.h
+	$(CCC) $(CXXFLAGS) -c calibrate.cxx
+
+fitter.o: fitter.c
+	$(CC) $(CFLAGS) -c fitter.c
+
+matrix.o: matrix.c matrix.h
+	$(CC) $(CFLAGS) -c matrix.c
+
+oca.o: oca.cxx oca.h
+	$(CCC) $(CXXFLAGS) -c oca.cxx
+	
+mozilla.o: mozilla.cxx mozilla.h
+	$(CCC) $(CXXFLAGS) $(XFLAGS) -c mozilla.cxx
+
+NextEvent.o: linux_patch/NextEvent.c
+	$(CC) $(CFLAGS) $(XFLAGS) -I./linux_patch -c linux_patch/NextEvent.c
+
+redispatch.o: redispatch.cxx Makefile
+	$(CCC) $(CFLAGS) $(DISPFLAGS) -c redispatch.cxx

@@ -1,0 +1,50 @@
+#
+# Solaris system-specific definitions for xsnoed Makefile
+#
+# Note: VERFLAGS must be defined externally
+#
+# Phil Harvey - 12/2/98
+#
+BASE          = .
+DISPBASE      = /home/u0/sstream/snostream/dispatcher
+DISPBASE2     = /users/sstream/snostream/dispatcher
+
+PROJFLAGS     = $(VERFLAGS)
+
+CFLAGS        = -g -xCC -D_BSD=43 $(PROJFLAGS) -I$(BASE)
+CXXFLAGS      = -g $(PROJFLAGS) -I$(BASE)
+LDFLAGS       = -g 
+LIBS          = -L/opt/SUNWspro/lib/ -lm -lposix4 -lgen -ldl -lsunmath
+
+CCC           = /opt/SUNWspro/bin/CC
+CC            = /opt/SUNWspro/bin/cc
+LD            = ld
+LDCC          = /opt/SUNWspro/bin/CC
+#LDCC_SHARED   = g++ -elf
+LDCC_SHARED   = /opt/SUNWspro/bin/CC
+LDSO_FLAGS    = -G -O -t -z muldefs
+XINCS         = -I/usr/X11R6/include/X11/
+XFLAGS        = $(XINCS)
+XLIBS         = -L/usr/X11R6/lib -lXm -lXmu -lXt -lX11 -L/usr/openwin/lib\
+                -L/opt/SUNWspro/WS4.0/user_widgets/obj -lXpm
+
+ROOTINCS      = -I$(ROOTSYS)/include
+ROOTFLAGS     = -O $(ROOTINCS)
+ROOTLIBS      = $(shell root-config --libs)
+
+QSNOINCS      = -I../include
+QSNOFLAGS     = $(ROOTFLAGS) $(QSNOINCS)
+QSNOLIBS      = -L../lib -lqtree $(ROOTLIBS)
+
+DISPINCS      = -I$(DISPBASE)/include -I$(DISPBASE2)/include -I./include
+DISPFLAGS     = $(DISPINCS)
+DISPLIBS      = -L$(DISPBASE)/lib -L$(DISPBASE2)/lib -lconthost -lsocket -lnsl
+
+OBJS          =
+
+ROOTOBJS      =
+
+
+#SNO_LD_FLAGS = -g
+
+include         Makefile.include

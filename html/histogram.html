@@ -1,0 +1,70 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.04 (Macintosh; I; PPC) [Netscape]">
+   <META NAME="Author" CONTENT="Phil Harvey">
+   <META NAME="Description" CONTENT="Sno Event Display user guide">
+   <LINK REL="Index" HREF="index.html">
+   <LINK REL="Start" HREF="xsnoed.html">
+   <LINK REL="Prev"  HREF="hit_info.html">
+   <LINK REL="Next"  HREF="flat_map.html">
+   <TITLE>XSNOED User Guide - Histogram Window</TITLE>
+   <SCRIPT language="javascript">
+      <!-- Hide the script from old browsers --
+      img1 = new Image(); img1.src = "next2.GIF";
+      img2 = new Image(); img2.src = "prev2.GIF";
+      img3 = new Image(); img3.src = "home2.GIF";
+      // --End Hiding Here -->
+   </SCRIPT>
+</HEAD>
+<BODY BACKGROUND="background.GIF">
+
+<A HREF="flat_map.html"
+ ONMOUSEOVER="document.images['img1'].src='next2.GIF'" 
+ ONMOUSEOUT="document.images['img1'].src='next.GIF'">
+ <IMG NAME="img1" SRC="next.GIF" ALIGN=RIGHT BORDER=0 HSPACE=5 HEIGHT=28 WIDTH=63 ALT="Next Page"></A>
+<A HREF="hit_info.html"
+ ONMOUSEOVER="document.images['img2'].src='prev2.GIF'" 
+ ONMOUSEOUT="document.images['img2'].src='prev.GIF'">
+ <IMG NAME="img2" SRC="prev.GIF" ALIGN=RIGHT BORDER=0 HSPACE=5 HEIGHT=28 WIDTH=63 ALT="Previous Page"></A>
+<A HREF="xsnoed.html"
+ ONMOUSEOVER="document.images['img3'].src='home2.GIF'" 
+ ONMOUSEOUT="document.images['img3'].src='home.GIF'">
+ <IMG NAME="img3" SRC="home.GIF" ALIGN=RIGHT BORDER=0 HSPACE=5 HEIGHT=28 WIDTH=63 ALT="First Page"></A>
+
+<H1>Histogram Window</H1>
+<HR>
+
+<IMG SRC="histogram.GIF" BORDER=0 HEIGHT=222 WIDTH=332 HSPACE=10 VSPACE=10 ALIGN=RIGHT>
+
+<P>The Histogram window provides a histogram of the currently displayed data.
+For example, if Tac values are currently being displayed, the histogram
+plots these values for all displayed hits. The horizontal histogram
+scale maps directly into the colors of the hits in other windows.
+
+<H3>Histogram Scales</H3>
+The histogram scales can be changed by clicking and dragging with the mouse.
+You can change either scale individually by clicking and dragging on it,
+or both scales simultaneously by clicking and dragging in the plot area
+of the window. Dragging a scale which has an origin of zero causes it to
+expand or contract. If the scale doesn't have a zero origin, or if you
+click within 8 pixels of the origin, dragging the scale will cause it to
+slide.  Alternatively, you can use the right mouse button to slide the scale.
+
+<BR CLEAR=ALL>
+<IMG SRC="hist_scales.GIF" BORDER=0 HEIGHT=184 WIDTH=398 HSPACE=10 VSPACE=10 ALIGN=RIGHT>
+<P>A quick click on either scale will bring up the Histogram Scales window, allowing
+the X and Y scale limits to be entered using the keyboard.  This feature is common to
+all XSNOED histogram windows.  There is also a checkbox
+which allows the Y scale to be displayed in logarithmic form.  Note that some histograms
+will ignore the entered value for the Y scale minimum since it can be fixed to zero.
+
+<P>Normally, the histogram Y scale is automatically adjusted according to the maximum bin
+value, and the X scale is automatically set for some data types.  Once the X or
+Y scales have been changed manually, this auto-scaling is disabled.  A quick click
+in the plot area of the histogram restores the default auto-scaling behaviour.
+
+<BR CLEAR=ALL>
+<HR>
+</BODY>
+</HTML>

@@ -1,0 +1,407 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.04 (Macintosh; I; PPC) [Netscape]">
+   <META NAME="Author" CONTENT="Phil Harvey">
+   <META NAME="Description" CONTENT="Sno Event Display user guide">
+   <LINK REL="Index" HREF="index.html">
+   <LINK REL="Start" HREF="xsnoed.html">
+   <LINK REL="Prev"  HREF="event_control.html">
+   <LINK REL="Next"  HREF="color_window.html">
+   <TITLE>XSNOED User Guide - Settings Window</TITLE>
+   <SCRIPT language="javascript">
+      <!-- Hide the script from old browsers --
+      img1 = new Image(); img1.src = "next2.GIF";
+      img2 = new Image(); img2.src = "prev2.GIF";
+      img3 = new Image(); img3.src = "home2.GIF";
+      // --End Hiding Here -->
+   </SCRIPT>
+</HEAD>
+<BODY BACKGROUND="background.GIF">
+
+<A HREF="color_window.html"
+ ONMOUSEOVER="document.images['img1'].src='next2.GIF'" 
+ ONMOUSEOUT="document.images['img1'].src='next.GIF'">
+ <IMG NAME="img1" SRC="next.GIF" ALIGN=RIGHT BORDER=0 HSPACE=5 HEIGHT=28 WIDTH=63 ALT="Next Page"></A>
+<A HREF="event_control.html"
+ ONMOUSEOVER="document.images['img2'].src='prev2.GIF'" 
+ ONMOUSEOUT="document.images['img2'].src='prev.GIF'">
+ <IMG NAME="img2" SRC="prev.GIF" ALIGN=RIGHT BORDER=0 HSPACE=5 HEIGHT=28 WIDTH=63 ALT="Previous Page"></A>
+<A HREF="xsnoed.html"
+ ONMOUSEOVER="document.images['img3'].src='home2.GIF'" 
+ ONMOUSEOUT="document.images['img3'].src='home.GIF'">
+ <IMG NAME="img3" SRC="home.GIF" ALIGN=RIGHT BORDER=0 HSPACE=5 HEIGHT=28 WIDTH=63 ALT="First Page"></A>
+
+<H1>Settings Window</H1>
+<HR>
+
+<IMG SRC="settings.GIF" BORDER=0 HEIGHT=418 WIDTH=372 HSPACE=10 VSPACE=10 ALIGN=RIGHT>
+
+<P>The Settings window allows certain XSNOED settings to be changed.
+All settings changes take effect immediately, so the effect of the <B>OK</B> button
+is simply to close the Settings window. The <B>Cancel</B> button
+closes the Settings window and restores all settings to the state they were in when the 
+window was initially opened. Note that the default state of each setting
+is defined in the <A HREF="resource.html">XSnoed resource file</A>.
+
+<P>The following is a list of available settings:
+
+<P><B>GTID's: Decimal / Hexadecimal</B>
+<P>Sets the display of event Global Trigger IDentification numbers to hexadecimal
+or decimal. When displayed in hex, the GTID numbers will have a leading '0x'.
+
+<P><B>Angles: Degress / Radians / None</B>
+<P>Sets the angle display in image windows to degrees or radians.
+The 3-D and projection images show the detector rotation angles if moved from the Home position.
+The angle display can be disabled by selecting the <B>None</B> radio button.
+
+<P><B>Times: Sudbury / Local / UTC</B>
+<P>Changes the event time display between Sudbury time, local time and UTC.
+The label in the <A HREF="event_info.html">Event Info window</A> changes between "Time:",
+"Loc Time:" and "UTC Time:" depending on the time display setting. <B>Sudbury</B> time is Eastern
+Standard Time, with daylight savings time when applicable. <B>Local</B> time is
+the time local to the system where XSNOED is being run. <B>UTC</B> is Universal Time Coordinates.
+
+<P><B>Hit Info: Show Hit XYZ</B>
+<P>Toggles on and off the X-Y-Z display in the <A HREF="hit_info.html">Hit Info window</A>.
+
+<P><B>Settings: Save Settings on Quit</B>
+<P>With this option selected, all settings including menu options and
+window locations are automatically saved to the <A HREF="resource.html">XSnoed resource file</A>
+in the user's home directory when XSNOED is quit. The <B>File/Save Settings</B> menu item
+saves these settings immediately.
+
+<P><B>Hit Size</B>
+<P>Sets the multiplication factor for the size of hits in all event views (except the crate image).
+Normally this should be set to 1.0, but sometimes it is useful to increase the hit size for
+very low NHIT, or decrease it for high NHIT events.
+
+<P><B>NCD Size</B>
+<P>Sets the multiplication factor for the size of the NCD tubes in the 3-D display.  If displayed
+at true size, the NCD's are so thin they can be difficult to see, so this setting allows the
+size of the NCD's to be enhanced to make them more visible.
+
+<P><A NAME="Image Labels"><B>Label</B></A>
+<P>The <B>Label</B> checkbox turns on the image labels. The labels appear below
+each image in every XSNOED window. This option is designed to provide extra information
+in printed images, and can also be turned on via the Print dialog.  After image labels
+are enabled in the settings, they can be hidden in individual image windows
+by simply clicking on the label.  Another click at the bottom of the image causes
+the label to re-appear.
+
+<P>The buttons to the right of the <B>Label</B> checkbox provide some basic control
+for common label quantities.  The <B>Clear</B> button clears the label string. The
+<B>+Run</B>, <B>+GTID</B> and <B>+Time</B> buttons add the run number, event GTID and
+time respectively to the label string. The label format string displayed below these buttons
+and can also be edited directly.
+
+<P>The label format string may be edited to contain any desired text.  As well as the quanties
+added by the buttons, there are a host of quantities which may entered manually into
+the label string. All format specifications begin with a '%' symbol and end with a format
+code. Floating point formats may contain an optional precision specifier before the
+format code (ie. %.4dm shows the data minimum to 3 decimal places). Most format format
+codes are two characters long, with the exception of "<B>%</B>" which adds the % symbol
+to the label, "<B>/</B>" which adds a newline character, and "<B>+</B>" which specifies the
+big label font.  The default label string is "Run: %rn  GTID: %gt", which shows the event run
+number and GTID.
+
+<P>The table below gives a full list of available codes
+for label format specifications:
+
+<BR CLEAR=ALL><P>
+<TABLE BORDER CELLSPACING=0 >
+<TR BGCOLOR="#F0F0F0">
+<TD><B><FONT SIZE=+1>Code</FONT></B></TD>
+<TD><B><FONT SIZE=+1>Name</FONT></B></TD>
+<TD><B><FONT SIZE=+1>Format</FONT></B></TD>
+<TD><B><FONT SIZE=+1>Description</FONT></B></TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP ALIGN=CENTER><B>rn</B></TD>
+<TD VALIGN=TOP>Run Number</TD>
+<TD VALIGN=TOP>int</TD>
+<TD>The run number for the displayed event.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP ALIGN=CENTER><B>sr</B></TD>
+<TD VALIGN=TOP>Sub-Run</TD>
+<TD VALIGN=TOP>int</TD>
+<TD>The sub-run number for the displayed event.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP ALIGN=CENTER><B>gt</B></TD>
+<TD VALIGN=TOP>GTID</TD>
+<TD VALIGN=TOP>int</TD>
+<TD>Event global trigger ID (GTID), expressed in decimal or
+hexadecimal depending on the current settings.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP ALIGN=CENTER><B>ti</B></TD>
+<TD VALIGN=TOP>Time</TD>
+<TD VALIGN=TOP>hh:mm:ss.ss</TD>
+<TD>The event time. Seconds are floating point with a
+default precision of 0 decimal places. Expressed in the time zone
+specified by the settings. If the time zone is local or UTC, "Loc"
+or "UTC" respectively are appended to the time string. No extra designation
+is appended for the Sudbury time zone.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP ALIGN=CENTER><B>da</B></TD>
+<TD VALIGN=TOP>Date</TD>
+<TD VALIGN=TOP>mm/dd/yyyy</TD>
+<TD>The event date. Expressed in the time zone specified
+by the settings.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP ALIGN=CENTER><B>nh</B></TD>
+<TD VALIGN=TOP>NHIT</TD>
+<TD VALIGN=TOP>int</TD>
+<TD>The event NHIT (total number of channels participating in the event).  See the
+NHIT description in the <A HREF="event_info.html">Event Info window</A> section
+for a detailed explanation.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP ALIGN=CENTER><B>no</B></TD>
+<TD VALIGN=TOP>Normal</TD>
+<TD VALIGN=TOP>int</TD>
+<TD>The number of normal PMT's in the event.  See the description in
+the <A HREF="event_info.html">Event Info window</A> section for details.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP ALIGN=CENTER><B>ow</B></TD>
+<TD VALIGN=TOP>Owl</TD>
+<TD VALIGN=TOP>int</TD>
+<TD>The number of OWL (outward looking) PMT's in the event.  See the description
+in the <A HREF="event_info.html">Event Info window</A> section for details.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP ALIGN=CENTER><B>lg</B></TD>
+<TD VALIGN=TOP>Low Gain</TD>
+<TD VALIGN=TOP>int</TD>
+<TD>The number of low gain PMT's in the event.  See the description
+in the <A HREF="event_info.html">Event Info window</A> section for details.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP ALIGN=CENTER><B>fe</B></TD>
+<TD VALIGN=TOP>FECD</TD>
+<TD VALIGN=TOP>int</TD>
+<TD>The number of FECD (Front End Card Digitizer) channels in the event.  See the description
+in the <A HREF="event_info.html">Event Info window</A> section for details.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP ALIGN=CENTER><B>bu</B></TD>
+<TD VALIGN=TOP>BUTTS</TD>
+<TD VALIGN=TOP>int</TD>
+<TD>The number of BUTTS (Berkeley Underwater Tube Testing Sled) PMT's in the event.  See the
+description in the <A HREF="event_info.html">Event Info window</A> section for details.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP ALIGN=CENTER><B>ne</B></TD>
+<TD VALIGN=TOP>Neck</TD>
+<TD VALIGN=TOP>int</TD>
+<TD>The number of neck PMT's in the event.  See the description in
+the <A HREF="event_info.html">Event Info window</A> section for details.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP ALIGN=CENTER><B>dt</B></TD>
+<TD VALIGN=TOP>Data Type</TD>
+<TD VALIGN=TOP>string</TD>
+<TD>The data type displayed in the hit color scale (see the <A HREF="data.html">Data
+menu</A> for a list of types).</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP ALIGN=CENTER><B>dm</B></TD>
+<TD VALIGN=TOP>Data Min</TD>
+<TD VALIGN=TOP>float</TD>
+<TD>The minimum value of the data color scale as set in the <A HREF="histogram.html">Event
+Histogram window</A>, with a default precision of 1 decimal place.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP ALIGN=CENTER><B>dx</B></TD>
+<TD VALIGN=TOP>Data Max</TD>
+<TD VALIGN=TOP>float</TD>
+<TD>The maximum value of the data color scale as set in the <A HREF="histogram.html">Event
+Histogram window</A>, with a default precision of 1 decimal place.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP ALIGN=CENTER><B>pk</B></TD>
+<TD VALIGN=TOP>Peak</TD>
+<TD VALIGN=TOP>int</TD>
+<TD>Analog trigger peak measurement (see the section on the <A HREF="event_info.html">Event
+Info window</A> for details).</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP ALIGN=CENTER><B>in</B></TD>
+<TD VALIGN=TOP>Int</TD>
+<TD VALIGN=TOP>int</TD>
+<TD>Analog trigger integration measurement (see the <A HREF="event_info.html">Event
+Info window</A> for details).</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP ALIGN=CENTER><B>df</B></TD>
+<TD VALIGN=TOP>Diff</TD>
+<TD VALIGN=TOP>int</TD>
+<TD>Analog trigger differential measurement (see the <A HREF="event_info.html">Event
+Info window</A> for details).</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP ALIGN=CENTER><B>tr</B></TD>
+<TD VALIGN=TOP>Trigger</TD>
+<TD VALIGN=TOP>string</TD>
+<TD>The event trigger bits set (see the <A HREF="event_control.html#Trigger bit names">Trigger
+bit names</A> table for a list of trigger names).</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP ALIGN=CENTER><B>en</B></TD>
+<TD VALIGN=TOP>Event Number</TD>
+<TD VALIGN=TOP>int</TD>
+<TD>The event serial number (not to be confused with the GTID).</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP ALIGN=CENTER><B>fn</B></TD>
+<TD VALIGN=TOP>File Name</TD>
+<TD VALIGN=TOP>string</TD>
+<TD>The name of the currently open data file.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP ALIGN=CENTER><B>fp</B></TD>
+<TD VALIGN=TOP>Fit Position</TD>
+<TD VALIGN=TOP>float (x3)</TD>
+<TD>The XYZ coordinates of the fit vertex in centimeters, with a default precision of 1 decimal place.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP ALIGN=CENTER><B>fd</B></TD>
+<TD VALIGN=TOP>Fit Direction</TD>
+<TD VALIGN=TOP>float (x3)</TD>
+<TD>The XYZ cosines of the fitted event direction, with a default precision of 3 decimal places.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP ALIGN=CENTER><B>fr</B></TD>
+<TD VALIGN=TOP>Fit Radius</TD>
+<TD VALIGN=TOP>float</TD>
+<TD>The distance from the fit vertex to the center of the detector in centimeters, with a default precision of 1 decimal place.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP ALIGN=CENTER><B>ft</B></TD>
+<TD VALIGN=TOP>Fit Time</TD>
+<TD VALIGN=TOP>float</TD>
+<TD>The fitted event time in nanoseconds, with a default precision of 2 decimal places.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP ALIGN=CENTER><B>fq</B></TD>
+<TD VALIGN=TOP>Fit Quality</TD>
+<TD VALIGN=TOP>float</TD>
+<TD>The quality of the fit (see the section on the <A HREF="fitter.html">Fitter
+window</A> for more details). The default precision is 2 decimal places.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP ALIGN=CENTER><B>nf</B></TD>
+<TD VALIGN=TOP>Num Fit</TD>
+<TD VALIGN=TOP>int</TD>
+<TD>The number of fitted PMT's in this event.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP ALIGN=CENTER><B>sd</B></TD>
+<TD VALIGN=TOP>Sun Direction</TD>
+<TD VALIGN=TOP>float (x3)</TD>
+<TD>The XYZ cosines of the direction towards the Sun at the time of the
+event, with a default precision of 3 decimal places.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP ALIGN=CENTER><B>sa</B></TD>
+<TD VALIGN=TOP>Sun Angle</TD>
+<TD VALIGN=TOP>float</TD>
+<TD>The angle between the fit and sun directions.  Expressed in degrees or radians depending
+on the angle display setting, with a default precision of 1 or 3 decimal places respectively.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP ALIGN=CENTER><B>pt</B></TD>
+<TD VALIGN=TOP>Previous Time</TD>
+<TD VALIGN=TOP>string</TD>
+<TD>The relative time between this event and the previous event, with units
+string.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP ALIGN=CENTER><B>nt</B></TD>
+<TD VALIGN=TOP>Next Time</TD>
+<TD VALIGN=TOP>string</TD>
+<TD>The relative time between this event and the next event, with units
+string.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP ALIGN=CENTER><B>%</B></TD>
+<TD VALIGN=TOP>Percent</TD>
+<TD VALIGN=TOP>string</TD>
+<TD>Adds the '%' symbol to the label string.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP ALIGN=CENTER><B>/</B></TD>
+<TD VALIGN=TOP>Newline</TD>
+<TD VALIGN=TOP>string</TD>
+<TD>Adds a newline character to the string, allowing mult-line labels.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP ALIGN=CENTER><B>+</B></TD>
+<TD VALIGN=TOP>Big Font</TD>
+<TD VALIGN=TOP>-</TD>
+<TD>Uses the big label font for the line containing this specification.  The
+label fonts are set in the <A HREF="resource.html">XSnoed resource file</A>.
+</TD>
+</TR>
+
+</TABLE>
+
+<P><B>Reset Event Sum</B>
+
+<P>This setting causes the event sum to be reset at the specified interval,
+as if File/Clear Event had been selected from the menu.  This option is useful
+when viewing live dispatched data.  Note that the sum is not cleared if data
+stops arriving.
+
+<P><B>OK</B>
+
+<P>Confirms settings changes and dismisses the Settings window.
+
+<P><B>Cancel</B>
+
+<P>Cancels all settings changes and returns settings to their values at the time
+when the Settings window was opened.
+
+<P>
+<HR>
+</BODY>
+</HTML>

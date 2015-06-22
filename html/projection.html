@@ -1,0 +1,161 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.04 (Macintosh; I; PPC) [Netscape]">
+   <META NAME="Author" CONTENT="Phil Harvey">
+   <META NAME="Description" CONTENT="Sno Event Display user guide">
+   <LINK REL="Index" HREF="index.html">
+   <LINK REL="Start" HREF="xsnoed.html">
+   <LINK REL="Prev"  HREF="crate_map.html">
+   <LINK REL="Next"  HREF="ncd_info.html">
+   <TITLE>XSNOED User Guide - Projection Window</TITLE>
+   <SCRIPT language="javascript">
+      <!-- Hide the script from old browsers --
+      img1 = new Image(); img1.src = "next2.GIF";
+      img2 = new Image(); img2.src = "prev2.GIF";
+      img3 = new Image(); img3.src = "home2.GIF";
+      // --End Hiding Here -->
+   </SCRIPT>
+</HEAD>
+<BODY BACKGROUND="background.GIF">
+
+<A HREF="ncd_info.html"
+ ONMOUSEOVER="document.images['img1'].src='next2.GIF'" 
+ ONMOUSEOUT="document.images['img1'].src='next.GIF'">
+ <IMG NAME="img1" SRC="next.GIF" ALIGN=RIGHT BORDER=0 HSPACE=5 HEIGHT=28 WIDTH=63 ALT="Next Page"></A>
+<A HREF="crate_map.html"
+ ONMOUSEOVER="document.images['img2'].src='prev2.GIF'" 
+ ONMOUSEOUT="document.images['img2'].src='prev.GIF'">
+ <IMG NAME="img2" SRC="prev.GIF" ALIGN=RIGHT BORDER=0 HSPACE=5 HEIGHT=28 WIDTH=63 ALT="Previous Page"></A>
+<A HREF="xsnoed.html"
+ ONMOUSEOVER="document.images['img3'].src='home2.GIF'" 
+ ONMOUSEOUT="document.images['img3'].src='home.GIF'">
+ <IMG NAME="img3" SRC="home.GIF" ALIGN=RIGHT BORDER=0 HSPACE=5 HEIGHT=28 WIDTH=63 ALT="First Page"></A>
+
+<H1>Projection Window</H1>
+<HR>
+
+<IMG SRC="projection.GIF" BORDER=0 HEIGHT=284 WIDTH=434 HSPACE=10 VSPACE=10 ALIGN=RIGHT>
+
+<P>The Projection window shows various map projections of the events.
+Each projection translates the theta/phi for the hits into a different
+coordinate system. The hit angles can be relative to the detector
+fixed frame, or relative to the current fit if one is available.
+The reference frame is selected in the <B>View</B> menu of this window.
+
+<P>The PMT hits are displayed in the same color scheme as hits in the other
+windows. The size of the hits may be configured to represent additional
+information depending on the settings in the <B>Hits</B> menu. By
+default the hits are fixed size, but this may be changed to make the size
+relative to Qhs. In this mode, the hit size is proportional to the
+absolute value of the difference between the raw Qhs value and a fixed
+pedestal of 500, so hits with Qhs near 500 are small and very high or
+low charge hits appear large in the display.
+The hit size may also be made proportional to the solid area subtended by
+the PMT (accounting for the distance to the PMT, but not the cosine of
+the angle). The solid-angle option is useful only when displaying
+the hit coordinates relative to a fit.
+
+<P>The bottom and right scrollbars rotate the event with respect to the
+displayed grid. The left scrollbar sets the magnification for zooming in/out.
+The whole image can be shifted by grabbing and dragging with the mouse.
+To return the display to it's original orientation and size, select <B>Move/To
+Home</B> from the menu.
+
+<P>All projections are views from the outside of the sphere. Grid lines
+show increments of 30 degrees in latitude and longitude. In the home position,
+the center of all projections (except polar projections) is oriented with
+the z axis upwards, the y axis to the right, and the x axis out of the
+screen. This is the same orientation as the main 3-D display in the home
+position. For polar projections, the center of the projection is looking
+down along the z axis, with the y axis to the right, and the x axis downwards.
+For dual projections, the left side is the front, and the right side is
+the back (except for polar projections, where the left is top, and the
+right is bottom).
+
+<P>Here is a brief description of the available projection types available
+through the <B>Projection</B> menu:
+
+<BR CLEAR=ALL><BLOCKQUOTE>
+<TABLE CELLSPACING=0 CELLPADDING=2 WIDTH="85%" NOSAVE >
+<TR NOSAVE>
+<TD VALIGN=TOP WIDTH="150" NOSAVE><B>Rectangular</B></TD>
+
+<TD>Lines of longitude and latitude are straight and equally spaced.
+This projection does not preserve area.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>Cylindrical Lambert</B></TD>
+
+<TD>Like the Rectangular projection but lines of latitude are spaced to
+give an equal-area projection.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>Sinusoidal</B></TD>
+
+<TD>Lines of longitude are sinusoids, and lines of latitude are equally
+spaced. This projection preserves area.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>Elliptical Linear</B></TD>
+
+<TD>Lines of longitude are ellipses, and lines of latitude are parallel and
+equally spaced. This projection does not preserve area.</TD>
+</TR>
+
+<TR NOSAVE>
+<TD VALIGN=TOP NOSAVE><B>Elliptical Mollweide</B></TD>
+
+<TD>Similar to Elliptical Linear except that lines of latitude are
+spaced according to Mollweide's projection which preserves area.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>Elliptical Hammer</B></TD>
+
+<TD>Hammer's equal area projection, where lines of latitude are curved.
+This is a good projection to minimize shape distortion while preserving
+area.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>Extended Hammer</B></TD>
+
+<TD>Allows events which cross the poles to be viewed without interruption,
+at the expense of greater distortion near the plot edges. This projection
+preserves area.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>Polar Linear</B></TD>
+
+<TD>This projection looks down on the detector, with lines of longitude
+radiating outwards from the center, and lines of latitude equally spaced.
+It is a useful projection when displaying hit coordinates relative
+to a fit, but does not preserve area.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>Polar Equal Area</B></TD>
+
+<TD>A polar projection where the lines of latitude are spaced to preserve area.
+It is equivalent to the Extended Hammer projection except that the projection
+is circular and centered on the Z axis instead of the X axis.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>"Dual" Projections</B></TD>
+
+<TD>Most of the above projection types also have corresponding "dual" projection
+options.  The dual projection splits the SNO sphere into two halves, with the
+front/top half on the left and the right/bottom half on the right.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+
+<HR>
+</BODY>
+</HTML>

@@ -1,0 +1,149 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.04 (Macintosh; I; PPC) [Netscape]">
+   <META NAME="Author" CONTENT="Phil Harvey">
+   <META NAME="Description" CONTENT="Sno Event Display user guide">
+   <LINK REL="Index" HREF="index.html">
+   <LINK REL="Start" HREF="xsnoed.html">
+   <LINK REL="Prev"  HREF="display.html">
+   <LINK REL="Next"  HREF="windows.html">
+   <TITLE>XSNOED User Guide - Data Menu</TITLE>
+   <SCRIPT language="javascript">
+      <!-- Hide the script from old browsers --
+      img1 = new Image(); img1.src = "next2.GIF";
+      img2 = new Image(); img2.src = "prev2.GIF";
+      img3 = new Image(); img3.src = "home2.GIF";
+      // --End Hiding Here -->
+   </SCRIPT>
+</HEAD>
+<BODY BACKGROUND="background.GIF">
+
+<A HREF="windows.html"
+ ONMOUSEOVER="document.images['img1'].src='next2.GIF'" 
+ ONMOUSEOUT="document.images['img1'].src='next.GIF'">
+ <IMG NAME="img1" SRC="next.GIF" ALIGN=RIGHT BORDER=0 HSPACE=5 HEIGHT=28 WIDTH=63 ALT="Next Page"></A>
+<A HREF="display.html"
+ ONMOUSEOVER="document.images['img2'].src='prev2.GIF'" 
+ ONMOUSEOUT="document.images['img2'].src='prev.GIF'">
+ <IMG NAME="img2" SRC="prev.GIF" ALIGN=RIGHT BORDER=0 HSPACE=5 HEIGHT=28 WIDTH=63 ALT="Previous Page"></A>
+<A HREF="xsnoed.html"
+ ONMOUSEOVER="document.images['img3'].src='home2.GIF'" 
+ ONMOUSEOUT="document.images['img3'].src='home.GIF'">
+ <IMG NAME="img3" SRC="home.GIF" ALIGN=RIGHT BORDER=0 HSPACE=5 HEIGHT=28 WIDTH=63 ALT="First Page"></A>
+
+<H1>Data Menu</H1>
+<HR>
+
+<P>The Data menu allows selection of the displayed data type.  In image windows,
+the value of the displayed data maps directly into the color scale defined by the
+<A HREF="histogram.html">Event Histogram</A>.  The various items of the Data menu
+are described below.
+
+<P>
+<A NAME="Uncalibrated"></A><B>Uncalibrated</B> (calibrated and fitter versions only)
+<BLOCKQUOTE>Displays RAW ADC data values for Tac, Qhs, Qhl and Qlx, or the
+raw hits for Hit Count display.</BLOCKQUOTE>
+
+<A NAME="Calibrated"></A><B>Calibrated</B> (calibrated and fitter versions only)
+<BLOCKQUOTE>Displays calibrated time and charge values for each hit using
+simplified (linear) calibration constants. Currently, time values are displayed
+in nanoseconds, and charge values pedestal corrected but are still displayed
+in raw ADC counts.</BLOCKQUOTE>
+
+<A NAME="Cal No Walk"></A><B>Cal No Walk</B> (calibrated and fitter versions only)
+<BLOCKQUOTE>Same as <B>Calibrated</B>, but with no time walk (Q vs. T)
+correction.  The time walk correction uses the value of Qhs to correct for the time
+walk of the discriminator. Note that the correction effects the time offsets,
+so fits will be affected. Turning on the time walk correction slows down
+loading of events by a factor of two when summing calibrated hits for optical
+calibration (since this operation imposes a time window on each hit before
+summing).</BLOCKQUOTE>
+
+<A NAME="SNODB Calibration"></A><B>SNODB Calibration</B> (ROOT_FILE version only)
+<BLOCKQUOTE>Applies calibration by loading SNODB constants from a network
+server and calculating calibrated values using the QSnoCal ROOT object.</BLOCKQUOTE>
+
+<A NAME="SNOMAN Calibration"></A><B>SNOMAN Calibration</B> (ROOT_FILE version only)
+<BLOCKQUOTE>Applies a full SNOMAN calibration by sending each event to a
+SNOMAN calibrator network server.</BLOCKQUOTE>
+
+<A NAME="Pre-calibrated"></A><B>Pre-calibrated</B> (ROOT_FILE version only)
+<BLOCKQUOTE>Used for displaying data which has already been calibrated.
+Will display existing calibrated values for Tac, Qhs, Qhl and Qlx if available.
+Note that pre-calibrated data is only available when reading from a file,
+and currently only ROOT files contain calibrated data.</BLOCKQUOTE>
+
+<A NAME="Tac"></A><B>Tac</B>
+<BLOCKQUOTE>Sets the color and histogram scales to display raw TAC values
+for each hit, or calibrated TAC values if calibrated data is displayed.
+See the section on the <A HREF="hit_info.html">Hit Info window</A>
+for more detail about the Tac values.</BLOCKQUOTE>
+
+<A NAME="Time Diff"></A><B>Time Diff</B> (calibrated and fitter versions only)
+<BLOCKQUOTE>Displays the time difference between the straight-line fitted
+time and the actual measured time for each hit. The speed of light used
+for this calculation is obtained from the value of the <B>light_speed</B> resource.</BLOCKQUOTE>
+
+<A NAME="Qhs"></A><B>Qhs</B>
+<BLOCKQUOTE>Displays the high gain, short integrate ADC value (pedestal
+corrected if calibrated data is displayed).</BLOCKQUOTE>
+
+<A NAME="Qhl"></A><B>Qhl</B>
+<BLOCKQUOTE>Displays the high gain, long integrate ADC value (pedestal corrected
+if calibrated data is displayed). See the section on the
+<A HREF="hit_info.html">Hit Info window</A> for more detail about the Qhl values.</BLOCKQUOTE>
+
+<A NAME="Qlx"></A><B>Qlx</B>
+<BLOCKQUOTE>Displays the long integrate (high or low gain, depending on
+the hardware settings) ADC value (pedestal corrected if calibrated data is
+displayed).  See the section on the <A HREF="hit_info.html">Hit Info window</A>
+for more detail about the Qlx values.</BLOCKQUOTE>
+
+<A NAME="Qhl-Qhs"></A><B>Qhl-Qhs</B>
+<BLOCKQUOTE>Displays the difference between high gain long and short integrate
+(pedestal corrected if calibrated data is displayed).</BLOCKQUOTE>
+
+<A NAME="Hit Count"></A><B>Hit Count</B>
+<BLOCKQUOTE>Displays the number of times each tube was hit. For normal events,
+each participating tube should be hit exactly once. This display is useful
+mainly when displaying summed events. Note: The histogram produced in this
+mode is NOT like a standard NHIT histogram. It is a histogram of the number
+of times each tube was hit (as opposed to the number of tubes hit in each
+event). See the section on the <A HREF="hit_info.html">Hit Info window</A>
+for more detail about the <B>Hit Cnt</B> values.</BLOCKQUOTE>
+
+<A NAME="NCD Shaper Value"></A><B>NCD Shaper Value</B>
+<BLOCKQUOTE>Displays the NCD shaper value as the color for each NCD hit.
+In sum mode, this is the average shaper value.</BLOCKQUOTE>
+
+<A NAME="NCD Shaper Hits"></A><B>NCD Shaper Hits</B>
+<BLOCKQUOTE>Displays the number of times the NCD Shaper fired as the color for each hit.</BLOCKQUOTE>
+
+<A NAME="NCD MUX Hits"></A><B>NCD MUX Hits</B>
+<BLOCKQUOTE>Displays the number of times the NCD MUX fired as the color for each hit.</BLOCKQUOTE>
+
+<A NAME="NCD Scope Hits"></A><B>NCD Scope Hits</B>
+<BLOCKQUOTE>Displays the number of times the NCD Scope fired as the color for each hit.
+The scope data must exist or the hit doesn't contribute to the scope count.</BLOCKQUOTE>
+
+<A NAME="Crate"></A><B>Crate</B>
+<BLOCKQUOTE>Displays the crate ID number as the color for each hit.</BLOCKQUOTE>
+
+<A NAME="Card"></A><B>Card</B>
+<BLOCKQUOTE>Displays the FEC card number as the color for each hit.</BLOCKQUOTE>
+
+<A NAME="Channel"></A><B>Channel</B>
+<BLOCKQUOTE>Displays the FEC channel number as the color for each hit.</BLOCKQUOTE>
+
+<A NAME="Cell"></A><B>Cell</B>
+<BLOCKQUOTE>Displays the CMOS cell number as the color for each hit.</BLOCKQUOTE>
+
+<A NAME="CMOS Rates"></A><B>CMOS Rates</B> (dispatcher version only)
+<BLOCKQUOTE>Displays the CMOS rates information. This special feature is
+only useful for displaying noise rates when connected to a dispatcher for
+online monitoring. CMOS rates are not normally stored to event files.</BLOCKQUOTE>
+
+<HR>
+</BODY>
+</HTML>

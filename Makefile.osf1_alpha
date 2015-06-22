@@ -1,0 +1,50 @@
+#
+# osf1 system-specific definitions for xsnoed Makefile
+#
+# Note: VERFLAGS must be defined externally
+#
+# Peter Thornewell - 1/22/99
+#
+
+BASE          = .
+DISPBASE      = ../
+
+PROJFLAGS     = -DSWAP_BYTES -DUSE_PTHREAD -DUSE_NANOSLEEP $(VERFLAGS)
+
+INCS          = -I$(BASE) -I/usr/sys/include -I/usr/include
+
+CFLAGS        = -g -std1 -DSVR4 $(PROJFLAGS) $(INCS)
+CXXFLAGS      = $(CFLAGS)
+LDFLAGS       = -g
+LIBS          = -lm -lrt -lpthread
+
+CC            = cxx
+CCC           = cxx
+LD            = ld
+LDCC          = cxx
+LDCC_SHARED   = cxx
+
+XINCS         = -I/usr/X11R6/include/X11/
+XFLAGS        = $(XINCS)
+XLIBS         = -L/usr/X11R6/lib -lXm -lXmu -lXt -lX11
+
+ROOTINCS      = -I$(ROOTSYS)/include
+ROOTFLAGS     = $(ROOTINCS)
+ROOTLIBS      = -L$(ROOTSYS)/lib -lNew -lBase -lCint -lClib -lCont -lFunc\
+                -lGraf -lGraf3d -lHist -lHtml -lMatrix -lMeta -lMinuit -lNet\
+                -lPostscript -lProof -lRint -lGui -lTree -lUnix -lZip -lGX11 \
+                -lGpad 
+
+QSNOINCS      = -I../include
+QSNOFLAGS     = $(ROOTFLAGS) $(QSNOINCS)
+QSNOLIBS      = -L../lib -lqtree $(ROOTLIBS)
+
+DISPINCS      = -I$(DISPBASE)/dispatcher/include -I./include
+DISPFLAGS     = $(DISPINCS)
+DISPLIBS      = -L$(DISPBASE)/dispatcher/lib -lconthost -lc
+
+OS_OBJS       =
+
+OS_ROOTOBJS   =
+
+include         Makefile.include

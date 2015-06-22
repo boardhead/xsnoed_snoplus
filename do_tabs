@@ -1,0 +1,105 @@
+#!/usr/bin/perl -w
+# -*- mode: perl; c-basic-offset: 4; tab-width: 4; tab-stop-list: (4 8 12 16 20 24 28 32 36 40 44 48 52 56 60 64 68 72 76 80 84 88 92 96 100 104 108 112 116 120); -*-
+#
+# File:			do_tabs_c
+#
+# Created:		09/12/01 - P. Harvey
+#
+# Modified:		09/13/01 - B. Moffat: Add .c file support
+#
+# Description:	Recursively adds/changes the header line in all .c, .cxx and .h files
+#				files in the current directory
+#
+# Arguments:	-d - remove existing header line
+#
+require 5.002;
+use strict;
+
+my $header_cxx = "/* -*- mode: c++; c-basic-offset: 4; tab-width: 4; tab-stop-list: (4 8 12 16 20 24 28 32 36 40 44 48 52 56 60 64 68 72 76 80 84 88 92 96 100 104 108 112 116 120); -*- */\n";
+my $header_c = "/* -*- mode: c; c-basic-offset: 4; tab-width: 4; tab-stop-list: (4 8 12 16 20 24 28 32 36 40 44 48 52 56 60 64 68 72 76 80 84 88 92 96 100 104 108 112 116 120); -*- */\n";
+
+my $arg = shift;
+
+$arg eq '-d' and $header_cxx = '', $header_c = '';
+
+sub DoTabs($);
+
+DoTabs('.');
+
+sub DoTabs($)
+{
+	my $dir = shift;
+	
+	if (opendir(THISDIR, $dir)) {
+	
+		# read list of files in this directory
+		my @files = readdir THISDIR;
+		closedir(THISDIR);
+		
+		my $filename;
+		foreach $filename (@files) {
+			
+			my $comment = '               ';
+			
+			$filename = "$dir/$filename";		# add directory name to filename
+			
+			if (-d $filename) {					# is this a directory?
+				next if $filename =~ /\/(\.|\.\.)$/;	# skip directories '.' and '..'
+				DoTabs("$filename");
+				next;
+			}
+			if ($filename =~ /(\.cxx|\.h|\.c)$/) {	# is this a .c, .cxx or .h file ?
+				unless (open(INFILE, $filename)) {
+					print "Error opening $filename\n";
+					next;
+				}
+				my $header;
+				if ($filename =~ /\.c$/) { # is this a .c file ?
+					$header = $header_c;
+				} else { # must be a .cxx or .h file
+					$header = $header_cxx;
+				}
+					
+				my $first_line = <INFILE>;
+				if ($first_line eq $header) {
+					close(INFILE);
+					print "Already added:  $filename\n";
+					next;
+				}
+				unless (open(OUTFILE, ">$filename.tmp")) {
+					close(INFILE);
+					print "Error creating $filename.tmp\n";
+					next;
+				}
+				print OUTFILE $header;			# write our header
+				if ($first_line =~ /tab-width:/) {
+					if ($header) {
+						$comment = 'Header changed:';
+					} else {
+						$comment = 'Header removed:';
+					}
+					# don't write original first line -- it was an old tab definition
+				} else {
+					$comment = 'Header added:  ' if $header;
+					print OUTFILE $first_line;	# write original first line of file
+				}
+				# copy over the rest of the file
+				while (<INFILE>) {
+					unless (print OUTFILE $_) {
+						close(INFILE);
+						close(OUTFILE);
+						unlink("$filename.tmp");
+						print "Error writing to $filename.tmp\n";
+						return;
+					}
+				}
+				# clean up and replace original file with new one
+				close(INFILE);
+				close(OUTFILE);
+				unlink($filename);
+				rename("$filename.tmp", $filename);
+			}
+			print "$comment $filename\n";
+		}
+	}
+}

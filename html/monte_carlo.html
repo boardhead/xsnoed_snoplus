@@ -1,0 +1,154 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.04 (Macintosh; I; PPC) [Netscape]">
+   <META NAME="Author" CONTENT="Phil Harvey">
+   <META NAME="Description" CONTENT="Sno Event Display user guide">
+   <LINK REL="Index" HREF="index.html">
+   <LINK REL="Start" HREF="xsnoed.html">
+   <LINK REL="Prev"  HREF="optical.html">
+   <LINK REL="Next"  HREF="event_times.html">
+   <TITLE>XSNOED User Guide - Monte Carlo Window</TITLE>
+   <SCRIPT language="javascript">
+      <!-- Hide the script from old browsers --
+      img1 = new Image(); img1.src = "next2.GIF";
+      img2 = new Image(); img2.src = "prev2.GIF";
+      img3 = new Image(); img3.src = "home2.GIF";
+      // --End Hiding Here -->
+   </SCRIPT>
+</HEAD>
+<BODY BACKGROUND="background.GIF">
+
+<A HREF="event_times.html"
+ ONMOUSEOVER="document.images['img1'].src='next2.GIF'" 
+ ONMOUSEOUT="document.images['img1'].src='next.GIF'">
+ <IMG NAME="img1" SRC="next.GIF" ALIGN=RIGHT BORDER=0 HSPACE=5 HEIGHT=28 WIDTH=63 ALT="Next Page"></A>
+<A HREF="optical.html"
+ ONMOUSEOVER="document.images['img2'].src='prev2.GIF'" 
+ ONMOUSEOUT="document.images['img2'].src='prev.GIF'">
+ <IMG NAME="img2" SRC="prev.GIF" ALIGN=RIGHT BORDER=0 HSPACE=5 HEIGHT=28 WIDTH=63 ALT="Previous Page"></A>
+<A HREF="xsnoed.html"
+ ONMOUSEOVER="document.images['img3'].src='home2.GIF'" 
+ ONMOUSEOUT="document.images['img3'].src='home.GIF'">
+ <IMG NAME="img3" SRC="home.GIF" ALIGN=RIGHT BORDER=0 HSPACE=5 HEIGHT=28 WIDTH=63 ALT="First Page"></A>
+
+<H1>Monte Carlo Window</H1>
+<HR>
+
+<IMG SRC="monte_carlo.GIF" BORDER=0 HEIGHT=216 WIDTH=371 HSPACE=10 VSPACE=10 ALIGN=RIGHT>
+
+<P>The Monte Carlo window displays information about the Monte Carlo simulation
+if available for this event. Data is displayed for each vertex of the current
+track. The interaction times are in nanoseconds with respect to the global trigger
+time, the energy is in MeV, <B>R</B> is the distance from the center of the detector
+in centimeters, and <B>Z</B> is the vertex elevation in centimeters. Also given are
+the particle name and interaction type.
+<P>
+
+The track list is displayed in chronological order for the currently selected track.
+If the track branches, only one branch is followed in the list. The vertex closest
+to the cursor is indicated by an asterisk in the list.
+<P>
+
+The menu in the Monte Carlo window controls the display of Monte Carlo information in
+the <A HREF="main.html">main XSNOED window</A>.  The following sections describe
+the various Monte Carlo window menu entries:
+<P>
+<BR CLEAR=ALL>
+<IMG SRC="mc_image.GIF" BORDER=0 HEIGHT=343 WIDTH=321 HSPACE=10 VSPACE=10 ALIGN=RIGHT>
+
+<A NAME="MC Display Menu"></A><H2>Monte Carlo Display Menu</H2>
+
+<B>Hide Interaction Labels</B>
+<BLOCKQUOTE>Turns off the display of particle interaction labels at the Monte Carlo vertices
+in the 3-D image.</BLOCKQUOTE>
+
+<B>Show Interaction Labels</B>
+<BLOCKQUOTE>Turns on the display of interaction names in the 3-D image of the <A HREF="main.html">
+main XSNOED window</A>.
+Note that some interaction names may not be displayed if they are too close together in
+a single track. The image to the right gives an example of a Monte Carlo
+display with interaction labels shown.</BLOCKQUOTE>
+
+<B>Label Highlighted Track</B>
+<BLOCKQUOTE>Shows interaction labels only for the highlighted track.  This is only
+effective if <B>Highlight Current Track</B> is also selected.</BLOCKQUOTE>
+
+<B>Highlight Current Track</B>
+<BLOCKQUOTE>If many tracks are displayed in the 3-D image window, the current track will
+be highlighted by drawing it in the Monte Carlo special color.  Note that
+this has no effect if <B>Track to One PMT</B> is selected from the Tracks menu.
+This feature only functions while the Monte Carlo window is open.</BLOCKQUOTE>
+
+<A NAME="MC Tracks Menu"></A><H2>Monte Carlo Tracks Menu</H2>
+<B>All Tracks</B>
+<BLOCKQUOTE>Display all Monte Carlo tracks in the 3-D image. Note that certain tracks
+may still be hidden depending on the particles selected in the <A HREF="#MC Particles Menu">
+particles menu</A>.</BLOCKQUOTE>
+
+<B>Track to One PMT</B>
+<BLOCKQUOTE>Display the Monte Carlo track leading to the PMT hit nearest the cursor. Will
+display all vertices leading to the PMT, regardless of whether or not the particles are
+selected in the particle menu.
+Note that there will be no Monte Carlo track for a PMT noise hit.</BLOCKQUOTE>
+
+<B>Selected Tracks:</B>
+<BLOCKQUOTE>Display any Monte Carlo track which contains any of the following interaction types:</BLOCKQUOTE>
+
+<B>Spectral Reflection</B>
+<BLOCKQUOTE>Display any Monte Carlo track containing a spectral reflection interaction.</BLOCKQUOTE>
+
+<B>Diffuse Reflection</B>
+<BLOCKQUOTE>Display any Monte Carlo track containing a diffuse reflection interaction.</BLOCKQUOTE>
+
+<B>Diffuse Transmission</B>
+<BLOCKQUOTE>Display any Monte Carlo track containing a diffuse transmission interaction.</BLOCKQUOTE>
+
+<B>Rayleigh Scattering</B>
+<BLOCKQUOTE>Display any Monte Carlo track containing a Rayleigh scattering interaction.</BLOCKQUOTE>
+
+<B>PMT Bounce</B>
+<BLOCKQUOTE>Display any Monte Carlo track containing a PMT bounce interaction.</BLOCKQUOTE>
+
+<B>Reached PMT</B>
+<BLOCKQUOTE>Display any Monte Carlo track which results in a PMT hit.</BLOCKQUOTE>
+
+<A NAME="MC Particles Menu"></A><H2>Monte Carlo Particles Menu</H2>
+
+The display for certain particle types can be turned off by deselecting
+items in this menu.  A vertex and the track leading away from it will only be
+displayed if the associated particle is selected in this menu.<P>
+
+<B>Photon</B>
+<BLOCKQUOTE>Display the Monte Carlo vertices for photons.</BLOCKQUOTE>
+
+<B>Gamma</B>
+<BLOCKQUOTE>Display the Monte Carlo vertices for gammas.</BLOCKQUOTE>
+
+<B>Electron</B>
+<BLOCKQUOTE>Display the Monte Carlo vertices for electrons.</BLOCKQUOTE>
+
+<B>Neutrino</B>
+<BLOCKQUOTE>Display the Monte Carlo vertices for neutrinos. This includes
+any flavor of neutrino.</BLOCKQUOTE>
+
+<B>Neutron</B>
+<BLOCKQUOTE>Display the Monte Carlo vertices for neutrons.</BLOCKQUOTE>
+
+<B>&lt;unknown></B>
+<BLOCKQUOTE>Display the Monte Carlo vertices for unknown particle types.
+This includes any vertex with an invalid particle code.</BLOCKQUOTE>
+
+<B>All</B>
+<BLOCKQUOTE>Display the vertices of all particles. Has the effect of selecting
+all of the particles menu entries, plus any particles without menu entries.</BLOCKQUOTE>
+
+<B>None</B>
+<BLOCKQUOTE>Turns off display of all particles. Note that this option also turns off
+display of some particles not listed in the <A HREF="#MC Particles Menu">particles menu</A>.
+The only way to turn on the display of these particles is with the <B>All</B> menu entry.
+</BLOCKQUOTE>
+
+<HR>
+</BODY>
+</HTML>

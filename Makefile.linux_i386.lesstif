@@ -1,0 +1,57 @@
+#
+# Linux system-specific definitions for xsnoed Makefile
+#
+# Note: VERFLAGS must be defined externally
+#
+# Phil Harvey - 12/2/98
+#
+BASE          = .
+
+INCLUDE       = -I$(BASE)
+
+PROJFLAGS     = -DSWAP_BYTES -DUSE_GETTIMEOFDAY -DUSE_PTHREAD -DIGNORE_DISP_ERRORS $(VERFLAGS)
+
+CFLAGS        = -g -O0 -D_BSD=43 $(PROJFLAGS)
+CXXFLAGS      = -g -O0 -Wall -fwritable-strings $(PROJFLAGS)
+PICFLAG       = -fPIC
+
+LDFLAGS       = -g
+LIBS          = -lm -lpthread 
+
+CCC           = g++
+CC            = cc
+LD            = ld
+LDCC          = g++
+LDCC_SHARED   = g++
+
+LDSO_FLAGS    = -shared -elf
+CC_LD_FLAGS   = -shared -elf
+
+XINCS         = -I/usr/X11R6/include/X11/ -I/usr/X11R6/include
+XFLAGS        = $(XINCS) -DLESSTIF
+XLIBS         = -L/usr/X11R6/lib -lXm -lXmu -lXt -lX11
+
+ROOTINCS      = -I$(ROOTSYS)/include
+ROOTFLAGS     = -fno-rtti $(ROOTINCS)
+ROOTLIBS      = $(shell root-config --libs) -lMinuit
+
+QSNOINCS      = -I../include
+QSNOFLAGS     = $(ROOTFLAGS) $(QSNOINCS)
+QSNOLIBS      = -L../lib -lqtree $(ROOTLIBS) -lg2c
+
+DISPINCS      = -I$(BASE)/../disp/include -I./include
+DISPFLAGS     = $(DISPINCS)
+DISPLIBS      = -L$(BASE)/../disp/lib -lconthost -lc
+
+OS_OBJS       = NextEvent.o RowColumn.o
+
+OS_ROOTOBJS   =
+
+include         Makefile.include
+
+NextEvent.o: linux_patch/NextEvent.c
+	$(CC) $(CFLAGS) $(PICFLAG) $(INCLUDE) $(XFLAGS) -I./linux_patch -c linux_patch/NextEvent.c
+
+RowColumn.o: linux_patch/RowColumn.c
+	$(CC) $(CFLAGS) $(PICFLAG) $(INCLUDE) $(XFLAGS) -I./linux_patch -c linux_patch/RowColumn.c
+

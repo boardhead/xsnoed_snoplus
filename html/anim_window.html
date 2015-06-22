@@ -1,0 +1,100 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.04 (Macintosh; I; PPC) [Netscape]">
+   <META NAME="Author" CONTENT="Phil Harvey">
+   <META NAME="Description" CONTENT="Sno Event Display user guide">
+   <LINK REL="Index" HREF="index.html">
+   <LINK REL="Start" HREF="xsnoed.html">
+   <LINK REL="Prev"  HREF="ascii_window.html">
+   <LINK REL="Next"  HREF="dump_window.html">
+   <TITLE>XSNOED User Guide - Animation Window</TITLE>
+   <SCRIPT language="javascript">
+      <!-- Hide the script from old browsers --
+      img1 = new Image(); img1.src = "next2.GIF";
+      img2 = new Image(); img2.src = "prev2.GIF";
+      img3 = new Image(); img3.src = "home2.GIF";
+      // --End Hiding Here -->
+   </SCRIPT>
+</HEAD>
+<BODY BACKGROUND="background.GIF">
+
+<A HREF="dump_window.html"
+ ONMOUSEOVER="document.images['img1'].src='next2.GIF'" 
+ ONMOUSEOUT="document.images['img1'].src='next.GIF'">
+ <IMG NAME="img1" SRC="next.GIF" ALIGN=RIGHT BORDER=0 HSPACE=5 HEIGHT=28 WIDTH=63 ALT="Next Page"></A>
+<A HREF="ascii_window.html"
+ ONMOUSEOVER="document.images['img2'].src='prev2.GIF'" 
+ ONMOUSEOUT="document.images['img2'].src='prev.GIF'">
+ <IMG NAME="img2" SRC="prev.GIF" ALIGN=RIGHT BORDER=0 HSPACE=5 HEIGHT=28 WIDTH=63 ALT="Previous Page"></A>
+<A HREF="xsnoed.html"
+ ONMOUSEOVER="document.images['img3'].src='home2.GIF'" 
+ ONMOUSEOUT="document.images['img3'].src='home.GIF'">
+ <IMG NAME="img3" SRC="home.GIF" ALIGN=RIGHT BORDER=0 HSPACE=5 HEIGHT=28 WIDTH=63 ALT="First Page"></A>
+
+<H1>Animation Window</H1>
+<HR>
+
+<IMG SRC="anim_window.GIF" BORDER=0 HEIGHT=275 WIDTH=456 HSPACE=10 VSPACE=10 ALIGN=RIGHT>
+
+<P>The Animation window provides a way to animate the tube hits of
+an individual event according to their actual hit times. As an example,
+the animation below shows a through-going muon from run 15944.
+
+<P><B><font color="#006000">Note:</font></B> All times are specified in percent
+(%) of the full range of TAC times for the specific event being viewed.
+If the data displayed is uncalibrated then raw TAC values are used, otherwise
+calibrated times are used.  The first hit of an event occurs at 0% on this
+scale, and the last hit occurs at 100%.
+
+<P>The <B>Hit Time</B> slider provides manual control of the current hit time
+as well as providing a time indicator when an animation is in progress.
+The time window is applied automatically if not done already when the slider
+position is changed.
+
+<P>The <B>Time Window</B> specifies the width of the time window for visible hits. 
+A value of 100 causes all tube hits before the current hit time (as specified by
+the slider position) to be displayed.  Smaller widths cause only hits which are
+closer to the current hit time to be shown.  A negative width may be specified,
+in which case hits after the current time are displayed (instead of before, as
+with a positive width value).  Pressing return in this field causes the current
+time window to be applied.
+
+<P>The <B>Apply Window</B> checkbox allows the time window to be turned on
+and off.  When on, only hits within the specified time window are displayed.
+
+<BR CLEAR=ALL>
+<IMG SRC="xsnoed_animation.gif" BORDER=0 HEIGHT=302 WIDTH=305 VSPACE=10 ALIGN=RIGHT>
+
+<P><B>Start Time</B> specifies the starting time for the animation sequence.
+This is a floating point number between 0 and 100.
+
+<P><B>End Time</B> specifies the ending time for the animation sequence.
+
+<P><B>Number of Frames</B> gives the number of frames for the animation.
+The actual number of frames generated is one greater than this value to allow
+the time interval to be evenly divided with a frame at each end.
+
+<P><B>Delay</B> is the delay time in seconds between frames.  If an animated gif is
+created, this delay time is written into the file, otherwise it it used
+as a wait time between the generated images.
+
+<P>If <B>Write Animated GIF</B> is checked, then the specified animated gif output file
+is written to disk.  The animation is generated from the images in the main window.
+Internally, individual frames are written as .bmp files which are deleted
+after they are used to create the animated gif file.
+
+<P>The <B>Animate</B> button causes the animation to begin.  This causes
+the slider to move automatically through the specified range of hit times,
+and writes an animated gif output file if selected.
+
+<P>Clicking on <B>Done</B> dismisses this window, and causes all hits
+in the current event to be displayed.
+
+<P><B><font color="#006000">Note:</font></B> Currently, the settings in this
+window are not persistent, and will revert back to the defaults if the window
+is closed.
+<P>
+<HR>
+</BODY>
+</HTML>

@@ -1,0 +1,166 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.04 (Macintosh; I; PPC) [Netscape]">
+   <META NAME="Author" CONTENT="Phil Harvey">
+   <META NAME="Description" CONTENT="Sno Event Display user guide">
+   <LINK REL="Index" HREF="index.html">
+   <LINK REL="Start" HREF="xsnoed.html">
+   <LINK REL="Prev"  HREF="event_info.html">
+   <LINK REL="Next"  HREF="histogram.html">
+   <TITLE>XSNOED User Guide - Hit Info Window</TITLE>
+   <SCRIPT language="javascript">
+      <!-- Hide the script from old browsers --
+      img1 = new Image(); img1.src = "next2.GIF";
+      img2 = new Image(); img2.src = "prev2.GIF";
+      img3 = new Image(); img3.src = "home2.GIF";
+      // --End Hiding Here -->
+   </SCRIPT>
+</HEAD>
+<BODY BACKGROUND="background.GIF">
+
+<A HREF="histogram.html"
+ ONMOUSEOVER="document.images['img1'].src='next2.GIF'" 
+ ONMOUSEOUT="document.images['img1'].src='next.GIF'">
+ <IMG NAME="img1" SRC="next.GIF" ALIGN=RIGHT BORDER=0 HSPACE=5 HEIGHT=28 WIDTH=63 ALT="Next Page"></A>
+<A HREF="event_info.html"
+ ONMOUSEOVER="document.images['img2'].src='prev2.GIF'" 
+ ONMOUSEOUT="document.images['img2'].src='prev.GIF'">
+ <IMG NAME="img2" SRC="prev.GIF" ALIGN=RIGHT BORDER=0 HSPACE=5 HEIGHT=28 WIDTH=63 ALT="Previous Page"></A>
+<A HREF="xsnoed.html"
+ ONMOUSEOVER="document.images['img3'].src='home2.GIF'" 
+ ONMOUSEOUT="document.images['img3'].src='home.GIF'">
+ <IMG NAME="img3" SRC="home.GIF" ALIGN=RIGHT BORDER=0 HSPACE=5 HEIGHT=28 WIDTH=63 ALT="First Page"></A>
+
+<H1>Hit Info Window</H1>
+<HR>
+
+<IMG SRC="hit_info.GIF" BORDER=0 HEIGHT=331 WIDTH=155 HSPACE=10 VSPACE=10 ALIGN=RIGHT>
+
+<P>The Hit Info window displays details about individual PMT hits. It
+is used in conjunction with any of the event windows, and gives information
+about the hit nearest the cursor. If there is no hit near the current
+cursor location, no information is shown. The following list describes
+the quantities displayed for each hit.
+
+<P>Note that uncalibrated channels may show <B>n/a</B> for some quantities
+when displaying calibrated data.  This correponds to a numerical value
+of -9999.
+
+<P><B>GTID</B>
+
+<BLOCKQUOTE>The GTID of the hit. This will always be the same as the event
+GTID unless the event is an orphan. In orphan events, the event GTID
+is zero, and there may be a number of different GTID's for hits in the
+event (since individual orphan events are now collected into 'orphanages').
+</BLOCKQUOTE>
+
+<B>TAC</B>
+
+<BLOCKQUOTE>The measured time of the hit. This is shown in raw ADC counts
+for uncalibrated displays, or nanoseconds for calibrated displays.
+See the <A HREF="data.html">Data Menu</A> section for information
+on how to change the calibration. In sum mode, this gives the average
+time for all hits in the channel.
+</BLOCKQUOTE>
+
+<B>Qhs</B>
+
+<BLOCKQUOTE>The high-gain, short-integrate charge for the hit. The number
+is calibrated if a calibrated display is selected. In sum mode, this
+gives the average charge for all hits in the channel.
+</BLOCKQUOTE>
+
+<B>Qhl</B>
+
+<BLOCKQUOTE>The high-gain, long-integrate charge for the hit. The number
+is calibrated if a calibrated display is selected. In sum mode, this
+gives the average charge for all hits in the channel.
+</BLOCKQUOTE>
+
+<B>Qlx / Qls / Qll</B>
+
+<BLOCKQUOTE>The low-gain, short or long integrate charge for the hit. The
+display will indicate <B>Qls</B> or <B>Qll </B>depending on the current
+channel setting. The number is calibrated if a calibrated display
+is selected. In sum mode, Qls and Qll are not differentiated, and
+the average charge for all hits in the channel is given.
+</BLOCKQUOTE>
+
+<B>Hit Cnt / Rate</B>
+
+<BLOCKQUOTE>The number of times a channel fired in the displayed event.
+For normal events, this number should always be 1 if the hardware is functioning
+properly. However, an individual channel may be hit many times in an
+orphanage event. This number is particularly useful in sum mode to
+determine the number of times a channel fired across all events summed.
+See the <A HREF="file.html">File Menu</A> section for information about the
+sum mode. With the OPTICAL_CAL version of XSNOED, this entry displays the
+ratio of observed/expected occupancy when in calibrated hits mode and a valid set
+of optical calibration constants is loaded. When displaying CMOS rates,
+this entry changes to <B>Rate</B> and gives the CMOS noise rate for the channel.
+</BLOCKQUOTE>
+
+<B>Crate</B>
+
+<BLOCKQUOTE>The crate number for the hit. For the detector underground, this
+is a number between 0 and 18. Crate 19 exists above ground in the
+hardware test setup.
+</BLOCKQUOTE>
+
+<B>Card</B>
+
+<BLOCKQUOTE>The front-end card (FEC) index for this channel. Also referred
+to as slot number, and ranges from 0 to 15.
+</BLOCKQUOTE>
+
+<B>Channel</B>
+
+<BLOCKQUOTE>The FEC channel number for this hit. Ranges from 0 to 31.
+</BLOCKQUOTE>
+
+<B>Cell</B>
+
+<BLOCKQUOTE>The CMOS cell number where the hit information was stored. This
+is a number between 0 and 15, and is important because the specific CMOS
+analogue storage cell used has an affect on the charge and time calibrations.
+</BLOCKQUOTE>
+
+<B>Type</B>
+
+<BLOCKQUOTE>The type of channel. Valid channel types are <B>Normal,</B> <B>OWL</B>,
+<B>Low Gain</B>, <B>Neck</B>, <B>BUTTS</B>, <B>FECD</B> and <B>Unknown</B>. FECD indicates
+a channel that is not connected to a PMT (a Front End Card Digitizer channel).
+The type is indicated in brackets
+if the hit has been marked as discarded using the center mouse button.
+Only normal tubes are used for fitting.
+</BLOCKQUOTE>
+
+<B>Panel</B>
+
+<BLOCKQUOTE>The panel ID and hex cell number of the PMT in the detector expressed
+in the form HXXX-YY, where XXX is the panel number and YY is the hex cell.
+Valid hex cell numbers are 01-21.
+OWL tubes are shown as HXXX-00, where XXX gives the number of the PSUP
+node nearest the tube. Neck, BUTTS and FECDs have no corresponding panel
+number, so their panel shows up as "-".
+</BLOCKQUOTE>
+
+<B>PMT</B>
+
+<BLOCKQUOTE>The barcode identification and index number for this PMT.  If there is no
+PMT associated with this channel, the barcode will be "-".  The index number is given
+in brackets and corresponds to the electronics channel number for this PMT, beginning
+at 0 for crate 0, card 0, channel 0.
+</BLOCKQUOTE>
+
+<B>X Y Z</B>
+
+<BLOCKQUOTE>The displayed position of the PMT hit in centimeters. This information
+is only displayed if <B>Hit Info: Show Hit XYZ</B> is selected in the
+<A HREF="settings.html">Settings window</A>.
+</BLOCKQUOTE>
+
+<HR>
+</BODY>
+</HTML>

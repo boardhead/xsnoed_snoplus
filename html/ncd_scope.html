@@ -1,0 +1,67 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.04 (Macintosh; I; PPC) [Netscape]">
+   <META NAME="Author" CONTENT="Phil Harvey">
+   <META NAME="Description" CONTENT="Sno Event Display user guide">
+   <LINK REL="Index" HREF="index.html">
+   <LINK REL="Start" HREF="xsnoed.html">
+   <LINK REL="Prev"  HREF="ncd_map.html">
+   <LINK REL="Next"  HREF="trigger_scope.html">
+   <TITLE>XSNOED User Guide - NCD Scope Window</TITLE>
+   <SCRIPT language="javascript">
+      <!-- Hide the script from old browsers --
+      img1 = new Image(); img1.src = "next2.GIF";
+      img2 = new Image(); img2.src = "prev2.GIF";
+      img3 = new Image(); img3.src = "home2.GIF";
+      // --End Hiding Here -->
+   </SCRIPT>
+</HEAD>
+<BODY BACKGROUND="background.GIF">
+
+<A HREF="trigger_scope.html"
+ ONMOUSEOVER="document.images['img1'].src='next2.GIF'" 
+ ONMOUSEOUT="document.images['img1'].src='next.GIF'">
+ <IMG NAME="img1" SRC="next.GIF" ALIGN=RIGHT BORDER=0 HSPACE=5 HEIGHT=28 WIDTH=63 ALT="Next Page"></A>
+<A HREF="ncd_map.html"
+ ONMOUSEOVER="document.images['img2'].src='prev2.GIF'" 
+ ONMOUSEOUT="document.images['img2'].src='prev.GIF'">
+ <IMG NAME="img2" SRC="prev.GIF" ALIGN=RIGHT BORDER=0 HSPACE=5 HEIGHT=28 WIDTH=63 ALT="Previous Page"></A>
+<A HREF="xsnoed.html"
+ ONMOUSEOVER="document.images['img3'].src='home2.GIF'" 
+ ONMOUSEOUT="document.images['img3'].src='home.GIF'">
+ <IMG NAME="img3" SRC="home.GIF" ALIGN=RIGHT BORDER=0 HSPACE=5 HEIGHT=28 WIDTH=63 ALT="First Page"></A>
+
+<H1>NCD Scope Window</H1>
+<HR>
+
+<IMG SRC="ncd_scope.GIF" BORDER=0 HEIGHT=631 WIDTH=416 HSPACE=10 VSPACE=10 ALIGN=RIGHT>
+
+<P>The NCD Scope window shows digitized NCD scope waveforms for all NCD scope channels.
+Note that most NCD events will only fire a single scope channel, however in sum mode the
+latest data for each scope channel is displayed.
+
+<P>The scales for all scope channels are tied together, so if you change one
+they all change. The traces for scope 0 and scope 1 are displayed in the same
+plot, and are differentiated by color.  The colors set via the <a
+href="color_window.html">Colors settings</a>, and are shared with the Ch1/Ch2
+colors of the <a href="trigger_scope.html">Trigger Scope</a>.
+
+<P>The <B>Display</B> menu in this window allows you to set the scope channels
+to be displayed.  By default all scope channels are displayed, but this can
+be changed to display any individual channel, or only channels with scope data.
+Note that if <B>Channels with Data</B> is selected, the displayed channels will
+only change if data is available (so zero channels will not be displayed).
+
+<P>The <B>Data</B> menu (ROOT_FILE version only) allows you to select display of
+<B>Raw</B> or <B>AntiLog</B> data. Antilogged data is displayed only if
+<B>AntiLog</B> is selected and the logamp calibration constants are available. 
+When antilogged data is displayed, the label changes to "AntiLog 0" or "AntiLog
+1" instead of "Scope 0" or "Scope 1" for each successfully antilogged trace. 
+Note that the antilogged data values are multiplied by 1000 to bring them into
+roughly the same range as the raw values.
+
+<BR CLEAR=ALL><P>
+<HR>
+</BODY>
+</HTML>

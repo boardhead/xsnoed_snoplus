@@ -1,0 +1,270 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.04 (Macintosh; I; PPC) [Netscape]">
+   <META NAME="Author" CONTENT="Phil Harvey">
+   <META NAME="Description" CONTENT="Sno Event Display user guide">
+   <LINK REL="Index" HREF="index.html">
+   <LINK REL="Start" HREF="xsnoed.html">
+   <LINK REL="Prev"  HREF="rch_window.html">
+   <LINK REL="Next"  HREF="resource.html">
+   <TITLE>XSNOED User Guide - Appendix</TITLE>
+   <SCRIPT language="javascript">
+      <!-- Hide the script from old browsers --
+      img1 = new Image(); img1.src = "next2.GIF";
+      img2 = new Image(); img2.src = "prev2.GIF";
+      img3 = new Image(); img3.src = "home2.GIF";
+      // --End Hiding Here -->
+   </SCRIPT>
+</HEAD>
+<BODY BACKGROUND="background.GIF">
+
+<A HREF="resource.html"
+ ONMOUSEOVER="document.images['img1'].src='next2.GIF'" 
+ ONMOUSEOUT="document.images['img1'].src='next.GIF'">
+ <IMG NAME="img1" SRC="next.GIF" ALIGN=RIGHT BORDER=0 HSPACE=5 HEIGHT=28 WIDTH=63 ALT="Next Page"></A>
+<A HREF="rch_window.html"
+ ONMOUSEOVER="document.images['img2'].src='prev2.GIF'" 
+ ONMOUSEOUT="document.images['img2'].src='prev.GIF'">
+ <IMG NAME="img2" SRC="prev.GIF" ALIGN=RIGHT BORDER=0 HSPACE=5 HEIGHT=28 WIDTH=63 ALT="Previous Page"></A>
+<A HREF="xsnoed.html"
+ ONMOUSEOVER="document.images['img3'].src='home2.GIF'" 
+ ONMOUSEOUT="document.images['img3'].src='home.GIF'">
+ <IMG NAME="img3" SRC="home.GIF" ALIGN=RIGHT BORDER=0 HSPACE=5 HEIGHT=28 WIDTH=63 ALT="First Page"></A>
+
+<H1>Appendix</H1>
+<HR>
+
+<H2><A NAME="Support Files"></A>Support Files</H2>
+
+XSNOED requires a number of files to run.  Some of the
+files are optional, and when present enable certain XSNOED
+features.  A list of the XSNOED support files is given below.
+<BLOCKQUOTE>
+<TABLE CELLSPACING=0 CELLPADDING=2 NOSAVE >
+<TR NOSAVE>
+<TD WIDTH="150" NOSAVE><B>XSnoed</B></TD>
+
+<TD>Default <A HREF="resource.html">XSnoed resource file</A></TD>
+</TR>
+
+<TR>
+<TD><B>geodesic.geo</B></TD>
+
+<TD>PSUP geometry file</TD>
+</TR>
+
+<TR>
+<TD><B>polar.geo</B></TD>
+
+<TD>Polar wire frame geometry</TD>
+</TR>
+
+<TR>
+<TD><B>vessel.geo</B></TD>
+
+<TD>Acrylic vessel geometry file</TD>
+</TR>
+
+<TR>
+<TD><B>flat.geo</B></TD>
+
+<TD>Flat Map geometry file</TD>
+</TR>
+
+<TR>
+<TD><B>database.dat</B></TD>
+
+<TD>Default PMT position database file</TD>
+</TR>
+
+<TR>
+<TD><B>NCDTubeMap.dat</B></TD>
+
+<TD>Default NCD position database file</TD>
+</TR>
+
+<TR>
+<TD><B>db_list.dat</B> <SUP>1</SUP></TD>
+
+<TD>List of PMT/NCD database files to use based on run number</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>fitter.dat</B></TD>
+
+<TD>[optional] Fitter configuration file to override defaults (fitter version only)</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>&lt;cal_file></B> <SUP>2</SUP></TD>
+
+<TD>[optional] PMT calibration constants to enable calibrated data display (calibrated version only)</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>&lt;oca_file></B>  <SUP>2</SUP></TD>
+
+<TD>[optional] Optical calibration constants to enable calibrated hit display (OCA version only)</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>ascii_window_menu.dat</B></TD>
+
+<TD>[optional] Definition for optional menu in ASCII window.  See the <A HREF="ascii_window.html">
+ASCII Output window</A> section for details.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+
+<P><SUP>1</SUP> If this file doesn't exist or if a database is not specified for the current run
+number, then the default PMT or NCD database is used.
+
+<P><SUP>2</SUP> The names of <B>cal_file</B> and <B>oca_file</B> are
+obtained from the <A HREF="resource.html">XSnoed resource file</A>.
+
+<P>XSNOED will generate binary versions of the PMT position database and
+the PMT calibration constants when they are loaded, and save them to
+disk with a ".bin" added to the filename if write privileges are
+available in the directory where these files are kept. These binary
+files load much more quickly, and will be used (if available) the
+next time they are needed. Note that these binary files are
+not portable to different platforms, and therefore are not provided as
+part of the standard XSNOED release.
+
+<A NAME="Search Path"></A>
+<P>XSNOED searches the following directories in order when looking for
+the support files:
+<OL>
+<LI>
+The current directory.</LI>
+
+<LI>
+The directory of the XSNOED executable.</LI>
+
+<LI>
+The directories specified by <B>file_path</B> in the <A HREF="resource.html">XSnoed resource file</A>.
+The <B>file_path</B> resource string may contain the names of multiple directories separated by colons.</LI>
+
+<LI>
+Directories specified by the PATH environment variable.</LI>
+</OL>
+<P>
+<HR>
+
+<BR><H2>
+<A NAME="X Window Notes"></A>X Window Notes</H2>
+
+On some systems, the backspace key will delete characters to the right
+of the cursor. To change this to delete characters to the left of the cursor,
+enter the following command or put it in the .xinitrc file before starting
+your X session: xmodmap -e "keysym Delete = BackSpace".
+<P>
+<HR>
+
+<BR><H2>
+<A NAME="Helper App"></A>XSNOED as a Helper Application for Netscape</H2>
+
+The X-Windows version of Netscape can be configured to use XSNOED as a helper
+application to display ZDAB files used in html links.  Follow these steps to
+configure XSNOED as a helper application in Netscape:
+
+<OL>
+<LI>Select <B>Edit/Preferences</B> from the Netscape menu.</LI>
+<LI>Select <B>Navigator/Applications</B> from the Category list.</LI>
+<LI>Click the <B>New...</B> button to add a new helper application.</LI>
+<LI>Set the Description to "ZDAB File".</LI>
+<LI>Set the MIME Type to "www/unknown" (see note below).</LI>
+<LI>Set the Suffixes to "zdab".</LI>
+<LI>Select Handled By <B>Application</B>.</LI>
+<LI>Enter the command line "xsnoed %s -n > /dev/null".</LI>
+<LI>Click on <B>OK</B>.</LI>
+</OL>
+
+<P><B><font color="#006000">Note:</font></B> The SNO manhattan web server sets the MIME type of ZDAB files to
+"www/unknown".  Other web servers may have different defaults, so the MIME
+type in step 5 above may be different.  If the web server can be configured,
+the preferred MIME type for ZDAB files would be "application/xsnoed".  To
+determine the MIME type for a page loaded by Netscape, select "View/Page Info"
+from the Netscape menus.
+
+<P>
+<HR>
+<BR><H2>
+<A NAME="XSNOED Versions"></A>XSNOED Versions</H2>
+
+XSNOED can be compiled with various features enabled or disabled. Information
+about the specific version you are running is printed to the console when
+XSNOED is run.  The version is defined with the XSNOED_OPTIONS environment
+variable when compiling xsnoed.<br>(ie. setenv XSNOED_OPTIONS "-UFITTR -DSNOPLUS")
+<BLOCKQUOTE>
+<TABLE CELLSPACING=0 CELLPADDING=2 WIDTH="85%" NOSAVE >
+<TR NOSAVE>
+<TD VALIGN=TOP WIDTH="150" NOSAVE><B>LOAD_CALIBRATION</B></TD>
+
+<TD>Enables calibrated data display. This version reads a calibration data
+file to obtain charge/time calibrations for each cell. This version requires
+a calibration database file to display calibrated values (name determined
+by the resource variable 'cal_file').</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>FITTR</B></TD>
+
+<TD>Online fitter enabled (calibrated display also enabled). This version
+requires a fitter configuration file (fitter.dat) for initialization of
+fitter constants.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>USE_PTHREAD</B></TD>
+
+<TD>Does all dispatcher calls from a separate program thread. This version
+is useful to improve the GUI response when connecting to a dispatcher through
+a slow connection. Do not use this version if a fast dispatcher connection
+is available, because the dispatcher performance will be somewhat degraded.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>ROOT_FILE</B></TD>
+
+<TD>Enables the ability to read ROOT files. To run this version, the ROOT
+libraries must exist and be set in the LD_LIBRARY_PATH.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>OPTICAL_CAL</B></TD>
+
+<TD>Enables optical calibration option. With this option enabled, the calibrated
+Hit Count display shows hits relative to calculated occupancy. This version
+requires database of optical calibration constants (name determined by
+the resource variable 'oca_file').</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>NO_DISPATCH</B></TD>
+
+<TD>No dispatcher connection capabilities. This version is provided to
+allow compilation on systems where the dispatcher libraries are not available.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>DEMO_VERSION</B></TD>
+
+<TD>Demo version of XSNOED.  This version is fully functional, but has an additional
+password protect feature that disables certain features allowing
+XSNOED to be used as an interactive demonstration for the general public.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>SNOPLUS</B></TD>
+
+<TD>SNO+ version of the event display.  Supports CAEN data instead of NCD.</TD>
+</TR>
+
+</TABLE>
+</BLOCKQUOTE>
+
+<HR>
+</BODY>
+</HTML>

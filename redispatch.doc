@@ -1,0 +1,78 @@
+redispatch version 2.4 documentation (07/03/03)
+-----------------------------------------------
+
+A program to redispatch SNO data to multiple target dispatchers.
+The source can be either a ZDAB file, or a dispatcher.  If the source
+is a file, RAWDATA and RECHDR packets are sent.  If the source is a
+dispatcher, RAWDATA, RECHDR and CMOSDATA packets are passed along.
+
+The program will not run unless a source file is opened or a connection
+is made to a source dispatcher, but will run if connections to target
+dispatcher(s) are not made, as long as valid addresses are given.
+
+If dispatcher connections are lost, redispatch will try to re-establish
+the connection at 10 second intervals for the source dispatcher, or 60
+second intervals for target dispatchers.
+
+If the source is a zdab file, no filtering is done and the events are
+sent out sequentially at the time interval specified by the -t option
+(default is 1 second).  If the source is a dispatcher, the event with
+the largest NHIT in the time interval is sent.  This time interval
+can be changed at run time through the use of the redispatcher command
+(REDCMD) packet.
+
+
+Syntax: redispatch [-t <time>] [-d <target>...] [-r] [-h] <source>
+
+    -d  Target (destination) dispatcher.  There may be many -d options.
+        If not specified, "localhost" is assumed.
+        
+    -t  Minimum time period between sending events (sec).  If not
+        specified, 1 second is assumed.  If the source is a dispatcher,
+        then a different time period may be specified for each target
+        and the "-t" option must come before the associated "-d".
+        The time may be zero to force output at maximum rate.
+    
+    -r  Repeat source file indefinitely (only valid for ZDAB source)
+    
+    -s  subscription string (default "w RAWDATA w CMOSDATA w RECHDR w REDCMD")
+
+    -h  Show this help information
+    
+    <source>  ZDAB file name or dispatcher address.  If not specified,
+              then "localhost" is assumed.
+              
+    <target>  Target dispatcher address.
+    
+    <time>  Floating point number of seconds between events sent out.
+
+
+Example:
+
+    For running the redispatcher on surf:
+
+    "redispatch -t 1 -d owl.phy.queensu.ca -t 0 -d localhost loveboat &"
+
+
+Run time commands:
+
+The redispatcher listens to REDCMD packets sent from the source
+dispatcher.  These packets contain a special command string that is
+used to reconfigure the redispatcher at run time.  The arguments
+used in the string are case and spacing sensitive and must match
+exactly what the redispatcher is expecting.  The following is a
+list of currently accepted redispatcher commands:
+
+1)  Time Command -- Sets the period between events sent to a
+                    specified target dispatcher.
+
+    Format:  "time=<secs> host=<hostname>"
+
+    time - The floating point number of seconds between dispatched
+           events.
+
+    host - The dispatcher target host for the new period.  This
+           field is optional, and defaults to "localhost" if not
+           specified.
+
+-----------------------------------------------

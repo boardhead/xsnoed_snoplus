@@ -1,0 +1,201 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.04 (Macintosh; I; PPC) [Netscape]">
+   <META NAME="Author" CONTENT="Phil Harvey">
+   <META NAME="Description" CONTENT="Sno Event Display user guide">
+   <LINK REL="Index" HREF="index.html">
+   <LINK REL="Start" HREF="xsnoed.html">
+   <LINK REL="Next"  HREF="index.html">
+   <TITLE>XSNOED User Guide - Introduction</TITLE>
+   <SCRIPT language="javascript">
+      <!-- Hide the script from old browsers --
+      img1 = new Image(); img1.src = "next2.GIF";
+      // --End Hiding Here -->
+   </SCRIPT>
+</HEAD>
+<BODY BACKGROUND="background.GIF">
+
+<A NAME="Introduction"></A>
+<A HREF="index.html"
+ ONMOUSEOVER="document.images['img1'].src='next2.GIF'"
+ ONMOUSEOUT="document.images['img1'].src='next.GIF'">
+ <IMG NAME="img1" SRC="next.GIF" ALIGN=RIGHT BORDER=0 HSPACE=5 HEIGHT=28 WIDTH=63 ALT="Next Page"></A>
+<H1>X-Windows SNO Event Display (XSNOED) User Guide</H1>
+<HR>
+
+<A HREF="Demo_Events.zdab"><IMG SRC="animated.GIF" BORDER=0 HEIGHT=162 WIDTH=155 HSPACE=10 VSPACE=10 ALIGN=RIGHT></A>
+
+<H2>Introduction</H2>
+<B><A HREF="revisions.html#Current Version">
+Version 5.0.2</A> - Nov. 7, 2012</B>
+<BR><B>By <A HREF="mailto:phil@owl.phy.queensu.ca">Phil Harvey</a>, Queen's University</B>
+<P>XSNOED is a graphical display tool used to view live SNO events
+from the dispatcher, or stored events from ZDAB or ROOT files.
+It runs under X Windows using the Motif widget set.
+Currently supported platforms are PC/Linux, Macintosh/OSX, Sun/Solaris (Sparc and x86), Alpha/OSF, HP-UX and VAX/VMS.
+
+<P>If you are running an X-Windows web browser and have it configured to use XSNOED as a
+helper application, you can <A HREF="Demo_Events.zdab">click here</A> or on the animated image
+to the right to run XSNOED and display an event.  If this doesn't work for you, look at
+the section called <A HREF="appendix.html#Helper App">XSNOED as a Helper Application for Netscape</A>
+for instructions on configuring your X-Windows Netscape.
+
+<P>Use the <A HREF="index.html"><B>Text Index</B></A>, or the <A HREF="clickable.html"><B>Clickable
+Window Index</B></A> to help navigate through this user guide.
+<P>
+<HR>
+<A NAME="Finding XSNOED"></A><H2>Where to Find XSNOED</H2>
+XSNOED is available for use by any SNO collaboration member, and
+can be found in the following locations:
+
+<UL>
+<table BORDER CELLSPACING=0 CELLPADDING=2 >
+<tr BGCOLOR="#F0F0F0">
+<td><b>Host</b></td>
+<td><b>Directory</b></td>
+<td><b>File</b></td>
+<td><b>Description</b></td>
+</tr>
+<tr>
+<td>surf.sno.laurentian.ca</td>
+<td>/usr/local/ph</td>
+<td>xsnoed.tar.gz&nbsp;&nbsp;</td>
+<td>Source code for all systems&nbsp;&nbsp;</td>
+</tr>
+<tr>
+<td>surf.sno.laurentian.ca</td>
+<td>/usr/local/ph</td>
+<td>xsnoed</td>
+<td>Solaris executable</td>
+</tr>
+<tr>
+<td>surf.sno.laurentian.ca</td>
+<td>/usr/local/ph</td>
+<td>xsnoed.linux</td>
+<td>Linux executable</td>
+</tr>
+<tr>
+<td>surf.sno.laurentian.ca</td>
+<td>/usr/local/ph</td>
+<td>xsnoed.darwin</td>
+<td>Mac OS X executable</td>
+</tr>
+<tr>
+<td>surf.sno.laurentian.ca</td>
+<td>/usr/local/ph</td>
+<td>disp.tar.gz</td>
+<td>Dispatcher libraries</td>
+</tr>
+<tr>
+<td>loveboat.sno.laurentian.ca</td>
+<td>/home/u0/sstream/bin</td>
+<td>xsnoed</td>
+<td>Solaris executable</td>
+</tr>
+<tr>
+<td>owl.phy.queensu.ca</td>
+<td>/usr/local/xsnoed</td>
+<td>xsnoed</td>
+<td>Linux executable</td>
+</tr>
+<tr>
+<td>marie.npl.washington.edu&nbsp;&nbsp;</td>
+<td>/raid/marie_users/sstream/bin&nbsp;&nbsp;</td>
+<td>xsnoed</td>
+<td>Alpha OSF executable</td>
+</tr>
+</table>
+</UL>
+<P>
+<B><font color="#006000">Note:</font></B> XSNOED requires a number of
+<A HREF="appendix.html#Support Files">support files</A> to run.
+These files can be found in any of the above directories,
+and are included in the source code tar file. 
+
+<P>
+<HR>
+<A NAME="Running XSNOED"></A><H2>Running XSNOED</H2>
+
+<TABLE>
+<TR>
+<TD VALIGN=TOP><B>Syntax:</B></TD><TD><B>xsnoed [filename] [resources] [-dnps]</B><BR><BR></TD>
+</TR><TR>
+<TD VALIGN=TOP><B>filename</B></TD><TD>Name of ZDAB or ROOT (ROOT_FILE version only)
+file to be opened, or dispatcher address to be connected when XSNOED is
+started. ROOT files are recognized by the string "root" in the filename,
+otherwise a ZDAB file is assumed. If no matching file is found, &lt;filename>
+is assumed to be a dispatcher address.</TD>
+</TR><TR>
+<TD VALIGN=TOP><B>resources&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</B></TD>
+<TD>Optional resource settings to override settings
+in the XSnoed resource file. See the section on the <A HREF="resource.html">
+XSnoed resource file</A> for more information about available resources.</TD>
+</TR><TR>
+<TD VALIGN=TOP><B>-d#</B></TD><TD>Sets "<B>D</B>ump Record Info" flag to specified value (#): 0=off, 1=normal,
+2=hex dump all but ZDAB records, 3=hex dump all including ZDAB records.  The "#" is optional, and defaults to 1 if not
+specified (ie. "-d" is equivalent to "-d1").</TD>
+</TR><TR>
+<TD VALIGN=TOP><B>-n</B></TD><TD>Do <B>n</B>ot load XSnoed settings from settings file.</TD>
+</TR><TR>
+<TD VALIGN=TOP><B>-p</B></TD><TD>Starts XSNOED in <B>p</B>rotected mode (DEMO_VERSION only).</TD>
+</TR><TR>
+<TD VALIGN=TOP><B>-s settings_file</B></TD><TD>Specifies name of <B>s</B>ettings file to use. 
+This allows different people on the same account to have individual
+XSNOED preferences. If not specified, the default settings file name is "~/.XSnoed".</TD>
+</TR><TR>
+<TD VALIGN=TOP><B>-R period</B></TD><TD><b>R</b>otates the XSNOED display with the specified period.
+Used for demonstration purposes.</TD>
+</TR>
+</TABLE>
+<P>
+<HR>
+<A NAME="Compiling XSNOED"></A><H2>Compiling XSNOED</H2>
+
+Before attempting to compile XSNOED, make sure you have a recent
+version of Motif (or Lesstif) installed on your system. (Linux users
+can now download the <A HREF="http://www.motifzone.net/download/">Open Group Motif</A>
+for free.)  Then follow these steps to compile XSNOED:
+
+<OL>
+<LI>Make a directory for the xsnoed source code, and copy
+    "<B>xsnoed.tar.gz</B>" into this directory.</LI>
+    
+<LI>Type "<B>gunzip xsnoed.tar.gz</B>" and "<B>tar -xf xsnoed.tar</B>" in the
+    xsnoed directory to extract the source code.</LI>
+    
+<LI>If you do NOT require XSNOED to be able to read live dispatched
+    data go to step 8), otherwise continue with step 4).</LI>
+    
+<LI>[<B>Compiling for dispatcher</B>] -- Copy the file "<B>disp.tar.gz</B>"
+    (available from surf:/usr/local/ph) into the parent directory of
+    the xsnoed source code.</LI>
+ 
+<LI>Type "<B>gunzip disp.tar.gz</B>" and "<B>tar -xf disp.tar</B>" to extract
+    the dispatcher libraries.  This will create a directory called
+    "<B>disp</B>" parallel to the xsnoed source code directory.</LI>
+    
+<LI>In the "<B>disp</B>" directory, change the "<B>lib</B>" soft link to point
+    to the library directory for your specific OS type.</LI>
+    
+<LI>Change back to the xsnoed source code directory, and advance
+    to step 9).</LI>
+ 
+<LI>[<B>No dispatcher</B>] -- Edit "Makefile.$OSTYPE_$MACHTYPE" for your
+    specific OS/machine type, and make the following changes:<BR>
+    
+    a) Add "-DNO_DISPATCH" to the "PROJFLAGS".<BR>
+    b) Remove "-lconthost" from the "DISPLIBS" definition.</LI>
+    
+<LI>Type "<B>make</B>".</LI>
+</OL>
+ 
+With any luck, you will now be the proud owner of a freshly compiled
+XSNOED -- type "<B>./xsnoed</B>" to run it.<P>
+
+See the README file included with the XSNOED source code for more
+information about compiling XSNOED.
+<P>
+<HR>
+</BODY>
+</HTML>

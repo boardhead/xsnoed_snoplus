@@ -1,0 +1,87 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.04 (Macintosh; I; PPC) [Netscape]">
+   <META NAME="Author" CONTENT="Phil Harvey">
+   <META NAME="Description" CONTENT="Sno Event Display user guide">
+   <LINK REL="Index" HREF="index.html">
+   <LINK REL="Start" HREF="xsnoed.html">
+   <LINK REL="Prev"  HREF="file.html">
+   <LINK REL="Next"  HREF="display.html">
+   <TITLE>XSNOED User Guide - Move Menu</TITLE>
+   <SCRIPT language="javascript">
+      <!-- Hide the script from old browsers --
+      img1 = new Image(); img1.src = "next2.GIF";
+      img2 = new Image(); img2.src = "prev2.GIF";
+      img3 = new Image(); img3.src = "home2.GIF";
+      // --End Hiding Here -->
+   </SCRIPT>
+</HEAD>
+<BODY BACKGROUND="background.GIF">
+
+<A HREF="display.html"
+ ONMOUSEOVER="document.images['img1'].src='next2.GIF'" 
+ ONMOUSEOUT="document.images['img1'].src='next.GIF'">
+ <IMG NAME="img1" SRC="next.GIF" ALIGN=RIGHT BORDER=0 HSPACE=5 HEIGHT=28 WIDTH=63 ALT="Next Page"></A>
+<A HREF="file.html"
+ ONMOUSEOVER="document.images['img2'].src='prev2.GIF'" 
+ ONMOUSEOUT="document.images['img2'].src='prev.GIF'">
+ <IMG NAME="img2" SRC="prev.GIF" ALIGN=RIGHT BORDER=0 HSPACE=5 HEIGHT=28 WIDTH=63 ALT="Previous Page"></A>
+<A HREF="xsnoed.html"
+ ONMOUSEOVER="document.images['img3'].src='home2.GIF'" 
+ ONMOUSEOUT="document.images['img3'].src='home.GIF'">
+ <IMG NAME="img3" SRC="home.GIF" ALIGN=RIGHT BORDER=0 HSPACE=5 HEIGHT=28 WIDTH=63 ALT="First Page"></A>
+<H1>Move Menu</H1>
+<HR>
+
+<P>The Move menu contains items which allow you to control movement of
+the viewpoint and fit. Note that some of these items may have no effect if
+a 2-D image is displayed in the main window.  A description of each item
+is given below.
+
+<P>
+<A NAME="To Home"></A><B>To Home</B>
+<BLOCKQUOTE>Rotates 3-D event display to home position with Z upwards,
+Y to the right, and X out of the screen. Also centers the detector in the
+display, resets the magnification, and sets the perspective to orthographic.</BLOCKQUOTE>
+
+<A NAME="To Fit"></A><B>To Fit</B>
+<BLOCKQUOTE>Changes the perspective point for 3-D display to the event
+vertex, with line of sight in the direction of the fitted event. If no
+fitted event is available, then the display is not changed.</BLOCKQUOTE>
+
+<A NAME="To Sun"></A><B>To Sun</B>
+<BLOCKQUOTE>Rotates the 3-D event display so that the line of sight is away
+from the sun, and sets the perspective to orthographic.</BLOCKQUOTE>
+
+<A NAME="Auto Fit"></A><B>Auto Fit</B>
+<BLOCKQUOTE>When this setting is toggled on, the perspective for the 3-D
+image is changed for each new event in the same way that <B>Move/To Fit</B>
+changes the display for a single event.</BLOCKQUOTE>
+
+<A NAME="Auto Sun"></A><B>Auto Sun</B>
+<BLOCKQUOTE>When this setting is toggled on, the 3-D image is changed for
+each new event in the same way that <B>Move/To Sun</B> changes the display for
+a single event.</BLOCKQUOTE>
+
+<A NAME="Sphere"></A><B>Sphere</B>
+<BLOCKQUOTE>When this setting is on, clicking and dragging in the main
+XSNOED 3-D image window causes the whole detector to rotate (left mouse
+button) or translate (center mouse button).</BLOCKQUOTE>
+
+<A NAME="Fit"></A><B>Fit</B>
+<BLOCKQUOTE>When this setting is on, clicking and dragging in the main
+XSNOED 3-D image window causes the current fit to translate (left mouse
+button) or rotate (center mouse button). If no fit is available, then the
+behaviour defaults to <B>Move/Sphere</B>.</BLOCKQUOTE>
+
+<A NAME="Next Fit"></A><B>Next Fit</B>
+<BLOCKQUOTE>Cycles through the fits available for a particular event. The
+current fit is indicated by a different color which is specified by the
+<B>curcon_col</B> resource (usually set to Red). Also, if <B>Display/Fit Lines</B>
+is selected, then lines are drawn from the vertex along the Cherenkov cone
+of the current fit.</BLOCKQUOTE>
+
+<HR>
+</BODY>
+</HTML>

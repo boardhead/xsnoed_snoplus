@@ -1,0 +1,120 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.04 (Macintosh; I; PPC) [Netscape]">
+   <META NAME="Author" CONTENT="Phil Harvey">
+   <META NAME="Description" CONTENT="Sno Event Display user guide">
+   <LINK REL="Index" HREF="index.html">
+   <LINK REL="Start" HREF="xsnoed.html">
+   <LINK REL="Prev"  HREF="clickable.html">
+   <LINK REL="Next"  HREF="menu.html">
+   <TITLE>XSNOED User Guide - Main Window</TITLE>
+   <SCRIPT language="javascript">
+      <!-- Hide the script from old browsers --
+      img1 = new Image(); img1.src = "next2.GIF";
+      img2 = new Image(); img2.src = "prev2.GIF";
+      img3 = new Image(); img3.src = "home2.GIF";
+      // --End Hiding Here -->
+   </SCRIPT>
+</HEAD>
+<BODY BACKGROUND="background.GIF">
+
+<A HREF="menu.html"
+ ONMOUSEOVER="document.images['img1'].src='next2.GIF'" 
+ ONMOUSEOUT="document.images['img1'].src='next.GIF'">
+ <IMG NAME="img1" SRC="next.GIF" ALIGN=RIGHT BORDER=0 HSPACE=5 HEIGHT=28 WIDTH=63 ALT="Next Page"></A>
+<A HREF="clickable.html"
+ ONMOUSEOVER="document.images['img2'].src='prev2.GIF'" 
+ ONMOUSEOUT="document.images['img2'].src='prev.GIF'">
+ <IMG NAME="img2" SRC="prev.GIF" ALIGN=RIGHT BORDER=0 HSPACE=5 HEIGHT=28 WIDTH=63 ALT="Previous Page"></A>
+<A HREF="xsnoed.html"
+ ONMOUSEOVER="document.images['img3'].src='home2.GIF'" 
+ ONMOUSEOUT="document.images['img3'].src='home.GIF'">
+ <IMG NAME="img3" SRC="home.GIF" ALIGN=RIGHT BORDER=0 HSPACE=5 HEIGHT=28 WIDTH=63 ALT="First Page"></A>
+<H1>Main XSNOED Window</H1>
+<HR>
+
+<IMG SRC="xsnoed.GIF" BORDER=0 HEIGHT=365 WIDTH=337 HSPACE=10 VSPACE=10 ALIGN=RIGHT>
+
+<P>The main XSNOED window displays a 3-D image of the PSUP and phototube hits, as
+well as providing a display of the acrylic vessel, water level, and fitted events. 
+The <A HREF="display.html">Display menu</A> controls the display of these and various other items.
+(Note that the main display can also be configured to show other event views.
+These other views, <A HREF="flat_map.html">Flat Map</A>, <A HREF="crate_map.html">Crate Map</A>
+and <A HREF="projection.html">Projection</A>, are described later in
+this document.)
+
+<P>The phototube support structure (PSUP) is shown as a white wire frame.
+Phototubes participating in the event (hits) are shown as colored hexagons. Tubes on the near
+side of the sphere are solid hexagons, while tubes on the back side are outlines.
+The X-Y-Z coordinate frame is shown in green. The Y axis is construction north, and the
+X axis points toward the control room. A yellow line extends from the origin
+in the direction of the sun at the time of the event (or at the current time if no
+event is displayed).
+
+<P>The event reconstruction (fit) is displayed as a red line and ring. The 
+line starts at the event vertex and points in the direction of the fitted event, ending
+at the intersection with the sphere of the detector. The ring represents the
+intersection of the event's Cherenkov cone with the detector sphere. If more
+than one fit is available, other fits are displayed in green.
+
+<P>Note that all colors are user configurable, and may be changed through settings in the
+<A HREF="color_window.html">Colors window</A>.
+
+<P>The title bar of the window gives some basic information about the event
+being viewed. This information is in the form [&lt;filename><B>:</B>&lt;gtid><B>.</B>&lt;fit>],
+where &lt;filename> is the name of current event file (or "Run ####" if connected
+to the dispatcher), &lt;gtid> is the global trigger ID of the event being
+viewed (in decimal by default, but can be changed to hexadecimal through an
+option in the <A HREF="settings.html">Settings window</A>), and
+&lt;fit> is the index number of the currently selected fit if available (set through
+the <A HREF="fitter.html">Fitter window</A> or the <B>Move/Next Fit</B> menu entry).
+
+<P>NCD tube hits are also drawn in the 3-D image.  The color of an NCD tube represents
+the value of the displayed NCD data type set in the <a href="data.html">Data menu</a>,
+with a scale set by the <a href="ncd_histogram">NCD Histogram</a>.
+The size of the tubes can be set through a slider in the
+<a href="settings.html">Settings window</a>
+
+<P>If Monte Carlo data is available, the particle tracks are drawn. The color
+of the track indicates the particle type. See the section on the <A HREF="monte_carlo.html">
+Monte Carlo window</A> for more information about the Monte Carlo display, and
+the <A HREF="color_window.html">Colors window</A> settings for the specific colors used.
+
+<P>The display can be rotated in any direction by clicking with the left mouse
+button and dragging. If the image is rotated away from the home position,
+the rotation angles <B>T</B>heta, <B>P</B>hi and <B>G</B>amma are shown in the upper
+right corner of the window. Theta is the angle of rotation from the Z axis, Phi is the rotation
+about the Z axis measured counterclockwise from the X axis in the X-Y plane, and Gamma is
+the angle that the Z axis makes with vertical in the 2-D projection. In this
+representation, the Home position is T=90, P=0 and G=0 degrees. Angles
+can also be represented in radians, or the angle display can be turned off
+through the <B>Angles</B> setting in the <A HREF="settings.html">Settings window</A>.
+
+<P>The right mouse button is used to shift the sphere in x and y.
+When <B>Move/Fit</B> is selected from the menu, the left mouse button shifts the fit,
+and the right mouse button changes the direction of the current fit
+(the current fit is selected through the <B>Move/Next Fit</B> menu entry if more
+than one fit is available).
+
+<P>The center mouse button is used to select individual hits (PMT's) to be
+discarded from the fit. Pressing this button near a hit in this window
+or any of the other image windows causes the "discarded" flag to be toggled
+for the hit. When running the Online fitter, discarded hits are not
+included in the fit. For Manual fits, discarded hits are not included
+in the Sigma calculation, and the calculation is re-done whenever the
+"discarded" flag changes for any hit. For the ROOT version, discarded hits will have
+bit zero of the QEvent bitmask set to indicate that the hit should be discarded.
+
+<P>Like other windows, the left scrollbar controls the magnification of
+the image, and can be used to zoom in or out. The right scrollbar
+sets the viewpoint for the perspective view, and the bottom scrollbar (the
+"Josh" bar) rotates the image about the z axis.
+
+<P>The main XSNOED window contains the menus which are explained in the
+<A HREF="menu.html">next section</A>.
+
+<P>
+<HR>
+</BODY>
+</HTML>

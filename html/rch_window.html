@@ -1,0 +1,66 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.04 (Macintosh; I; PPC) [Netscape]">
+   <META NAME="Author" CONTENT="Phil Harvey">
+   <META NAME="Description" CONTENT="Sno Event Display user guide">
+   <LINK REL="Index" HREF="index.html">
+   <LINK REL="Start" HREF="xsnoed.html">
+   <LINK REL="Prev"  HREF="snodb_viewer.html">
+   <LINK REL="Next"  HREF="appendix.html">
+   <TITLE>XSNOED User Guide - Rch Windows</TITLE>
+   <SCRIPT language="javascript">
+      <!-- Hide the script from old browsers --
+      img1 = new Image(); img1.src = "next2.GIF";
+      img2 = new Image(); img2.src = "prev2.GIF";
+      img3 = new Image(); img3.src = "home2.GIF";
+      // --End Hiding Here -->
+   </SCRIPT>
+</HEAD>
+<BODY BACKGROUND="background.GIF">
+
+<A HREF="appendix.html"
+ ONMOUSEOVER="document.images['img1'].src='next2.GIF'" 
+ ONMOUSEOUT="document.images['img1'].src='next.GIF'">
+ <IMG NAME="img1" SRC="next.GIF" ALIGN=RIGHT BORDER=0 HSPACE=5 HEIGHT=28 WIDTH=63 ALT="Next Page"></A>
+<A HREF="snodb_viewer.html"
+ ONMOUSEOVER="document.images['img2'].src='prev2.GIF'" 
+ ONMOUSEOUT="document.images['img2'].src='prev.GIF'">
+ <IMG NAME="img2" SRC="prev.GIF" ALIGN=RIGHT BORDER=0 HSPACE=5 HEIGHT=28 WIDTH=63 ALT="Previous Page"></A>
+<A HREF="xsnoed.html"
+ ONMOUSEOVER="document.images['img3'].src='home2.GIF'" 
+ ONMOUSEOUT="document.images['img3'].src='home.GIF'">
+ <IMG NAME="img3" SRC="home.GIF" ALIGN=RIGHT BORDER=0 HSPACE=5 HEIGHT=28 WIDTH=63 ALT="First Page"></A>
+
+<H1>Rch Windows</H1>
+<HR>
+
+<IMG SRC="rch_window.GIF" BORDER=0 HEIGHT=262 WIDTH=338 HSPACE=10 VSPACE=10 ALIGN=RIGHT>
+
+<P>The Rch windows (RchTime, RchQhs, RchQhl and RchQlx) display the
+singles histograms for the channel nearest the cursor. 
+The histogram label shows the crate/card/channel currently plotted.
+
+<P>These windows are only available in the ROOT version of XSNOED. The Rch file is
+selected through the main window <B>Files/Open Rch File</B> menu entry. If
+no Rch file is open, the "Open Rch File" dialog box will appear
+when any Rch window is opened. The Rch file can also be set through the
+QSnoed::SetRch() functions from the ROOT console.
+
+<P>The Rch histogram may be overlaid with data from another Rch file. To do this,
+select <B>Files/Open Overlay</B> from the Rch window menu. The overlay data is drawn in
+the "scale_col3" color.  By default, the overlay Y scale is adjusted to have the same
+maximum value as the main data. A manual change of the Y axis disables this automatic
+scaling of the overlay data. Note that the overlay file is specific to the window, so
+different overlay files may be opened for the various Rch windows.
+
+<P>After opening an Rch window, the histogram scales are set the same as the corresponding
+calibrated data in the <A HREF="histogram.html">Event Histogram window</A>.
+These scales can be changed by clicking or dragging as with all XSNOED histograms.
+Manually changing the Y scale will disable the automatic y-axis scaling feature, but a
+quick click in the histogram plot area turns it back on.
+
+<BR CLEAR=ALL><P>
+<HR>
+</BODY>
+</HTML>

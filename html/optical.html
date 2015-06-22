@@ -1,0 +1,66 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.04 (Macintosh; I; PPC) [Netscape]">
+   <META NAME="Author" CONTENT="Phil Harvey">
+   <META NAME="Description" CONTENT="Sno Event Display user guide">
+   <LINK REL="Index" HREF="index.html">
+   <LINK REL="Start" HREF="xsnoed.html">
+   <LINK REL="Prev"  HREF="fitter.html">
+   <LINK REL="Next"  HREF="monte_carlo.html">
+   <TITLE>XSNOED User Guide - Optical Window</TITLE>
+   <SCRIPT language="javascript">
+      <!-- Hide the script from old browsers --
+      img1 = new Image(); img1.src = "next2.GIF";
+      img2 = new Image(); img2.src = "prev2.GIF";
+      img3 = new Image(); img3.src = "home2.GIF";
+      // --End Hiding Here -->
+   </SCRIPT>
+</HEAD>
+<BODY BACKGROUND="background.GIF">
+
+<A HREF="monte_carlo.html"
+ ONMOUSEOVER="document.images['img1'].src='next2.GIF'" 
+ ONMOUSEOUT="document.images['img1'].src='next.GIF'">
+ <IMG NAME="img1" SRC="next.GIF" ALIGN=RIGHT BORDER=0 HSPACE=5 HEIGHT=28 WIDTH=63 ALT="Next Page"></A>
+<A HREF="fitter.html"
+ ONMOUSEOVER="document.images['img2'].src='prev2.GIF'" 
+ ONMOUSEOUT="document.images['img2'].src='prev.GIF'">
+ <IMG NAME="img2" SRC="prev.GIF" ALIGN=RIGHT BORDER=0 HSPACE=5 HEIGHT=28 WIDTH=63 ALT="Previous Page"></A>
+<A HREF="xsnoed.html"
+ ONMOUSEOVER="document.images['img3'].src='home2.GIF'" 
+ ONMOUSEOUT="document.images['img3'].src='home.GIF'">
+ <IMG NAME="img3" SRC="home.GIF" ALIGN=RIGHT BORDER=0 HSPACE=5 HEIGHT=28 WIDTH=63 ALT="First Page"></A>
+
+<H1>Optical Constants Window</H1>
+<HR>
+
+<IMG SRC="optical.GIF" BORDER=0 HEIGHT=269 WIDTH=368 HSPACE=10 VSPACE=10 ALIGN=RIGHT>
+
+<P>The Optical Constants window is used to set the source position and optical parameters
+for the detector.  This window is only available in the OPTICAL_CAL version of XSNOED.
+
+<P>To perform an interactive optical calibration, first change the display
+to calibrated hits in the <A HREF="data.html">Data menu</A>, then sum
+an entire run of events for a specific source location. (Note: The
+summed events are windowed and only prompt hits are summed if you
+perform the sum in calibrated hits mode. In this mode, hits differing
+from prompt light by more than 3.5 nanoseconds are not summed.)
+
+<P>The next step is to enter the x,y,z source position (in centimeters) into the
+Optical Constants window. Then (if a corresponding source position
+is found in the OCA database file) adjust the acrylic, H2O and D2O attenuation
+parameters to give a uniform hit distribution. If multiple copies
+of XSNOED are running, the attenuation parameters are automatically updated
+in each version. This allows you to determine a set of constants
+that yield reasonable results for a number of source positions.
+
+<P>The calibrated hit values displayed are the expected/calculated occupancies
+for each PMT, normalized to an average of unity. The normalization
+constant is given as the <B>Source Intensity</B> at the bottom of this window. 
+Also displayed is the percentage of hits in the prompt window.
+
+<BR CLEAR=ALL><P>
+<HR>
+</BODY>
+</HTML>
