@@ -1,31 +1,31 @@
 /*
-** File:		redispatcher.c
+** File:        redispatcher.c
 **
-** Created:		08/14/98 by Phil Harvey (based on bdcollector.c)
-**				
-** Revisions:	11/03/98 (2.0) PH - rewrite to allow multiple outputs and input from file
-**				11/29/99 (2.1) PH - redispatch RECHDR records
-**				05/16/00 (2.2) PH - allow different rates for each target dispatcher
-**				10/27/00 (2.3) PH - redispatch all recognized banks from zdab file
-**								  - truncate extended PMT event records
+** Created:     08/14/98 by Phil Harvey (based on bdcollector.c)
+**
+** Revisions:   11/03/98 (2.0) PH - rewrite to allow multiple outputs and input from file
+**              11/29/99 (2.1) PH - redispatch RECHDR records
+**              05/16/00 (2.2) PH - allow different rates for each target dispatcher
+**              10/27/00 (2.3) PH - redispatch all recognized banks from zdab file
+**                                - truncate extended PMT event records
 **              07/03/03 (2.4) PH - specify subscription string on command line
 **              02/04/04 (2.5) PH - modify for redispatching NCD data
 **
-** Description:	program to redistribute SNO data to outside listeners
-**				Sends max one event per second (the largest NHIT event that
-**				occurred in the time interval). Also redistributes cmos rates data.
+** Description: program to redistribute SNO data to outside listeners
+**              Sends max one event per second (the largest NHIT event that
+**              occurred in the time interval). Also redistributes cmos rates data.
 **
-** Syntax:		redispatch [-d <target>...] [-t <time>] [-r] [-h] <source>
+** Syntax:      redispatch [-d <target>...] [-t <time>] [-r] [-h] <source>
 **
-**				-d Specifies target dispatcher address (may be many -d entries)
-**				-t Specifies time delay between events output
-**				-r Repeat input file indefinitely (only valid for a zdab file source)
-**              -s Subscription string (default "w RAWDATA w CMOSDATA w RECHDR w REDCMD")
-**				-h Help
-**
-**				<source> may be either a file name or dispatcher address
-**				<desination> must be a dispatcher address
-**				<time> is a time in seconds (floating point format)
+**              -d  target dispatcher (may be many -d options)
+**              -t  time period to wait between sending events in steady rate mode (sec)
+**              -R  dispatch events at rate determined by 50 MHz timestamps
+**              -r  repeat source file indefinitely (only valid for file source)
+**              -s  subscription string (default "w RAWDATA w CMOSDATA w RECHDR w REDCMD")
+**              -h  show this help information
+**              <source>  ZDAB file name or dispatcher address
+**              <target>  dispatcher address
+**              <time>  floating point number of seconds
 */
 #define VERSION					"2.5"		/* redispatcher version number */
 
