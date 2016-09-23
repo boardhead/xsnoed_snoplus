@@ -260,10 +260,13 @@ int main (int argc, char *argv[])
 	int iaddr;						/* temporary variable for IP address */
 	DispEntry *x;					/* temporary variable for dispatcher entry */
 	int repeat;
+    int realtime;                   /* flag indicating dispatch rate governed by 50MHz timestamp */
 	int was_dest;					/* flag indicating a target has been specified */
 	char *host;						/* temporary variable for host name */
 	int i, n;						/* temporary variables */
 	u_int32 sleep_time;				/* microseconds to sleep between sending events */
+    u_int32 rsleep_time;            /* seconds to sleep when dispatching 'realtime'*/
+    double last50MHzTime=0;         /* 50MHZ timestamp of previously dispatched event */
 	FILE *fp;						/* zdab file */
 	aPmtEventRecord *aPmt, *per;	/* pointers to SNO PMT records */
 	aGenericRecordHeader	*grh;	/* pointers to generic records */
@@ -297,6 +300,7 @@ int main (int argc, char *argv[])
 	
 	was_dest = 0;
 	repeat = 0;
+    realtime = 0;
 	disp_source.socket = -1;
 	disp_source.hostname = NULL;
 	
@@ -313,7 +317,8 @@ int main (int argc, char *argv[])
 		if ((i==argc && argc==1) || (i<argc && !strcmp(argv[i],"-h"))) {
 			printf("Syntax: %s [-d <target>...] [-t <time>] [-r] [-h] <source>\n",progname);
 			printf("    -d  target dispatcher (may be many -d options)\n");
-			printf("    -t  minimum time period between sending events (sec)\n");
+            printf("    -t  time period to wait between sending events in steady rate mode (sec)\n");
+            printf("    -R  dispatch events at rate determined by 50 MHz timestamps\n");
 			printf("    -r  repeat source file indefinitely (only valid for file source)\n");
             printf("    -s  subscription string (default \"w RAWDATA w CMOSDATA w RECHDR w REDCMD\")\n");
 			printf("    -h  show this help information\n");
@@ -378,6 +383,8 @@ int main (int argc, char *argv[])
 	        dispatch_time = atof(argv[++i]);
 	    } else if (!strcmp(argv[i],"-r")) {
 	    	repeat = 1;
+        } else if (!strcmp(argv[i],"-R")) {
+            realtime = 1;
 	    } else if (!strcmp(argv[i],"-s") && i < argc-1) {
 	        subs = argv[++i];
 	        printf("Subscription string set to \"%s\"\n", subs);
@@ -406,8 +413,14 @@ int main (int argc, char *argv[])
 			quit();
 		}
 	  
-		rPrintf("Reading from ZDAB file %s at a minimum period of %.2g sec\n",
+        if ( realtime ==1 ) {
+            rPrintf("Reading from ZDAB file %s in 'realtime' (based on 50MHz timestamps)\n",
+                disp_source.hostname);
+        }
+        else {
+		    rPrintf("Reading from ZDAB file %s at a minimum period of %.2g sec\n",
 				disp_source.hostname, dispatch_time);
+	    }
 	    for (x=disp_queue; x; x=x->next) {
 	    	rPrintf("Redispatching to: %s\n",x->hostname);
 	    }
@@ -435,7 +448,20 @@ int main (int argc, char *argv[])
 					// swap event to network byte-ordering
 					SWAP_INT32(per, (n + sizeof(u_int32) - 1) / sizeof(u_int32));
 					sendToAll("RAWDATA",buffer,n+sizeof(aGenericRecordHeader));
-					usleep_ph(sleep_time);
+
+                    if (realtime == 1) {
+                        rsleep_time = (u_int32)((get50MHzTime(aPmt)-last50MHzTime)*1e6);
+                        if ( (int)rsleep_time > 0) {
+                            if ( (last50MHzTime != 0) && (get50MHzTime(aPmt) != 0) ) {
+                                usleep_ph(rsleep_time);
+                            }
+                        }
+                        last50MHzTime = get50MHzTime(aPmt);
+                    }
+                    else {
+                        usleep(sleep_time);
+                    }
+
 				} else {
 					// write all other known banks (will write after a MAST bank)
 					int index = PZdabWriter::GetIndex(nzdabPtr->bank_name);
@@ -509,8 +535,14 @@ int main (int argc, char *argv[])
 		
 		rPrintf("Source dispatcher %s\n", disp_source.hostname);
 	    for (x=disp_queue; x; x=x->next) {
-	    	rPrintf("Redispatching to %s at a minimum period of %.2g sec\n",
+            if (realtime == 1 ) {
+                rPrintf("Redispatching to %s in 'realtime' (from 50MHz timestamps)\n",
+                    x->hostname);
+            }
+            else {
+	    	    rPrintf("Redispatching to %s at a minimum period of %.2g sec\n",
 	    			x->hostname, x->dispatch_time);
+	        }
 	    }
 
 		/* infinite loop to redispatch SNO data */

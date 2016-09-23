@@ -11,30 +11,62 @@
 // XSNOED MTC word trigger bit strings
 // - word defined as: (mtc_word[3] & 0xff000000UL) | (mtc_word[4] & 0x0007ffffUL)
 char *SnoStr::sXsnoedTrig[32] = {
+#ifdef SNOPLUS
 	"OWLEL", 			"OWLEH", 			"PULGT", 			"PRESCL", 
 	"PED", 				"PONG", 			"SYNC",				"EXTA",
 	"HYDRO",			"EXT3",				"EXT4",				"EXT5",
-	"EXT6",				"NCDSHAP",			"EXT8",				"SRAW",
+	"EXT6",				"EXT7",			    "EXT8",				"SRAW",
 	"NCDMUX",			"SOFGT",			"MISS",				"ORPHAN",
 	"NONE",				"CAEN",		        "u22",			    "u23",
 	"100L",				"100M",				"100H",				"20",
 	"20LB",				"ESUML",			"ESUMH",			"OWLN"
+#else
+	"OWLEL", 			"OWLEH", 			"PULGT", 			"PRESCL", 
+	"PED", 				"PONG", 			"SYNC",				"EXTA",
+	"HYDRO",			"EXT3",				"EXT4",				"EXT5",
+	"EXT6",				"EXT7", 			"EXT8",				"SRAW",
+	"NCDMUX",			"SOFGT",			"MISS",				"ORPHAN",
+	"NONE",				"CAEN",		        "u22",			    "u23",
+	"100L",				"100M",				"100H",				"20",
+	"20LB",				"ESUML",			"ESUMH",			"OWLN"
+#endif
 };
 							
 // TRIG bank 'TriggerMask' strings
 char *SnoStr::sTrigMask[32] = { 
+#ifdef SNOPLUS
+	"100L",				"100M",				"100H",				"20",
+	"20LB",				"ESUML",			"ESUMH",			"OWLN",
+ 	"OWLEL",			"OWLEH",			"PULGT",			"PRESCL",
+ 	"PED",				"PONG",				"SYNC",				"EXTA",
+ 	"HYDRO",			"EXT3",				"EXT4",				"EXT5",
+ 	"EXT6",				"EXT7",			    "EXT8",				"SRAW",
+ 	"NCD",  			"SOFGT",			"<26>",				"<27>",
+ 	"<28>",				"<29>",				"<30>",				"<31>"
+#else
 	"100L",				"100M",				"100H",				"20",
 	"20LB",				"ESUML",			"ESUMH",			"OWLN",
  	"OWLEL",			"OWLEH",			"PULGT",			"PRESCL",
  	"PED",				"PONG",				"SYNC",				"EXTA",
  	"HYDRO",			"EXT3",				"EXT4",				"EXT5",
  	"EXT6",				"NCDSHAP",			"EXT8",				"SRAW",
- 	"NCDMUX",			"SOFGT",			"<26>",				"<27>",
+ 	"NCD",			    "SOFGT",			"<26>",				"<27>",
  	"<28>",				"<29>",				"<30>",				"<31>"
+#endif
 };
 
 // RHDR bank 'RunMask' strings
 char *SnoStr::sRunType[32] = {
+#ifdef SNOPLUS
+	"Mainenance",		"Transition",		"Physics",			"Int Source",
+	"Ext Source",		"ECA",			    "Diagnostic",		"Experimental",
+	"Supernova",		"<09>",				"<10>",				"TELLIE",
+	"SMELLIE",		    "AMELLIE",			"PCA",				"ECA PED",
+	"ECA TSlope",		"<17>",			    "<18>",				"<19>",
+	"<20>",		    	"DCR Activity",		"Coils Off",		"PMT Off",
+	"Bubbler",			"Recirc",			"SL Assay",			"Unusual Activity",
+ 	"<28>",				"<29>",				"<30>",				"<31>"
+#else
 	"Neutrino",			"Source",			"Calib",			"NCD",
 	"Salt",				"Poison",			"Partial",			"Air",
 	"D2O",				"H2O",				"UC",				"Trans",
@@ -43,6 +75,7 @@ char *SnoStr::sRunType[32] = {
 	"D2O Circ",			"Bubbler",			"SL Assay",			"NCD Maint",
 	"PMT Off",			"NCD Off",			"NCD ECA",			"<27>",
  	"<28>",				"<29>",				"<30>",				"<31>"
+#endif
 };
 
 // RHDR bank 'SourceMask' strings

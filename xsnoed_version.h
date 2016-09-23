@@ -252,7 +252,8 @@
 ** 5.0.3 (03/24/14) - PH Added resource names to CAEN channel menu.  Added Full and Auto
 **                       buttons to histogram scales dialog.  Fixed quirk with drawing bars
 **                       of supressed-zero histogram.  
+** 5.0.4 (xx/xx/16) - PH Added hotkey for "Clear Event" menu item
 */
 
-#define XSNOED_VERSION      "5.0.3"     // xsnoed version number
+#define XSNOED_VERSION      "5.0.4"     // xsnoed version number
 

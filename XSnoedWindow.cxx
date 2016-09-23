@@ -107,7 +107,7 @@ static MenuStruct file_menu[] = {
 #endif
 	{ "Next Event", 		'>', XK_N,	IDM_NEXT_EVENT,		NULL, 0, 0},
 	{ "Prev Event",			'<', XK_v,	IDM_PREV_EVENT,		NULL, 0, 0},
-	{ "Clear Event",		0, XK_l,	IDM_CLEAR_EVENT,	NULL, 0, 0},
+	{ "Clear Event",		'l', XK_l,	IDM_CLEAR_EVENT,	NULL, 0, 0},
 	{ NULL, 				0, 0,		0,					NULL, 0, 0},
 	{ "Sum Events",			0, XK_u,	IDM_SUM_EVENT,		NULL, 0, MENU_TOGGLE},
 #ifdef FITTR
