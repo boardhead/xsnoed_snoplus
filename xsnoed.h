@@ -30,6 +30,7 @@
 #define TRIGGER_ORPHAN	0x00080000UL	// synthetic "ORPHAN" trigger bit mask
 #define TRIGGER_NONE	0x00100000UL	// synthetic "NONE" trigger bit mask
 #define TRIGGER_CAEN    0x00200000UL    // synthetic "CAEN" trigger bit mask (SNO+)
+#define TRIGGER_TUBII   0x00400000UL    // synthetic "TUBII" trigger bit mask (SNO+)
 #define TRIGGER_NCD     0x00012000UL    // NCD shaper + NCD MUX trigger bits
 
 typedef void (* XSnoedCallbackPtr)(void);

@@ -1866,6 +1866,13 @@ static int showEvent(ImageData *data, HistoryEntry *event_buff)
             data->caenPattern = 0;
             data->caenEventCount = 0;
             data->caenClock = 0;
+            data->tubiiTrig = 0;
+            data->tubiiGT = 0;
+        }
+        TubiiRecord *tubii = (TubiiRecord *)PZdabFile::GetExtendedData(pmtRecord, SUB_TYPE_TUBII);
+        if (tubii) {
+            data->tubiiTrig = tubii->TrigWord;
+            data->tubiiGT = tubii->GTID;
         }
         caen = PZdabFile::GetExtendedData(pmtRecord, SUB_TYPE_CAEN);
         if (caen) {

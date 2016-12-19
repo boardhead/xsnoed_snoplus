@@ -17,7 +17,7 @@ char *SnoStr::sXsnoedTrig[32] = {
 	"HYDRO",			"EXT3",				"EXT4",				"EXT5",
 	"EXT6",				"EXT7",			    "EXT8",				"SRAW",
 	"NCDMUX",			"SOFGT",			"MISS",				"ORPHAN",
-	"NONE",				"CAEN",		        "u22",			    "u23",
+	"NONE",				"CAEN",		        "TUBII",		    "u23",
 	"100L",				"100M",				"100H",				"20",
 	"20LB",				"ESUML",			"ESUMH",			"OWLN"
 #else

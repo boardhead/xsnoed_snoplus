@@ -66,6 +66,12 @@ However, due to the existence of orphans (GTID = 0) and the possibility of
 hardware read errors, in practice these numbers are not necessarily sequential
 or unique within a run.</BLOCKQUOTE>
 
+<B>CAEN Num</B>
+
+<BLOCKQUOTE>The CAEN trigger number for this event.  Immediately after a cold
+run start this should be the same as the event GTID, but since the SNO hardward
+skips GTID's ending in 0xffff, this quickly deviates from the event GTID.</BLOCKQUOTE>
+
 <B>Evt Num / SUMMED</B>
 
 <BLOCKQUOTE>The serial number of this event within the run. This number is
@@ -113,6 +119,12 @@ displayed time is only accurate if the events are closer in time than this.
 of the different trigger bits, see the table of valid <A HREF="event_control.html#Trigger bit names">trigger
 bit names</A> in the <A HREF="event_control.html">Event Control window</A>
 section.</BLOCKQUOTE>
+
+<B>TUBII Trig</B>
+
+<BLOCKQUOTE>TUBII trigger word in hex.  The event GTID is also shown in brackets
+on this line if it is different from the SNO GTID (which may happen in an orphan
+event for example).</BLOCKQUOTE>
 
 <B>Pk/Int/Dif</B>
 

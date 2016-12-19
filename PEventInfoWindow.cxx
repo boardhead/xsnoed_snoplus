@@ -68,6 +68,9 @@ PEventInfoWindow::PEventInfoWindow(ImageData *data)
 	tw_time_label.CreateLabel("Time:", rc1,NULL,0);
 	XtCreateManagedWidget("Prev/Next:",  xmLabelWidgetClass,rc1,NULL,0);
 	XtCreateManagedWidget("Trigger:",  	 xmLabelWidgetClass,rc1,NULL,0);
+#ifdef SNOPLUS
+	XtCreateManagedWidget("TUBII Trig:", xmLabelWidgetClass,rc1,NULL,0);
+#endif
 	XtCreateManagedWidget("Pk/Int/Dif:", xmLabelWidgetClass,rc1,NULL,0);
 
 	XtCreateManagedWidget("Normal:",  	 xmLabelWidgetClass,rc1,NULL,0);
@@ -110,6 +113,9 @@ PEventInfoWindow::PEventInfoWindow(ImageData *data)
 	tw_time		.CreateLabel("time", 	 rc2,NULL,0);
 	tw_diff		.CreateLabel("diff", 	 rc2,NULL,0);
 	tw_trig		.CreateLabel("trig", 	 rc2,NULL,0);
+#ifdef SNOPLUS
+	tw_tubii	.CreateLabel("tubii", 	 rc2,NULL,0);
+#endif
 	tw_peak		.CreateLabel("peak", 	 rc2,NULL,0);
 	
 	// must initialize all 'kNumPmtCounts' structures
@@ -269,9 +275,12 @@ u_int32 PEventInfoWindow::GetTriggerWord(aPmtEventRecord *pmtRecord)
         }
     }
 #ifdef SNOPLUS
-    // add synthetic "CAEN" trigger bit
+    // add synthetic "CAEN" and "TUBII" trigger bits
     if (PZdabFile::GetExtendedData(pmtRecord, SUB_TYPE_CAEN)) {
         trig_word |= TRIGGER_CAEN;
+    }
+    if (PZdabFile::GetExtendedData(pmtRecord, SUB_TYPE_TUBII)) {
+        trig_word |= TRIGGER_TUBII;
     }
 #endif
     return(trig_word);
@@ -366,6 +375,15 @@ void PEventInfoWindow::UpdateSelf()
         strcpy(buff, "-");
     }
 	tw_caen.SetStringNow(buff);
+    if (data->tubiiGT) {
+	    sprintf(buff, "0x%.6x", (int)data->tubiiTrig);
+	    if (data->event_id != data->tubiiGT) {
+	        sprintf(strchr(buff,'\0'), data->hex_id ? " (0x%.6x)" : " (%d)", data->tubiiGT);
+	    }
+    } else {
+        strcpy(buff, "-");
+    }
+	tw_tubii.SetStringNow(buff);
 #endif
 	if (data->sum) {
 		sprintf(buff,"%ld",(long)data->sum_event_count);

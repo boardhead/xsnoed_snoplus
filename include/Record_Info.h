@@ -802,6 +802,7 @@ typedef struct MCJitter {
 #define SUB_TYPE_HCA_QUEENS    15UL     // Queen's HCA calibration
 #define SUB_TYPE_NCD		   16UL     // NCD data record
 #define SUB_TYPE_CAEN          32UL     // SNO+ CAEN data
+#define SUB_TYPE_TUBII         33UL     // SNO+ TUBII trigger word
 
 /* sub-field header */
 typedef struct SubFieldHeader {
@@ -880,8 +881,16 @@ typedef struct ExtraEventData {
 #define UNPK_CAEN_PATTERN(a)        ( (*((a)+1) >> 8) & 0x0000ffff )
 #define UNPK_CAEN_PACK_FLAG(a)      ( (*((a)+1) >> 24) & 0x00000001 )
 #define UNPK_CAEN_BOARD_ID(a)       ( *((a)+1) >> 25 )
+#define UNPK_CAEN_SYNC16(a)         ( (*((a)+1) >> 15) & 0x00000001 )
+#define UNPK_CAEN_SYNC24(a)         ( (*((a)+1) >> 16) & 0x00000001 )
 #define UNPK_CAEN_EVENT_COUNT(a)    ( *((a)+2) & 0x00ffffff )
 #define UNPK_CAEN_TRIGGER_TIME(a)   ( *((a)+3) )
+
+/* sub-field ID number 33 - TUBii record */
+typedef struct TubiiRecord {
+    u_int32     TrigWord;
+    u_int32     GTID;
+} aTubiiRecord;
 
 /* .............................. End extended format .............................. */
 
@@ -921,7 +930,7 @@ typedef struct ExtraEventData {
 // "a" in the following is a pointer to 6 longwords as read out from the MTC.
 #define UNPK_MTC_BC50_1(a)		( (*((a)+1) >> 21) & 0x7FF )
 #define UNPK_MTC_BC50_2(a)		( *((a)+2) )
-#define UNPK_MTC_BC10_1(a)		( *( a )
+#define UNPK_MTC_BC10_1(a)		( *( a ) )
 #define UNPK_MTC_BC10_2(a)		( *((a)+1) & 0x1FFFFF )
 #define UNPK_MTC_GT_ID(a)		( *((a)+3) & 0x00FFFFFF )
 #define UNPK_MTC_DIFF(a)		(((*((a)+4) >> 29) & 0x007) | ((*((a)+5) << 3) & 0x3F8))

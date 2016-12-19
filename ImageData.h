@@ -522,6 +522,8 @@ struct ImageData : XSnoedResource {
 	u_int32         caenPattern;
 	u_int32         caenEventCount;
 	u_int32         caenClock;	
+    u_int32         tubiiTrig;
+    u_int32         tubiiGT;
 	HistoryEntry  * sum_event;          // history entry for last event summed
 	int             reset_sum;          // flag to reset sum
 	double          reset_sum_time;     // reset sum time in minutes
