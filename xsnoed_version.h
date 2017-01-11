@@ -253,7 +253,8 @@
 **                       buttons to histogram scales dialog.  Fixed quirk with drawing bars
 **                       of supressed-zero histogram.  
 ** 5.0.4 (12/19/16) - PH Added TUBII trigger info and hotkey for "Clear Event" menu item
+** 5.0.5 (01/11/17) - PH Use SNO+ time zero of Jan 1, 2010
 */
 
-#define XSNOED_VERSION      "5.0.4"     // xsnoed version number
+#define XSNOED_VERSION      "5.0.5"     // xsnoed version number
 
