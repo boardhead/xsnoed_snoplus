@@ -175,7 +175,7 @@ void PImageCanvas::CanvasResizeProc(Widget w, PImageCanvas *anImage, XmDrawingAr
 	if (anImage->GetCanvasSize()) {
 		if (wasDrawn) {
 			// clear the canvas on the screen until we can redraw it
-			XClearArea(anImage->mDpy,XtWindow(w),0,0,0,0,TRUE);
+			//(causes flickering) XClearArea(anImage->mDpy,XtWindow(w),0,0,0,0,TRUE);
 		}
 	}
 }
