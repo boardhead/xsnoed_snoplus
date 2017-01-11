@@ -4364,7 +4364,11 @@ void initData(ImageData *data, int load_settings)
 	tms.tm_hour = 0;
 	tms.tm_mday = 1;
 	tms.tm_mon = 0;
-	tms.tm_year = 96;
+#ifdef SNOPLUS
+    tms.tm_year = 110;  // SNO+ time zero is Jan 1, 2010
+#else
+	tms.tm_year = 96;   // SNO time zero is Jan 1, 1996
+#endif
 	tms.tm_isdst = 0;
 	data->sno_time_zero = mktime(&tms);
 	/* mktime returns UTC time given local time but sno time zero is UTC */
