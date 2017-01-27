@@ -70,7 +70,6 @@ char *SnoStr::sRunType[32] = {
 	"Neutrino",			"Source",			"Calib",			"NCD",
 	"Salt",				"Poison",			"Partial",			"Air",
 	"D2O",				"H2O",				"UC",				"Trans",
-lkjdf
 	"Src Moving",		"Coils",			"ECA",				"Diag",
 	"Supernova",		"Maint",			"PCA",				"Expt",
 	"D2O Circ",			"Bubbler",			"SL Assay",			"NCD Maint",
