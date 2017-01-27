@@ -58,7 +58,7 @@ char *SnoStr::sTrigMask[32] = {
 // RHDR bank 'RunMask' strings
 char *SnoStr::sRunType[32] = {
 #ifdef SNOPLUS
-	"Mainenance",		"Transition",		"Physics",			"Int Source",
+	"Maintenance",		"Transition",		"Physics",			"Int Source",
 	"Ext Source",		"ECA",			    "Diagnostic",		"Experimental",
 	"Supernova",		"<09>",				"<10>",				"TELLIE",
 	"SMELLIE",		    "AMELLIE",			"PCA",				"ECA PED",
@@ -70,6 +70,7 @@ char *SnoStr::sRunType[32] = {
 	"Neutrino",			"Source",			"Calib",			"NCD",
 	"Salt",				"Poison",			"Partial",			"Air",
 	"D2O",				"H2O",				"UC",				"Trans",
+lkjdf
 	"Src Moving",		"Coils",			"ECA",				"Diag",
 	"Supernova",		"Maint",			"PCA",				"Expt",
 	"D2O Circ",			"Bubbler",			"SL Assay",			"NCD Maint",
