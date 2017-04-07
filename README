@@ -36,7 +36,12 @@ Then follow these steps to compile XSNOED:
     b) Remove "-lconthost" from the "DISPLIBS" definition.
     
  9) Type "make".
- 
+
+NOTE: The makefiles rely on OSTYPE and MACHTYPE environment variables
+being set properly, but it seems that some bash shells do not set
+these.  If the make fails, check these variables and either set them
+manually or run make from a tcsh instead of a bash shell.
+
 With any luck, you will now be the proud owner of a freshly compiled
 XSNOED -- type "./xsnoed" to run it.
 
