@@ -107,6 +107,7 @@ static int	thread_running = 0;
 static int	thread_command = THREAD_CMD_NULL;
 static int	thread_command_count = 0;
 static int 	thread_response_count = 0;
+static pthread_mutex_t command_mutex = PTHREAD_MUTEX_INITIALIZER;
 void * do_dispatcher_thread(void *arg);
 int get_data_threaded(void);
 int do_thread_command(int cmd);
@@ -2557,8 +2558,10 @@ char *GetDispName(void)
 int do_thread_command(int cmd)
 {
 	if (thread_command_complete()) {
+		pthread_mutex_lock(&command_mutex);
 		++thread_command_count;
 		thread_command = cmd;
+		pthread_mutex_unlock(&command_mutex);
 		return(0);
 	} else {
 		return(-1);
@@ -2567,7 +2570,11 @@ int do_thread_command(int cmd)
 
 int thread_command_complete()
 {
-	return(thread_command_count == thread_response_count);
+	bool result;
+	pthread_mutex_lock(&command_mutex);
+	result = thread_command_count == thread_response_count;
+	pthread_mutex_unlock(&command_mutex);
+	return result;
 }
 
 int get_data_threaded()
@@ -2728,11 +2735,15 @@ void * do_dispatcher_thread(void *arg)
 				}
 				break;
 			case THREAD_CMD_DIE:
+				pthread_mutex_lock(&command_mutex);
 				thread_running = 0;
 				thread_response_count = thread_command_count;
+				pthread_mutex_unlock(&command_mutex);
 				return(NULL);
 		}
-		thread_response_count = thread_command_count;
+		pthread_mutex_lock(&command_mutex);
+ 		thread_response_count = thread_command_count;
+		pthread_mutex_unlock(&command_mutex);
 	}
 }
 

@@ -254,7 +254,8 @@
 **                       of supressed-zero histogram.  
 ** 5.0.4 (12/19/16) - PH Added TUBII trigger info and hotkey for "Clear Event" menu item
 ** 5.0.5 (01/11/17) - PH Use SNO+ time zero of Jan 1, 2010
+** 5.0.6 (04/07/17) - Ben Land - Patch race condition in dispatcher thread
 */
 
-#define XSNOED_VERSION      "5.0.5"     // xsnoed version number
+#define XSNOED_VERSION      "5.0.6"     // xsnoed version number
 
