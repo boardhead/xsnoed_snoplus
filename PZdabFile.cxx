@@ -577,8 +577,8 @@ void PZdabFile::DumpRecord(u_int32 *bankData, int bankSize, u_int32 bankName, u_
 		case RUN_RECORD: {
 			SBankRHDR *rhdr = (RunRecord *)bankData;
 			SnoStr::GetList(buff, SnoStr::sRunType, rhdr->RunMask);
-			Printf("RHDR at GT %.8ld: Run=%ld - %s\n", (long)lastGTID,
-					(long)rhdr->RunNumber, buff);
+			Printf("RHDR at GT %.8ld: Run=%ld (%s) - Valid=%.8ld GTID=%.8ld\n", (long)lastGTID,
+			        (long)rhdr->RunNumber, buff, (long)rhdr->ValidGTID, (long)rhdr->FirstGTID);
 		} break;
 		
 		case TRIG_RECORD: {
