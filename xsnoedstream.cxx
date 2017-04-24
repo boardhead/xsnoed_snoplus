@@ -2389,7 +2389,7 @@ void load_event(ImageData *data, long target, int loadBy)
 int put_next_event_into_future(ImageData *data)
 {
 	int			n_future = data->history_size[HISTORY_FUTURE];
-	const short kBuffSize = 512;
+	const short kBuffSize = 8192;
 	char 		buff[kBuffSize];
 	
 	if (n_future && !data->history_buff[HISTORY_FUTURE][n_future-1]) {
