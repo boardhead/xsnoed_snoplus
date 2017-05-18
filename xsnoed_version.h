@@ -256,7 +256,8 @@
 ** 5.0.5 (01/11/17) - PH Use SNO+ time zero of Jan 1, 2010
 ** 5.0.6 (04/07/17) - Ben Land - Patch race condition in dispatcher thread
 ** 5.0.7 (04/11/17) - PH Show RHDR GTID's in zdab dump
+** 5.0.8 (05/18/17) - PH Update to SNO+ tube map
 */
 
-#define XSNOED_VERSION      "5.0.7"     // xsnoed version number
+#define XSNOED_VERSION      "5.0.8"     // xsnoed version number
 

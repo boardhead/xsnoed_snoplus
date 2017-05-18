@@ -84,7 +84,11 @@
 //#define DEBUG_EXTRA_DATA			/* for debugging extra hit and event data */
 
 #define	ONLINE_FITTER_NAME			"Online"
+#ifdef SNOPLUS
+#define DATABASE_FILE				"database_snoplus.dat"
+#else
 #define DATABASE_FILE				"database.dat"
+#endif
 #define NCD_FILE                    "NCDTubeMap.dat"
 #define DB_LIST_FILE                "db_list.dat"
 

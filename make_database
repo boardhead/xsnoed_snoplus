@@ -1,0 +1,145 @@
+#!/usr/bin/perl -w
+#
+# File:     make_database
+#
+# Description:  make xsnoed database.dat file from input PMT INFO csv file
+#
+# Syntax:       make_database <PMT_INFO_CSV_FILE>
+#
+# Created:      2017-05-18 - P. Harvey
+#
+use strict;
+
+my $infile = shift or die "Expected name of PMT INFO csv file\n";
+
+open INFILE, $infile or die "Error opening $infile\n";
+
+my %pmt;
+my %lg;
+my %owl;
+my %neck;
+
+# CSV file format:
+#  0 "crate"
+#  1 "card"
+#  2 "channel"
+#  3 "PMTIC"
+#  4 "PMT"
+#  5 "bundle"
+#  6 "qccc"
+#  7 "paddle card"
+#  8 "high voltage"
+#  9 "pmt type" (0x01=active, 0x02=pmt, 0x08=neck, 0x10=fecd, 0x20=low gain, 0x40=owl, 0x80=butt, 0x100=hqe)
+# 10 "x"
+# 11 "y"
+# 12 "z"
+# 13 "panel"
+
+my $nlg = 0;
+my $npmt = 0;
+my $nowl = 0;
+my $nneck = 0;
+
+while (<INFILE>) {
+    tr/\n\r//d;
+    my @a = split /,/;
+    @a < 14 and die "Too few elements";
+    s/^"(.*)"$/$1/ foreach @a;
+    $a[0] eq 'crate' and next;
+    $a[9] =~ /^0x/ or die "Bad PMT type $a[9]";
+    my $type = hex $a[9];
+    my $panel = $a[13];
+    if ($type & 0x02) {
+        $pmt{$panel} and die "DUPLICATE PMT $panel";
+        $pmt{$panel} = \@a;
+        ++$npmt;
+    } elsif ($type & 0x40) {
+        $owl{$panel} and die "DUPLICATE OWL $panel";
+        $owl{$panel} = \@a;
+        ++$nowl;
+    } elsif ($type & 0x20) {
+        $lg{$panel} and die "DUPLICATE LOW GAIN $panel";
+        $lg{$panel} = \@a;
+        ++$nlg;
+    } elsif ($type & 0x08) {
+        my $chan = $a[3];
+        $neck{$chan} and die "DUPLICATE NECK";
+        $neck{$chan} = \@a;
+        ++$nneck;
+    }
+}
+
+close INFILE;
+
+$nowl == 91 or die "Wrong number of OWL tubes ($nowl should be 91)\n";
+$nlg == 49 or die "Wrong number of low gain tubes ($nlg should be 49)\n";
+$nneck == 4 or die "Wrong number of neck tubes ($nneck should be 4)\n";
+
+open DATFILE, "database.dat" or die "Error opening datbase.dat\n";
+
+my @t = localtime(time);
+$t[5] += 1900;
+$t[4]++;
+<DATFILE>;  # skip header
+
+printf("DATE=%.4d%.2d%.2d, TIME=%.2d:%.2d:%.2d, NPAN=751, NPMT=9522, NOWL=%d, NLG=%d, NBUT=0, NECK=%d\n",
+    reverse(@t[0..5]),
+    $nowl, $nlg, $nneck);
+
+my ($numTubes, $n, $pan, $nbutt);
+$nowl = 91;
+$nlg = 49;
+$nbutt = 22;
+$nneck = 4;
+
+while (<DATFILE>) {
+    tr/\n\r//d;
+    my @a = split /\s+/;
+    if (defined $numTubes) {
+        /^E/ or die "Bad PMT";
+        undef $numTubes if ++$n >= $numTubes;
+        my $pos = sprintf('%s-%.2d', $pan, $n);
+        if ($pmt{$pos}) {
+            my $pmt = $pmt{$pos};
+            # (not sure what the 4th item is, so just copy it over for now ($a[3]))
+            printf("%s %s %s %s %s %5s %8.3f %8.3f %8.3f\n",
+                $$pmt[3], $$pmt[4], $$pmt[5], $a[3], $$pmt[6], $$pmt[9], @a[6..8]);
+        } else {
+            printf("%s ---- ---- ---- ----  0x10 %8.3f %8.3f %8.3f\n",
+                $a[0], @a[6..8]);
+        }
+    } elsif ($a[0] =~ /^H\d+$/) {
+        $pan = $a[0];
+        $numTubes = $a[1];
+        $n = 0;
+        print "$_\n";
+        next;
+    } elsif ($nowl) {
+        $a[5] =~ /^N(\d+)$/ or die "Bad OWL";
+        my $pos = "H$1-00";
+        my $owl = $owl{$pos} or die "Missing OWL";
+        printf("%s %s %s %s %s %s %s %6.1f %6.1f %6.1f\n",
+              $$owl[3], $$owl[4] || '----', $$owl[5], $a[3], $$owl[6], $a[5], $$owl[9], @a[7..9]);
+        --$nowl;
+    } elsif ($nlg) {
+        my $pos = $a[5];
+        my $lg = $lg{$pos} or die "Missing low gain tube";
+        printf("%s %s %s %s %s %s %s\n",
+              $$lg[3], $$lg[4] || '----', $$lg[5], $a[3], $$lg[6], $pos, $$lg[9]);
+        --$nlg;
+    } elsif ($nbutt) {
+        --$nbutt;
+    } elsif ($nneck) {
+        my $chan = $a[0];
+        my $neck = $neck{$chan} or die "Missing neck tube";
+        printf("%s %s %s %s %s %s %s\n",
+              $$neck[3], $$neck[4] || '----', $$neck[6], $$neck[9], @a[4..6]);
+        --$nneck;
+    } else {
+        die "Unexpected data $_";
+    }
+}
+
+close DATFILE;
+
+# end
