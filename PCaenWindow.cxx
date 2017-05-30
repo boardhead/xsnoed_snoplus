@@ -304,15 +304,14 @@ void PCaenWindow::UpdateSelf()
                 mHist[chan]->SetDirty();
             }
         }
-        if (data->caen_size) {
+        if (data->caen_size || data->sum) {
             long caen_size = data->caen_size;
             for (chan=0; chan<kMaxCaenChannels; ++chan) {
+                if (data->sum) caen_size = data->sum_caen_samples[chan];
                 PNCDScopeImage *hist = mHist[chan];
                 if (hist->GetScaleMax() > caen_size) {
                     hist->SetScaleMax(caen_size);
                 }
-                u_int16 *caen = data->caen_data[chan];
-                if (!caen) continue;
                 u_int32 *src = data->sum_caen[chan];
                 if (src) {
                     hist->CreateData(caen_size, 1);  // make 2D data
@@ -335,6 +334,8 @@ void PCaenWindow::UpdateSelf()
                         hist->SetDirty();
                     }
                 } else {
+                    u_int16 *caen = data->caen_data[chan];
+                    if (!caen) continue;
                     hist->CreateData(caen_size);
                     long *pt = hist->GetDataPt();
                     if (pt) {
