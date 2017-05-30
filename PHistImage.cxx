@@ -77,21 +77,31 @@ PHistImage::~PHistImage()
 }
 
 // CreateData - create histogram data (can be used to delete data if numbins=0)
-void PHistImage::CreateData(int numbins)
+void PHistImage::CreateData(int numbins, int twoD)
 {
-	if (numbins != mNumBins) {
+    int numPix;
+    if (twoD) {
+        numPix = mHeight - HIST_MARGIN_BOTTOM - HIST_MARGIN_TOP;
+        if (numPix < 0) numPix = 0;
+    } else {
+        numPix = 0;
+    }
+	if (numbins != mNumBins || numPix != mNumPix) {
 		delete [] mHistogram;
 		delete [] mOverlay;
 		mHistogram = NULL;
 	}
     if (numbins && !mHistogram) {
-        mHistogram = new long[numbins];
+        mHistogram = new long[numbins * (numPix ? numPix : 1)];
         // resize overlay if it was created before
         if (mOverlay && numbins!=mNumBins) mOverlay = new long[numbins];
         mNumBins = numbins;
+        mNumTraces = 0;
+        mNumPix = numPix;
     } else {
         mOverlay = NULL;
     }
+    if (!mHistogram) mNumPix = 0;
 }
 
 // CreateOverlay - create overlay data the same size as the histogram array
@@ -549,7 +559,11 @@ void PHistImage::HandleEvents(XEvent *event)
 				// redraw histogram if either scale changed
 				if (doUpdate) {
 					wasChanged = 1;
-					SetDirty();
+                    SetDirty();
+					if (mNumPix) {
+					    mOwner->SetDirty(0x02);
+					    mOwner->UpdateSelf();
+					}
 				}
 			} else {
 				SetCursorForPos(event->xbutton.x, event->xbutton.y);
@@ -593,7 +607,7 @@ void PHistImage::DoGrabY(double newMin, double newMax)
 */
 void PHistImage::DrawSelf()
 {
-	int				i,n,x,y,dx,dy;
+	int				i,j,n,x,y,dx,dy;
 	int				lastx, lasty;
 	int				x1,y1,x2,y2;
 	long			counts;
@@ -647,7 +661,33 @@ void PHistImage::DrawSelf()
 		if (dx < GetScaling()) dx = GetScaling();			/* limit minimum bin size */
 		else if (dx == GetScaling()) dx = 2*GetScaling();
 
-		if (mStyle == kHistStyleBars) {
+        if (mNumPix) {
+
+			if (mHistogram) {
+				lastx = x1;
+				int ncols = mOwner->GetData()->num_cols - 1;
+				SetForeground(FIRST_SCALE_COL + ncols);
+				for (i=0; i<nbin; ++i) {
+					long *dat = mHistogram + i * mNumPix;
+					x = x1 + ((i+1)*(x2-x1)+nbin/2)/nbin + 1;
+					long numTraces = mNumTraces;
+					for (j=0; j<mNumPix; ++j) {
+					    if (!dat[j]) continue;
+                        y = y2 - j;
+                        if (numTraces) {
+                            int col = dat[j] * ncols / numTraces;
+                            if (col < 0) col = 0;
+                            if (col > ncols) col = ncols;
+                            SetForeground(FIRST_SCALE_COL + col);
+                        }
+                        DrawLine(lastx, y, x, y);
+					}
+					lastx = x;
+				}
+				SetForeground(TEXT_COL);
+			}
+
+		} else if (mStyle == kHistStyleBars) {
 		
 			if (mHistogram) {
 				for (i=0; i<nbin; ++i) {
@@ -818,6 +858,11 @@ void PHistImage::ReadScaleValues()
 	SetDirty();
 	DoneGrab();
 	UpdateScaleInfo();
+}
+
+int PHistImage::GetPix(long val)
+{
+    return mHeight - HIST_MARGIN_BOTTOM - mYScale->GetPix((double)val);
 }
 
 void PHistImage::CheckScaleRange()

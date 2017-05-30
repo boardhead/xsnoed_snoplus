@@ -1913,6 +1913,30 @@ static int showEvent(ImageData *data, HistoryEntry *event_buff)
                             }
                             continue;
                         }
+                        if (data->sum) {
+                            u_int32 *sumPt = data->sum_caen[i];
+                            if (sumPt && data->sum_caen_samples[i] != trace_samples) {
+                                free(data->sum_caen[i]);
+                                data->sum_caen_samples[i] = 0;
+                                data->sum_caen[i] = sumPt = 0;
+                            }
+                            if (!sumPt && !data->sum_caen_samples[i]) {
+                                data->sum_caen_samples[i] = trace_samples;
+                                data->sum_caen[i] = sumPt = (u_int32 *)XtMalloc(trace_samples * 4096 * sizeof(u_int32));
+                                if (sumPt) memset(sumPt, 0, trace_samples * 4096 * sizeof(u_int32));
+                            }
+                            if (sumPt) {
+                                u_int32 *wordPt = caen + 4 + n * trace_words;
+                                for (int j=0; j<trace_samples; ++wordPt) {
+                                    unsigned val = *(wordPt) & 0x0000ffff;
+                                    if (val > 4095) val = 4095;
+                                    ++sumPt[(j++) * 4096 + val];
+                                    val = *(wordPt) >> 16;
+                                    ++sumPt[(j++) * 4096 + val];
+                                }
+                                ++data->sum_caen_count[i];
+                            }
+                        }
                         if (!trace) {
                             // allocate memory for this trace
                             trace = new u_int16[trace_samples];
@@ -2782,6 +2806,12 @@ void clearSum(ImageData *data)
 		data->sum_ncdData = NULL;
 #ifdef SNOPLUS
         data->sum_caenData = NULL;
+		for (int i=0; i<8; ++i) {
+		    if (data->sum_caen[i] && data->sum_caen_samples[i]) {
+		        memset(data->sum_caen[i], 0, data->sum_caen_samples[i] * sizeof(u_int32));
+		    }
+		    data->sum_caen_count[i] = 0;
+		}
 #endif
 		memset(data->sum_mtc_word, 0, 6*sizeof(u_int32));
 		data->sum_trig_word = 0;

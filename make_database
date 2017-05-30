@@ -1,13 +1,13 @@
 #!/usr/bin/perl -w
-#
-# File:     make_database
+#-------------------------------------------------------------------------------
+# File:         make_database
 #
 # Description:  make xsnoed database.dat file from input PMT INFO csv file
 #
 # Syntax:       make_database <PMT_INFO_CSV_FILE>
 #
 # Created:      2017-05-18 - P. Harvey
-#
+#-------------------------------------------------------------------------------
 use strict;
 
 my $infile = shift or die "Expected name of PMT INFO csv file\n";

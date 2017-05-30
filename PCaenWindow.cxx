@@ -307,20 +307,44 @@ void PCaenWindow::UpdateSelf()
         if (data->caen_size) {
             long caen_size = data->caen_size;
             for (chan=0; chan<kMaxCaenChannels; ++chan) {
-                if (mHist[chan]->GetScaleMax() > caen_size) {
-                    mHist[chan]->SetScaleMax(caen_size);
+                PNCDScopeImage *hist = mHist[chan];
+                if (hist->GetScaleMax() > caen_size) {
+                    hist->SetScaleMax(caen_size);
                 }
                 u_int16 *caen = data->caen_data[chan];
                 if (!caen) continue;
-                mHist[chan]->CreateData(caen_size);
-                long *pt = mHist[chan]->GetDataPt();
-                if (pt) {
-                    mHist[chan]->SetCalibrated(0, 0);   // not displaying antilogged data
-                    for (int i=0; i<caen_size; ++i) {
-                        pt[i] = caen[i];
+                u_int32 *src = data->sum_caen[chan];
+                if (src) {
+                    hist->CreateData(caen_size, 1);  // make 2D data
+                    long *dst = hist->GetDataPt();
+                    if (dst && hist->IsPixOK()) {
+                        long numPix = hist->GetNumPix();
+                        memset(dst, 0, numPix * caen_size * sizeof(long));
+                        for (int i=0; i<caen_size; ++i) {
+                            for (int j=0; j<4096; ++j) {
+                                u_int32 val = src[i * 4096 + j];
+                                if (!val) continue;
+                                int pix = hist->GetPix(j);
+                                if (pix < 0) pix = 0;
+                                if (pix >= numPix) pix = numPix - 1;
+                                dst[i * numPix + pix] += val;
+                            }
+                        }
+                        hist->SetNumTraces(data->sum_caen_count[chan]);
+                        hist->SetScaleLimits(0,caen_size,10);
+                        hist->SetDirty();
                     }
-                    mHist[chan]->SetScaleLimits(0,caen_size,10);
-                    mHist[chan]->SetDirty();
+                } else {
+                    hist->CreateData(caen_size);
+                    long *pt = hist->GetDataPt();
+                    if (pt) {
+                        hist->SetCalibrated(0, 0);   // not displaying antilogged data
+                        for (int i=0; i<caen_size; ++i) {
+                            pt[i] = caen[i];
+                        }
+                        hist->SetScaleLimits(0,caen_size,10);
+                        hist->SetDirty();
+                    }
                 }
             }
         }

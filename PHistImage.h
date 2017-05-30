@@ -16,8 +16,8 @@ enum EHistStyle {
 	kHistStyleSteps
 };
 
-class PScale;
 struct ImageData;
+class PScale;
 
 class PHistImage : public PImageCanvas {
 public:
@@ -59,15 +59,20 @@ public:
 	void			SetUnderscale(long num)		{ mUnderscale = num; }
 	void			SetOverscale(long num)		{ mOverscale = num; }
 	void			SetStyle(EHistStyle style)	{ mStyle = style; }
+	void            SetNumTraces(long num)      { mNumTraces = num; }
 	void			SetLog(int on);
 	
-	void			CreateData(int numbins);
+	void			CreateData(int numbins, int twoD=0);
 	void            CreateOverlay(int numbins);
 	void            SetFixedBins(int on=1)      { mFixedBins = on; }
 	long		  *	GetDataPt()					{ return mHistogram; }
 	long          * GetOverlayPt()              { return mOverlay; }
 	int				GetNumBins()				{ return mNumBins; }
+	int             GetNumPix()                 { return mNumPix; }
 	int				GetGrabFlag()				{ return mGrabFlag; }
+	int             GetPix(long val);
+	long            GetNumTraces()              { return mNumTraces; }
+	int             IsPixOK()                   { return mYScale != NULL; }
 	
 	virtual void	SetScaleLimits()			{ }
 	void			SetScaleLimits(float min, float max, float min_rng);
@@ -86,6 +91,8 @@ protected:
 	long			mOverscale;		// number of overscale entries
 	long			mUnderscale;	// number of underscale entries
 	int				mNumBins;		// number of histogram bins
+	int             mNumPix;        // number of pixels for 2D plot
+	long            mNumTraces;     // number of traces for 2D plot
 	int			  *	mHistCols;		// colours for drawing histogram (underscale,regular,overscale)
 	int             mPlotCol;       // plot color for kHistStyleLines
 	int				mOverlayCol;	// pixel value for overlay colour

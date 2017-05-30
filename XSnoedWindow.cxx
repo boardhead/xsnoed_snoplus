@@ -1457,6 +1457,14 @@ void XSnoedWindow::SetupSum(ImageData *data)
 		free(data->sum_qhs);
 		free(data->sum_qhl);
 		free(data->sum_qlx);
+        for (int i=0; i<8; ++i) {
+            if (data->sum_caen[i]) {
+                free(data->sum_caen[i]);
+                data->sum_caen[i] = 0;
+                data->sum_caen_samples[i] = 0;
+            }
+        }
+		data->sum_tac = data->sum_qhs = data->sum_qhl = data->sum_qlx = 0;
 		/* display current event */
 		showHistory(data,0);
 	} else {
@@ -1470,10 +1478,17 @@ void XSnoedWindow::SetupSum(ImageData *data)
 			XtSetArg(wargs[0], XmNset, FALSE);
 			MenuList *ms = PMenu::GetCurMenuItem();
 			XtSetValues(ms->button,wargs,1);
-			if (data->sum_tac) free(data->sum_tac);
-			if (data->sum_qhs) free(data->sum_qhs);
-			if (data->sum_tac) free(data->sum_tac);
-			if (data->sum_qlx) free(data->sum_qlx);
+			if (data->sum_tac) { free(data->sum_tac); data->sum_tac = 0; }
+			if (data->sum_qhs) { free(data->sum_qhs); data->sum_qhs = 0; }
+			if (data->sum_tac) { free(data->sum_tac); data->sum_tac = 0; }
+			if (data->sum_qlx) { free(data->sum_qlx); data->sum_qlx = 0; }
+			for (int i=0; i<8; ++i) {
+			    if (data->sum_caen[i]) {
+			        free(data->sum_caen[i]);
+			        data->sum_caen[i] = 0;
+			        data->sum_caen_samples[i] = 0;
+			    }
+			}
 		} else {
 			clearSum(data);
 			/* put the currently displayed event into the sum */
