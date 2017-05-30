@@ -514,9 +514,9 @@ struct ImageData : XSnoedResource {
 	u_int32		  *	sum_qhs;			// only allocated while sum = 1
 	u_int32		  *	sum_qhl;			// only allocated while sum = 1
 	u_int32		  *	sum_qlx;			// only allocated while sum = 1
-	u_int32       * sum_caen[8];   		// only allocated while sum = 1
-	u_int32         sum_caen_count[8];  // total traces summed for each CAEN channel
-	u_int32         sum_caen_samples[8];// number of samples in each CAEN sum
+	u_int32       * sum_caen[kMaxCaenChannels]; // only allocated while sum = 1
+	u_int32         sum_caen_count[kMaxCaenChannels];  // total traces summed for each CAEN channel
+	u_int32         sum_caen_samples[kMaxCaenChannels];// number of samples in each CAEN sum
 	u_int32       * sum_ncdData;        // ncd data of last event summed
     u_int32       * sum_caenData;       // summed trigger sums
 	u_int16       * caen_data[kMaxCaenChannels];  // raw scope data arrays

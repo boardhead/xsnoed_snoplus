@@ -2806,7 +2806,7 @@ void clearSum(ImageData *data)
 		data->sum_ncdData = NULL;
 #ifdef SNOPLUS
         data->sum_caenData = NULL;
-		for (int i=0; i<8; ++i) {
+		for (int i=0; i<kMaxCaenChannels; ++i) {
 		    if (data->sum_caen[i] && data->sum_caen_samples[i]) {
 		        memset(data->sum_caen[i], 0, data->sum_caen_samples[i] * sizeof(u_int32));
 		    }
