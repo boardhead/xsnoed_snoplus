@@ -669,8 +669,8 @@ void PHistImage::DrawSelf()
             // draw 2-dimensional histogram
             lastx = x1;
             int ncols = mOwner->GetData()->num_cols - 1;
-            SetForeground(FIRST_SCALE_COL + ncols);
-            int col = ncols;
+            SetForeground(FIRST_SCALE_COL);
+            int col = 0;
             XSegment **spp = new XSegment*[nbin];
             memset(spp, 0, nbin * sizeof(XSegment*));
             int *nseg = new int[ncols+1];
@@ -684,13 +684,11 @@ void PHistImage::DrawSelf()
                     for (j=0; j<mNumPix; ++j) {
                         if (!dat[j]) continue;
                         y = y2 - j;
-                        if (numTraces) {
-                            if (dat[j] == 1) {
-                                col = 0;
-                            } else {
-                                col = (dat[j] * ncols) / numTraces;
-                                if (col > ncols) col = ncols;
-                            }
+                        if (dat[j] == 1) {
+                            col = 0;
+                        } else if (numTraces) {
+                            col = (dat[j] * ncols) / numTraces;
+                            if (col > ncols) col = ncols;
                         }
                         if (!spp[col]) {
                             spp[col] = new XSegment[kSegMax];
