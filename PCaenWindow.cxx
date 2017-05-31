@@ -325,6 +325,7 @@ void PCaenWindow::DoCalc(PHistImage *hist)
         unsigned long *dst = (unsigned long *)hist->GetDataPt();
         if (!dst) continue;
         long numPix = hist->GetNumPix();
+        unsigned long max = 0;
         memset(dst, 0, numPix * caen_size * sizeof(long));
         for (int i=0; i<caen_size; ++i) {
             for (int j=0; j<4096; ++j) {
@@ -333,9 +334,11 @@ void PCaenWindow::DoCalc(PHistImage *hist)
                 int pix = hist->GetPix(j);
                 if (pix < 0) pix = 0;
                 if (pix >= numPix) pix = numPix - 1;
-                dst[i * numPix + pix] += val;
+                unsigned long tmp = (dst[i * numPix + pix] += val);
+                if (max < tmp) max = tmp;
             }
         }
+        mMaxVal = max;
         hist->SetNumTraces(data->sum_caen_count[chan]);
         hist->SetScaleLimits(0,caen_size,10);
         break;

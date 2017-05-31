@@ -27,6 +27,11 @@ class PHistCalc {
 public:
     virtual void    DoCalc(PHistImage *hist) { };
     virtual int     GetRange(PHistImage *hist, int *min, int *max) { return 0; }
+    
+    unsigned long   GetMaxVal()     { return mMaxVal; }
+
+protected:
+    unsigned long   mMaxVal;
 };
 
 class PHistImage : public PImageCanvas {

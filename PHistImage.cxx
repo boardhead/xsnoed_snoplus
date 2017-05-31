@@ -674,19 +674,19 @@ void PHistImage::DrawSelf()
             memset(spp, 0, nbin * sizeof(XSegment*));
             int *nseg = new int[ncols+1];
             memset(nseg, 0, (ncols + 1) * sizeof(int));
+            unsigned long max = mCalcObj ? mCalcObj->GetMaxVal() : mNumTraces;
             if (mNumPix && mHistogram) {
                 const int kSegMax = 100;
                 for (i=0; i<nbin; ++i) {
                     unsigned long *dat = (unsigned long *)mHistogram + (i + noffset) * mNumPix;
                     x = x1 + ((i+1)*(x2-x1)+nbin/2)/nbin + 1;
-                    long numTraces = mNumTraces;
                     for (j=0; j<mNumPix; ++j) {
                         if (!dat[j]) continue;
                         y = y2 - j;
                         if (dat[j] == 1) {
                             col = 0;
-                        } else if (numTraces) {
-                            col = (dat[j] * ncols) / numTraces;
+                        } else if (max) {
+                            col = (dat[j] * ncols) / max;
                             if (col > ncols) col = ncols;
                         }
                         if (!spp[col]) {
