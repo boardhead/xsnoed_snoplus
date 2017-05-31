@@ -2783,7 +2783,7 @@ void clearSum(ImageData *data)
 #ifdef OPTICAL_CAL
 	data->missed_window_count = 0;
 #endif
-	
+
 	if (data->sum) {
 		memset(data->sum_tac,  0, NUM_TOTAL_CHANNELS * sizeof(u_int32));
 		memset(data->sum_qhs,  0, NUM_TOTAL_CHANNELS * sizeof(u_int32));
@@ -2808,7 +2808,7 @@ void clearSum(ImageData *data)
         data->sum_caenData = NULL;
 		for (int i=0; i<kMaxCaenChannels; ++i) {
 		    if (data->sum_caen[i] && data->sum_caen_samples[i]) {
-		        memset(data->sum_caen[i], 0, data->sum_caen_samples[i] * sizeof(u_int32));
+		        memset(data->sum_caen[i], 0, data->sum_caen_samples[i] * 4096 * sizeof(u_int32));
 		    }
 		    data->sum_caen_count[i] = 0;
 		}

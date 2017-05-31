@@ -13,11 +13,20 @@ enum {
 
 enum EHistStyle {
 	kHistStyleBars,
-	kHistStyleSteps
+	kHistStyleSteps,
+	kHistStyle2D
 };
 
 struct ImageData;
 class PScale;
+class PHistImage;
+
+const int kDirtyHistCalc = 0x80;  // indicates the 2D hist may require calculating
+
+class PHistCalc {
+public:
+    virtual void    DoCalc(PHistImage *hist) = 0;
+};
 
 class PHistImage : public PImageCanvas {
 public:
@@ -61,6 +70,7 @@ public:
 	void			SetStyle(EHistStyle style)	{ mStyle = style; }
 	void            SetNumTraces(long num)      { mNumTraces = num; }
 	void			SetLog(int on);
+	void            SetCalcObj(PHistCalc *obj)  { mCalcObj = obj; }
 	
 	void			CreateData(int numbins, int twoD=0);
 	void            CreateOverlay(int numbins);
@@ -72,7 +82,6 @@ public:
 	int				GetGrabFlag()				{ return mGrabFlag; }
 	int             GetPix(long val);
 	long            GetNumTraces()              { return mNumTraces; }
-	int             IsPixOK()                   { return mYScale != NULL; }
 	
 	virtual void	SetScaleLimits()			{ }
 	void			SetScaleLimits(float min, float max, float min_rng);
@@ -114,6 +123,7 @@ protected:
 	int             mFixedBins;     // false if data is rebinned on x scale change
 	Widget			sp_log, sp_min, sp_max;	// widgets for scale window
 	Widget          sp_ymin, sp_ymax;
+	PHistCalc     * mCalcObj;       // object used to recalculate 2D histogram
 	
 private:
 	static void		ScaleAutoProc(Widget w, PHistImage *hist, caddr_t call_data);

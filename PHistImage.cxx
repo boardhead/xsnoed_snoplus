@@ -10,6 +10,7 @@
 #include "PImageWindow.h"
 #include "ImageData.h"
 #include "PUtils.h"
+#include "PCaenWindow.h"
 
 #define HIST_MARGIN_BOTTOM			(25 * GetScaling())
 #define HIST_MARGIN_LEFT			(48 * GetScaling())
@@ -49,6 +50,7 @@ PHistImage::PHistImage(PImageWindow *owner, Widget canvas, int createCanvas)
 	mOverlayCol     = SCALE_COL3;
 	mPlotCol        = TEXT_COL;
 	mFixedBins      = 0;
+	mCalcObj        = NULL;
 
 	if (!canvas && createCanvas) {
 		CreateCanvas("ehCanvas");
@@ -81,7 +83,7 @@ void PHistImage::CreateData(int numbins, int twoD)
 {
     int numPix;
     if (twoD) {
-        numPix = mHeight - HIST_MARGIN_BOTTOM - HIST_MARGIN_TOP;
+        numPix = mHeight + 1 - HIST_MARGIN_BOTTOM - HIST_MARGIN_TOP;
         if (numPix < 0) numPix = 0;
     } else {
         numPix = 0;
@@ -559,11 +561,7 @@ void PHistImage::HandleEvents(XEvent *event)
 				// redraw histogram if either scale changed
 				if (doUpdate) {
 					wasChanged = 1;
-                    SetDirty();
-					if (mNumPix) {
-					    mOwner->SetDirty(0x02);
-					    mOwner->UpdateSelf();
-					}
+					SetDirty(kDirtyHistCalc);
 				}
 			} else {
 				SetCursorForPos(event->xbutton.x, event->xbutton.y);
@@ -615,7 +613,7 @@ void PHistImage::DrawSelf()
 #ifdef PRINT_DRAWS
 	Printf("drawHist\n");
 #endif
-	
+
 	MakeHistogram();
 	SetHistogramLabel();
 
@@ -643,7 +641,12 @@ void PHistImage::DrawSelf()
 	/* set the scale ranges (also draws them) */
 	mXScale->SetRng(GetScaleMin(),GetScaleMax());
 	mYScale->SetRng(GetYMin(),GetYMax());
-	
+
+    /* calculate histogram data if necessary */
+    if ((IsDirty() & kDirtyHistCalc) && mCalcObj) {
+        mCalcObj->DoCalc(this);
+    }
+
 	if (mNumBins) {
 
 		int nbin, noffset;
@@ -661,31 +664,61 @@ void PHistImage::DrawSelf()
 		if (dx < GetScaling()) dx = GetScaling();			/* limit minimum bin size */
 		else if (dx == GetScaling()) dx = 2*GetScaling();
 
-        if (mNumPix) {
+        if (mStyle == kHistStyle2D) {
 
-			if (mHistogram) {
-				lastx = x1;
-				int ncols = mOwner->GetData()->num_cols - 1;
-				SetForeground(FIRST_SCALE_COL + ncols);
-				for (i=0; i<nbin; ++i) {
-					long *dat = mHistogram + i * mNumPix;
-					x = x1 + ((i+1)*(x2-x1)+nbin/2)/nbin + 1;
-					long numTraces = mNumTraces;
-					for (j=0; j<mNumPix; ++j) {
-					    if (!dat[j]) continue;
+            // draw 2-dimensional histogram
+            lastx = x1;
+            int ncols = mOwner->GetData()->num_cols - 1;
+            SetForeground(FIRST_SCALE_COL + ncols);
+            int col = ncols;
+            XSegment **spp = new XSegment*[nbin];
+            memset(spp, 0, nbin * sizeof(XSegment*));
+            int *nseg = new int[ncols+1];
+            memset(nseg, 0, (ncols + 1) * sizeof(int));
+            if (mNumPix && mHistogram) {
+                const int kSegMax = 100;
+                for (i=0; i<nbin; ++i) {
+                    unsigned long *dat = (unsigned long *)mHistogram + i * mNumPix;
+                    x = x1 + ((i+1)*(x2-x1)+nbin/2)/nbin + 1;
+                    long numTraces = mNumTraces;
+                    for (j=0; j<mNumPix; ++j) {
+                        if (!dat[j]) continue;
                         y = y2 - j;
                         if (numTraces) {
-                            int col = dat[j] * ncols / numTraces;
-                            if (col < 0) col = 0;
-                            if (col > ncols) col = ncols;
-                            SetForeground(FIRST_SCALE_COL + col);
+                            if (dat[j] <= 1 && numTraces > 1) {
+                                col = 0;
+                            } else {
+                                col = (dat[j] * ncols) / numTraces;
+                                if (col > ncols) col = ncols;
+                            }
                         }
-                        DrawLine(lastx, y, x, y);
-					}
-					lastx = x;
-				}
-				SetForeground(TEXT_COL);
-			}
+                        if (!spp[col]) {
+                            spp[col] = new XSegment[kSegMax];
+                            if (!spp[col]) break;
+                        }
+                        if (nseg[col] >= kSegMax) {
+                            SetForeground(FIRST_SCALE_COL + col);
+                            DrawSegments(spp[col], kSegMax);
+                            nseg[col] = 0;
+                        }
+                        XSegment *sp = spp[col] + nseg[col]++;
+                        sp->x1 = lastx;
+                        sp->x2 = x;
+                        sp->y1 = sp->y2 = y;
+                    }
+                    lastx = x;
+                }
+                for (col=0; col<=ncols; ++col) {
+                    if (nseg[col]) {
+                        SetForeground(FIRST_SCALE_COL + col);
+                        DrawSegments(spp[col], nseg[col]);
+                        delete [] spp[col];
+                    }
+                }
+                delete [] nseg;
+                delete [] spp;
+            }
+            SetForeground(TEXT_COL);
 
 		} else if (mStyle == kHistStyleBars) {
 		
@@ -823,7 +856,7 @@ void PHistImage::Resize()
 		delete mYScale;
 		mYScale = NULL;
 	}
-	SetDirty();
+	SetDirty(kDirtyHistCalc);
 }
 
 // this must only be called when the scale window is open
@@ -855,7 +888,7 @@ void PHistImage::ReadScaleValues()
 	DoGrab(xmin, xmax);
 	DoGrabY(ymin, ymax);
 	mGrabFlag &= ~GRABS_ACTIVE;
-	SetDirty();
+	SetDirty(kDirtyHistCalc);
 	DoneGrab();
 	UpdateScaleInfo();
 }

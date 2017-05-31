@@ -13,10 +13,11 @@
 #include "PListener.h"
 #include "PMenu.h"
 #include "ImageData.h"
+#include "PHistImage.h"
 
 class PNCDScopeImage;
 
-class PCaenWindow : public PImageWindow, public PListener, public PMenuHandler {
+class PCaenWindow : public PImageWindow, public PListener, public PMenuHandler, public PHistCalc {
 public:
 	PCaenWindow(ImageData *data);
 	virtual ~PCaenWindow();
@@ -26,6 +27,8 @@ public:
     virtual void    DoMenuCommand(int anID);
 	
     void            DoneGrab(PNCDScopeImage *hist);
+    
+    virtual void    DoCalc(PHistImage *hist);
 
 private:
     void            SetChannels(int chan_mask);

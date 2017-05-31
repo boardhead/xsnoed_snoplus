@@ -17,8 +17,8 @@
 #include "include/NcdDataTypes.h"
 #include "CUtils.h"
 
-const int   kDirtyEvent          = 0x02;
-const int   kDirtyAll            = 0x04;
+const int   kDirtyEvent       = 0x02;
+const int   kDirtyAll         = 0x04;
 const int   kAllCaenChannels  = 0xff;    // mask for all scope channels on
 
 static MenuStruct channels_menu[] = {
@@ -111,6 +111,7 @@ PCaenWindow::PCaenWindow(ImageData *data)
         mHist[chan]->SetScaleLimits(0,15000,10);
         mHist[chan]->SetScaleMin(0);
         mHist[chan]->SetScaleMax(1000);
+        mHist[chan]->SetCalcObj(this);
         if (chan < kCaenRsrcNum) {
             mHist[chan]->SetLabel(data->caen_lbl[chan]);
             mHist[chan]->SetYMin(data->caen_min[chan]);
@@ -282,6 +283,36 @@ void PCaenWindow::SetChannels(int chan_mask)
     }
 }
 
+// recalculate 2D histogram
+void PCaenWindow::DoCalc(PHistImage *hist)
+{
+    for (int chan=0; chan<kMaxCaenChannels; ++chan) {
+        if (hist != mHist[chan]) continue;
+        ImageData	*data = GetData();
+        long caen_size = data->sum_caen_samples[chan];
+        u_int32 *src = data->sum_caen[chan];
+        if (!src) continue;
+        hist->CreateData(caen_size, 1);  // make 2D data
+        unsigned long *dst = (unsigned long *)hist->GetDataPt();
+        if (!dst) continue;
+        long numPix = hist->GetNumPix();
+        memset(dst, 0, numPix * caen_size * sizeof(long));
+        for (int i=0; i<caen_size; ++i) {
+            for (int j=0; j<4096; ++j) {
+                u_int32 val = src[i * 4096 + j];
+                if (!val) continue;
+                int pix = hist->GetPix(j);
+                if (pix < 0) pix = 0;
+                if (pix >= numPix) pix = numPix - 1;
+                dst[i * numPix + pix] += val;
+            }
+        }
+        hist->SetNumTraces(data->sum_caen_count[chan]);
+        hist->SetScaleLimits(0,caen_size,10);
+        break;
+    }
+}
+
 // UpdateSelf
 void PCaenWindow::UpdateSelf()
 {
@@ -303,36 +334,18 @@ void PCaenWindow::UpdateSelf()
             } else if (IsDirty() & kDirtyAll) {
                 mHist[chan]->SetDirty();
             }
+            mHist[chan]->SetStyle(data->sum ? kHistStyle2D : kHistStyleSteps);
         }
-        if (data->caen_size || data->sum) {
-            long caen_size = data->caen_size;
+        long caen_size = data->caen_size;
+        if (caen_size || data->sum) {
             for (chan=0; chan<kMaxCaenChannels; ++chan) {
                 if (data->sum) caen_size = data->sum_caen_samples[chan];
                 PNCDScopeImage *hist = mHist[chan];
                 if (hist->GetScaleMax() > caen_size) {
                     hist->SetScaleMax(caen_size);
                 }
-                u_int32 *src = data->sum_caen[chan];
-                if (src) {
-                    hist->CreateData(caen_size, 1);  // make 2D data
-                    long *dst = hist->GetDataPt();
-                    if (dst && hist->IsPixOK()) {
-                        long numPix = hist->GetNumPix();
-                        memset(dst, 0, numPix * caen_size * sizeof(long));
-                        for (int i=0; i<caen_size; ++i) {
-                            for (int j=0; j<4096; ++j) {
-                                u_int32 val = src[i * 4096 + j];
-                                if (!val) continue;
-                                int pix = hist->GetPix(j);
-                                if (pix < 0) pix = 0;
-                                if (pix >= numPix) pix = numPix - 1;
-                                dst[i * numPix + pix] += val;
-                            }
-                        }
-                        hist->SetNumTraces(data->sum_caen_count[chan]);
-                        hist->SetScaleLimits(0,caen_size,10);
-                        hist->SetDirty();
-                    }
+                if (data->sum_caen[chan]) {
+                    hist->SetDirty(kDirtyHistCalc);  // histogram requires calculating
                 } else {
                     u_int16 *caen = data->caen_data[chan];
                     if (!caen) continue;
