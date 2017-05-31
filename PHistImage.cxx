@@ -678,7 +678,7 @@ void PHistImage::DrawSelf()
             if (mNumPix && mHistogram) {
                 const int kSegMax = 100;
                 for (i=0; i<nbin; ++i) {
-                    unsigned long *dat = (unsigned long *)mHistogram + i * mNumPix;
+                    unsigned long *dat = (unsigned long *)mHistogram + (i + noffset) * mNumPix;
                     x = x1 + ((i+1)*(x2-x1)+nbin/2)/nbin + 1;
                     long numTraces = mNumTraces;
                     for (j=0; j<mNumPix; ++j) {
