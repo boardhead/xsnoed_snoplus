@@ -685,7 +685,7 @@ void PHistImage::DrawSelf()
                         if (!dat[j]) continue;
                         y = y2 - j;
                         if (numTraces) {
-                            if (dat[j] <= 1 && numTraces > 1) {
+                            if (dat[j] == 1) {
                                 col = 0;
                             } else {
                                 col = (dat[j] * ncols) / numTraces;
