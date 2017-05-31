@@ -1932,6 +1932,7 @@ static int showEvent(ImageData *data, HistoryEntry *event_buff)
                                     if (val > 4095) val = 4095;
                                     ++sumPt[(j++) * 4096 + val];
                                     val = *(wordPt) >> 16;
+                                    if (val > 4095) val = 4095;
                                     ++sumPt[(j++) * 4096 + val];
                                 }
                                 ++data->sum_caen_count[i];

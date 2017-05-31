@@ -25,7 +25,8 @@ const int kDirtyHistCalc = 0x80;  // indicates the 2D hist may require calculati
 
 class PHistCalc {
 public:
-    virtual void    DoCalc(PHistImage *hist) = 0;
+    virtual void    DoCalc(PHistImage *hist) { };
+    virtual int     GetRange(PHistImage *hist, int *min, int *max) { return 0; }
 };
 
 class PHistImage : public PImageCanvas {

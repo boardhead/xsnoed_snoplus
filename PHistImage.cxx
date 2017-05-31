@@ -945,11 +945,13 @@ void PHistImage::ScaleAutoProc(Widget w, PHistImage *hist, caddr_t call_data)
 		    nbin = hist->mNumBins;
 		}
 		if (hist->mHistogram) {
-			for (int i=0; i<nbin; ++i) {
-				counts = hist->mHistogram[i+noffset];
-				if (max < counts) max = counts;
-				if (min > counts) min = counts;
-			}
+		    if (!hist->mCalcObj || !hist->mCalcObj->GetRange(hist, &min, &max)) {
+                for (int i=0; i<nbin; ++i) {
+                    counts = hist->mHistogram[i+noffset];
+                    if (max < counts) max = counts;
+                    if (min > counts) min = counts;
+                }
+            }
 		}
 		if (hist->mOverlay) {
 			for (int i=0; i<nbin; ++i) {
