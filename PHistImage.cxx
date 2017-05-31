@@ -10,7 +10,6 @@
 #include "PImageWindow.h"
 #include "ImageData.h"
 #include "PUtils.h"
-#include "PCaenWindow.h"
 
 #define HIST_MARGIN_BOTTOM			(25 * GetScaling())
 #define HIST_MARGIN_LEFT			(48 * GetScaling())
