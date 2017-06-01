@@ -668,24 +668,22 @@ void PHistImage::DrawSelf()
 
             // draw 2-dimensional histogram
             if (mNumPix && mHistogram) {
-                lastx = x1;
+                // create array to hold line segments for each colour
                 int ncols = mOwner->GetData()->num_cols;
-                SetForeground(FIRST_SCALE_COL);
-                unsigned col = 0;
                 XSegment **spp = new XSegment*[ncols];
                 memset(spp, 0, ncols * sizeof(XSegment*));
                 int *nseg = new int[ncols];
                 memset(nseg, 0, ncols * sizeof(int));
+                unsigned col = 0;
                 unsigned long max = mCalcObj ? mCalcObj->GetMaxVal() : mNumTraces;
                 int defCol = mNumTraces > 1 ? ncols - 1 : 0;
-                const int kSegMax = 100;
+                const int kSegMax = 100;    // draw up to 100 line segments at a time
 
-                for (i=0; i<nbin; ++i) {
+                for (i=0, lastx=x1; i<nbin; ++i) {
                     unsigned long *dat = (unsigned long *)mHistogram + (i + noffset) * mNumPix;
                     x = x1 + ((i+1)*(x2-x1)+nbin/2)/nbin + 1;
                     for (j=0; j<mNumPix; ++j) {
                         if (!dat[j]) continue;
-                        y = y2 - j;
                         if (dat[j] == 1) {
                             col = 0;
                         } else if (max) { // (may be 0 if all points are offscale)
@@ -706,7 +704,7 @@ void PHistImage::DrawSelf()
                         XSegment *sp = spp[col] + nseg[col]++;
                         sp->x1 = lastx;
                         sp->x2 = x;
-                        sp->y1 = sp->y2 = y;
+                        sp->y1 = sp->y2 = y2 - j;
                     }
                     lastx = x;
                 }
