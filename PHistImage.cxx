@@ -685,11 +685,13 @@ void PHistImage::DrawSelf()
                         y = y2 - j;
                         if (dat[j] == 1) {
                             col = 0;
-                        } else if (max) {
+                        } else if (max) { // (may be 0 if all points are offscale)
                             col = (dat[j] * ncols) / max;
                             if (col >= ncols) col = ncols - 1;
+                        } else if (mNumTraces > 1) {
+                            col = ncols - 1;
                         } else {
-                            col = mNumTraces > 1 ? ncols - 1 : 0;
+                            col = 0;
                         }
                         if (!spp[col]) {
                             spp[col] = new XSegment[kSegMax];
