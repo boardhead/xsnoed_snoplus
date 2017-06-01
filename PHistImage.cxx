@@ -112,6 +112,7 @@ void PHistImage::CreateOverlay(int numbins)
 		delete [] mHistogram;
 		delete [] mOverlay;
 		mOverlay = NULL;
+		mNumPix = 0;
 	}
     if (numbins && !mOverlay) {
         mOverlay = new long[numbins];
