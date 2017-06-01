@@ -670,12 +670,13 @@ void PHistImage::DrawSelf()
             lastx = x1;
             int ncols = mOwner->GetData()->num_cols;
             SetForeground(FIRST_SCALE_COL);
-            int col = 0;
+            unsigned col = 0;
             XSegment **spp = new XSegment*[ncols];
             memset(spp, 0, ncols * sizeof(XSegment*));
             int *nseg = new int[ncols];
             memset(nseg, 0, ncols * sizeof(int));
             unsigned long max = mCalcObj ? mCalcObj->GetMaxVal() : mNumTraces;
+            int defCol = mNumTraces > 1 ? ncols - 1 : 0;
             if (mNumPix && mHistogram) {
                 const int kSegMax = 100;
                 for (i=0; i<nbin; ++i) {
@@ -689,10 +690,8 @@ void PHistImage::DrawSelf()
                         } else if (max) { // (may be 0 if all points are offscale)
                             col = (dat[j] * ncols) / max;
                             if (col >= ncols) col = ncols - 1;
-                        } else if (mNumTraces > 1) {
-                            col = ncols - 1;
                         } else {
-                            col = 0;
+                            col = defCol;
                         }
                         if (!spp[col]) {
                             spp[col] = new XSegment[kSegMax];
