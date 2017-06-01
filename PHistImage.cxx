@@ -671,9 +671,13 @@ void PHistImage::DrawSelf()
                 // create array to hold line segments for each colour
                 int ncols = mOwner->GetData()->num_cols;
                 XSegment **spp = new XSegment*[ncols];
-                memset(spp, 0, ncols * sizeof(XSegment*));
                 int *nseg = new int[ncols];
-                memset(nseg, 0, ncols * sizeof(int));
+                if (spp && nseg){
+                    memset(spp, 0, ncols * sizeof(XSegment*));
+                    memset(nseg, 0, ncols * sizeof(int));
+                } else {
+                    nbin = 0;   // (don't draw anything)
+                }
                 unsigned col = 0;
                 unsigned long max = mCalcObj ? mCalcObj->GetMaxVal() : mNumTraces;
                 int defCol = mNumTraces > 1 ? ncols - 1 : 0;
@@ -708,11 +712,13 @@ void PHistImage::DrawSelf()
                     }
                     lastx = x;
                 }
-                for (col=0; col<ncols; ++col) {
-                    if (nseg[col]) {
-                        SetForeground(FIRST_SCALE_COL + col);
-                        DrawSegments(spp[col], nseg[col]);
-                        delete [] spp[col];
+                if (nbin) {
+                    for (col=0; col<ncols; ++col) {
+                        if (nseg[col]) {
+                            SetForeground(FIRST_SCALE_COL + col);
+                            DrawSegments(spp[col], nseg[col]);
+                            delete [] spp[col];
+                        }
                     }
                 }
                 delete [] nseg;
