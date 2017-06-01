@@ -29,7 +29,7 @@ public:
     void            DoneGrab(PNCDScopeImage *hist);
     
     virtual void    DoCalc(PHistImage *hist);
-    virtual int     GetRange(PHistImage *hist, int *min, int *max);
+    virtual int     GetRange(PHistImage *hist, int noffset, int nbin, int *min, int *max);
 
 private:
     void            SetChannels(int chan_mask);

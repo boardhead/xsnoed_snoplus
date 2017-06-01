@@ -284,16 +284,21 @@ void PCaenWindow::SetChannels(int chan_mask)
 }
 
 // calculate range for 2D histogram (return 1 if OK)
-int PCaenWindow::GetRange(PHistImage *hist, int *min, int *max)
+int PCaenWindow::GetRange(PHistImage *hist, int noffset, int nbin, int *min, int *max)
 {
+    ImageData	*data = GetData();
+
+    if (!data->sum) return 0;
+
     for (int chan=0; chan<kMaxCaenChannels; ++chan) {
         if (hist != mHist[chan]) continue;
-        ImageData	*data = GetData();
         u_int32 *src = data->sum_caen[chan];
-        if (!src) continue;
+        if (!src) break;
         long caen_size = data->sum_caen_samples[chan];
-        for (int i=0; i<caen_size; ++i) {
-            u_int32 *pt = src + i * 4096;
+        if (nbin + noffset < 0) nbin = -noffset;
+        if (nbin + noffset > caen_size) nbin = caen_size - noffset;
+        for (int i=0; i<nbin; ++i) {
+            u_int32 *pt = src + (i + noffset) * 4096;
             for (int j=0; j<4096; ++j) {
                 if (pt[j]) {
                     if (*min > j) *min = j;
@@ -319,11 +324,11 @@ void PCaenWindow::DoCalc(PHistImage *hist)
         if (hist != mHist[chan]) continue;
         ImageData	*data = GetData();
         u_int32 *src = data->sum_caen[chan];
-        if (!src) continue;
+        if (!src) break;
         long caen_size = data->sum_caen_samples[chan];
         hist->CreateData(caen_size, 1);  // make 2D data
         unsigned long *dst = (unsigned long *)hist->GetDataPt();
-        if (!dst) continue;
+        if (!dst) break;
         long numPix = hist->GetNumPix();
         unsigned long max = 0;
         memset(dst, 0, numPix * caen_size * sizeof(long));
