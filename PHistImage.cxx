@@ -667,18 +667,19 @@ void PHistImage::DrawSelf()
         if (mStyle == kHistStyle2D) {
 
             // draw 2-dimensional histogram
-            lastx = x1;
-            int ncols = mOwner->GetData()->num_cols;
-            SetForeground(FIRST_SCALE_COL);
-            unsigned col = 0;
-            XSegment **spp = new XSegment*[ncols];
-            memset(spp, 0, ncols * sizeof(XSegment*));
-            int *nseg = new int[ncols];
-            memset(nseg, 0, ncols * sizeof(int));
-            unsigned long max = mCalcObj ? mCalcObj->GetMaxVal() : mNumTraces;
-            int defCol = mNumTraces > 1 ? ncols - 1 : 0;
             if (mNumPix && mHistogram) {
+                lastx = x1;
+                int ncols = mOwner->GetData()->num_cols;
+                SetForeground(FIRST_SCALE_COL);
+                unsigned col = 0;
+                XSegment **spp = new XSegment*[ncols];
+                memset(spp, 0, ncols * sizeof(XSegment*));
+                int *nseg = new int[ncols];
+                memset(nseg, 0, ncols * sizeof(int));
+                unsigned long max = mCalcObj ? mCalcObj->GetMaxVal() : mNumTraces;
+                int defCol = mNumTraces > 1 ? ncols - 1 : 0;
                 const int kSegMax = 100;
+
                 for (i=0; i<nbin; ++i) {
                     unsigned long *dat = (unsigned long *)mHistogram + (i + noffset) * mNumPix;
                     x = x1 + ((i+1)*(x2-x1)+nbin/2)/nbin + 1;
@@ -718,8 +719,8 @@ void PHistImage::DrawSelf()
                 }
                 delete [] nseg;
                 delete [] spp;
+                SetForeground(TEXT_COL);
             }
-            SetForeground(TEXT_COL);
 
 		} else if (mStyle == kHistStyleBars) {
 		
