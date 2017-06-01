@@ -688,6 +688,8 @@ void PHistImage::DrawSelf()
                         } else if (max) {
                             col = (dat[j] * ncols) / max;
                             if (col >= ncols) col = ncols - 1;
+                        } else {
+                            col = mNumTraces > 1 ? ncols - 1 : 0;
                         }
                         if (!spp[col]) {
                             spp[col] = new XSegment[kSegMax];
