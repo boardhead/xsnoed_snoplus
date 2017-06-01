@@ -332,10 +332,14 @@ void PCaenWindow::DoCalc(PHistImage *hist)
                 u_int32 val = src[i * 4096 + j];
                 if (!val) continue;
                 int pix = hist->GetPix(j);
-                if (pix < 0) pix = 0;
-                if (pix >= numPix) pix = numPix - 1;
-                unsigned long tmp = (dst[i * numPix + pix] += val);
-                if (max < tmp) max = tmp;
+                if (pix <= 0) {
+                    dst[i * numPix] += val;
+                } else if (pix >= numPix) {
+                    dst[i * numPix + numPix - 1] += val;
+                } else {
+                    unsigned long tmp = (dst[i * numPix + pix] += val);
+                    if (max < tmp) max = tmp;
+                }
             }
         }
         mMaxVal = max;
