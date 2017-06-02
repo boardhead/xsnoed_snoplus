@@ -461,7 +461,7 @@ struct ImageData : XSnoedResource {
 	FILE		  *	infile;				// input file (or NULL if none open)
 	double			sno_time_zero;		// zero time for 10 MHz clock
 	long			event_num;			// number of event in file
-	long			event_id;			// event global trigger ID
+	long			event_id;			// global trigger ID of currently displayed event
 	int				non_seq_file;		// flag indicates that events in file are non-sequential
 	int				require_rewind;		// flag indicates that file needs rewinding before next get_event
 	long			last_seq_gtid;		// id of last event read from file (reset on rewind)
@@ -505,6 +505,8 @@ struct ImageData : XSnoedResource {
 	int				sum_sub_run;		// sub-run number of last event summed
 	PSharedString	sum_filename;		// filename for last event of sum
 	u_int32			sum_event_id;		// event id of last event summed
+	u_int32         sum_tubiiGT;        // TUBII GT of last event summed
+	u_int32         sum_tubiiTrig;      // tubii trigger word of last event summed
 	u_int32			sum_mtc_word[6];	// mtc word from last event summed
 	u_int32         sum_trig_word;      // trig word from last event summed
 	u_int32			sum_event_count;	// number of events summed

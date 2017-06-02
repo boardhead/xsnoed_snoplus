@@ -1804,6 +1804,7 @@ void xsnoed_add_rcons(ImageData *data, RconEvent *rcon, int nrcon, int update_di
 /*
 ** show the event
 ** Note: if data->sum is non-zero, the event is summed and not shown
+**       (and the summed event is shown if pmtRecord is null)
 **		 if the trigger is continuous -- set event_buff to NULL to show summed events
 ** Returns non-zero if event was drawn.
 */
@@ -1864,20 +1865,15 @@ static int showEvent(ImageData *data, HistoryEntry *event_buff)
 ** Handle the CAEN data
 */
 	u_int32 *caen = NULL;
+	TubiiRecord *tubii = NULL;
     if (pmtRecord) {
         if (!data->sum) {
             data->caenChannelMask = 0;
             data->caenPattern = 0;
             data->caenEventCount = 0;
             data->caenClock = 0;
-            data->tubiiTrig = 0;
-            data->tubiiGT = 0;
         }
-        TubiiRecord *tubii = (TubiiRecord *)PZdabFile::GetExtendedData(pmtRecord, SUB_TYPE_TUBII);
-        if (tubii) {
-            data->tubiiTrig = tubii->TrigWord;
-            data->tubiiGT = tubii->GTID;
-        }
+        tubii = (TubiiRecord *)PZdabFile::GetExtendedData(pmtRecord, SUB_TYPE_TUBII);
         caen = PZdabFile::GetExtendedData(pmtRecord, SUB_TYPE_CAEN);
         if (caen) {
             u_int32 len = (*(caen - 1) & SUB_LENGTH_MASK) - 1;
@@ -2159,7 +2155,14 @@ static int showEvent(ImageData *data, HistoryEntry *event_buff)
 		/* save necessary event information */
 		data->sum_run_number = pmtRecord->RunNumber;
 		data->sum_sub_run = pmtRecord->DaqStatus;
-		data->sum_event_id  = pmtRecord->TriggerCardData.BcGT;
+		data->sum_event_id = pmtRecord->TriggerCardData.BcGT;
+		if (tubii) {
+		    data->sum_tubiiGT = tubii->GTID;
+		    data->sum_tubiiTrig = tubii->TrigWord;
+		} else {
+		    data->sum_tubiiGT = 0;
+		    data->sum_tubiiTrig = 0;
+		}
 		data->sum_time = ((double) 4294967296.0 * pmtRecord->TriggerCardData.Bc10_2 + 
 							 pmtRecord->TriggerCardData.Bc10_1) * 1e-7;
 		data->sum_filename.SetString(event_buff->filename);
@@ -2298,6 +2301,13 @@ fclose(fp);
 		data->run_number = pmtRecord->RunNumber;
 		data->sub_run = pmtRecord->DaqStatus;
 		data->event_id  = pmtRecord->TriggerCardData.BcGT;
+        if (tubii) {
+            data->tubiiTrig = tubii->TrigWord;
+            data->tubiiGT = tubii->GTID;
+        } else {
+            data->tubiiTrig = 0;
+            data->tubiiGT = 0;
+        }
 		// set currently displayed filename for this event
 		data->mDispFile.SetString(event_buff->filename);
 	
@@ -2386,6 +2396,8 @@ fclose(fp);
 		data->run_number = data->sum_run_number;
 		data->sub_run = data->sum_sub_run;
 		data->event_id = data->sum_event_id;
+		data->tubiiGT = data->sum_tubiiGT;
+		data->tubiiTrig = data->sum_tubiiTrig;
 		memcpy(data->mtc_word, data->sum_mtc_word, 6*sizeof(u_int32));
 		data->trig_word = data->sum_trig_word;
 		data->mDispFile.SetString(data->sum_filename);
@@ -2801,6 +2813,8 @@ void clearSum(ImageData *data)
 		data->sum_run_number = 0;
 		data->sum_sub_run = -1;
 		data->sum_event_id = 0;
+		data->sum_tubiiGT = 0;
+		data->sum_tubiiTrig = 0;
 		data->sum_filename.Release();
 		releaseHistoryEntry(data->sum_event);
 		data->sum_event = NULL;
@@ -5513,6 +5527,8 @@ void loadUniformHits(ImageData *data)
 	data->run_number = 0;
 	data->sub_run = -1;
 	data->event_id = 0;
+	data->tubiiGT = 0;
+	data->tubiiTrig = 0;
 	memset(data->mtc_word, 0, 6*sizeof(u_int32));
 	data->trig_word = 0;
 	
