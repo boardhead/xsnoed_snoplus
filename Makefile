@@ -24,7 +24,7 @@ VER_LIB       = $(XSNOED_OPTIONS) -DFITTR -DROOT_FILE -DROOT_SYSTEM -DNO_MAIN
 VER_SNOMAN    = $(XSNOED_OPTIONS) -DFITTR -DNO_MAIN -DXSNOMAN -DNO_DISPATCH
 
 ifndef OSTYPE
-OSTYPE = $(shell uname -s | tr '[:upper:]' '[:lower:]')
+OSTYPE = $(shell uname -s | awk '{print tolower($0)}')
 endif
 ifndef MACHTYPE
 MACHTYPE = $(shell uname -m)
