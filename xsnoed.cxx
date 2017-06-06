@@ -1911,7 +1911,7 @@ static int showEvent(ImageData *data, HistoryEntry *event_buff)
                         }
                         if (data->sum) {
                             u_int32 *sumPt = data->sum_caen[i];
-                            if (sumPt && data->sum_caen_samples[i] != trace_samples) {
+                            if (sumPt && data->sum_caen_samples[i] != (u_int32)trace_samples) {
                                 free(data->sum_caen[i]);
                                 data->sum_caen_samples[i] = 0;
                                 data->sum_caen[i] = sumPt = 0;
