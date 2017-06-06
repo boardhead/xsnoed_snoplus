@@ -23,6 +23,13 @@ VER_LIB       = $(XSNOED_OPTIONS) -DFITTR -DROOT_FILE -DROOT_SYSTEM -DNO_MAIN
 #-NT
 VER_SNOMAN    = $(XSNOED_OPTIONS) -DFITTR -DNO_MAIN -DXSNOMAN -DNO_DISPATCH
 
+ifndef OSTYPE
+OSTYPE = $(shell uname -s | tr '[:upper:]' '[:lower:]')
+endif
+ifndef MACHTYPE
+MACHTYPE = $(shell uname -m)
+endif
+
 PLATFORM      = $(OSTYPE)_$(MACHTYPE)$(XSNOED_MAKE_VER)
 
 PROGS         = xsnoed
