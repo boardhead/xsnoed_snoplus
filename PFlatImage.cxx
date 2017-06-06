@@ -229,8 +229,11 @@ void PFlatImage::TransformHits()
 			  memcpy(&nod.x3, data->remap_data + hi->index, sizeof(Point3));
 			} else {
 			  if( !ReMap(0,n0,&data->geod,&mFrame,&nod) ) {
-			  	++failed_remaps;
-//				Printf("Remap failed for tube %d\n", hi->index);
+			    // print failed message unless this tube is missing
+			    if (data->tube_coordinates[hi->index].tube != -1) {
+			  	    ++failed_remaps;
+				    Printf("Remap failed for channel %d/%d/%d\n", hi->crate, hi->card, hi->channel);
+				}
 			  }
 			  memcpy(data->remap_data + hi->index, &nod.x3, sizeof(Point3));
 			  data->remap_done[hi->index] = 1;
