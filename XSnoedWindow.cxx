@@ -1359,7 +1359,7 @@ void XSnoedWindow::AboutXSnoed()
 							"Sudbury Neutrino Observatory\n"
 							"X-Windows Event Display Program\n"
 							" \n"
-							"Copyright \xa9 1992-2014\n"
+							"Copyright \xa9 1992-2017\n"
 							"Philip Harvey, Queen's University\n"
 							" \n";
 	char	  * aboutStr2 = "Thanks to Peter Skensved, Mark Boulay and\n"
