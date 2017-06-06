@@ -669,7 +669,7 @@ void PHistImage::DrawSelf()
             // draw 2-dimensional histogram
             if (mNumPix && mHistogram) {
                 // create array to hold line segments for each colour
-                int ncols = mOwner->GetData()->num_cols;
+                unsigned ncols = (unsigned)mOwner->GetData()->num_cols;
                 XSegment **spp = new XSegment*[ncols];
                 int *nseg = new int[ncols];
                 if (spp && nseg){
