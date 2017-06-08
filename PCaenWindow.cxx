@@ -23,7 +23,9 @@ const int   kAllCaenChannels  = 0xff;    // mask for all scope channels on
 
 static MenuStruct channels_menu[] = {
 	{ "All Channels",0,XK_A,IDM_CAEN_ALL,  NULL, 0, 0 },
-	{ "Channels with Data",0, XK_D,IDM_CAEN_AUTO, NULL, 0, 0 },
+	{ "Channels with Data",0, XK_D,IDM_CAEN_ACTIVE, NULL, 0, 0 },
+	{ NULL, 				0, 0,		0,					NULL, 0, 0},
+	{ "Auto Scale",  0, XK_u,IDM_CAEN_AUTO, NULL, 0, MENU_TOGGLE },
 	{ NULL, 				0, 0,		0,					NULL, 0, 0},
 	{ "Channel 0",	 0, XK_0,IDM_CAEN_0,    NULL, 0, MENU_TOGGLE | MENU_TOGGLE_ON },
 	{ "Channel 1",	 0, XK_1,IDM_CAEN_1,    NULL, 0, MENU_TOGGLE | MENU_TOGGLE_ON },
@@ -81,6 +83,7 @@ PCaenWindow::PCaenWindow(ImageData *data)
         sprintf(buff, "Channel %d - %s", i, data->caen_lbl[i]);
         GetMenu()->SetLabel(IDM_CAEN_0+i, buff);
     }
+    GetMenu()->SetToggle(IDM_CAEN_AUTO, data->caen_auto);
 
 	n = 0;
     XtSetArg(wargs[n], XmNtopAttachment, 	XmATTACH_WIDGET);    ++n;
@@ -127,6 +130,7 @@ PCaenWindow::PCaenWindow(ImageData *data)
         mHist[chan]->SetPlotCol(SCOPE1_COL);
         mHist[chan]->SetOverlayCol(SCOPE0_COL);
     }
+
     // set current channel mask to an invalid entry (with all channels on)
     // to force our channels to be arranged initially
     data->caen_mask = -1;
@@ -160,14 +164,21 @@ void PCaenWindow::Listen(int message, void *message_data)
 
 void PCaenWindow::DoMenuCommand(int anID)
 {
+    ImageData *data = GetData();
+
 	switch (anID) {
 		case IDM_CAEN_ALL:
 		    SetChannels(kAllCaenChannels);
 		    SetDirty(kDirtyAll);
 		    break;
-		case IDM_CAEN_AUTO:
+		case IDM_CAEN_ACTIVE:
 		    SetChannels(GetActiveChannels());
 		    SetDirty(kDirtyAll);
+		    break;
+		case IDM_CAEN_AUTO:
+		    data->caen_auto ^= 1;
+		    if (data->caen_auto) SetDirty(kDirtyAll);
+		    printf("%d\n",data->caen_auto);
 		    break;
 		case IDM_CAEN_0:
 		case IDM_CAEN_1:
@@ -177,7 +188,7 @@ void PCaenWindow::DoMenuCommand(int anID)
 		case IDM_CAEN_5:
 		case IDM_CAEN_6:
 		case IDM_CAEN_7:
-		    SetChannels(GetData()->caen_mask ^ (1 << (anID - IDM_CAEN_0)));
+		    SetChannels(data->caen_mask ^ (1 << (anID - IDM_CAEN_0)));
 		    SetDirty(kDirtyAll);
 		    break;
     }
@@ -371,6 +382,7 @@ void PCaenWindow::UpdateSelf()
         for (chan=0; chan<kMaxCaenChannels; ++chan) {
             if (mHist[chan]->GetDataPt() || mHist[chan]->GetOverlayPt()) {
                 mHist[chan]->CreateData(0);
+                mHist[chan]->SetAutoScale(data->caen_auto);
                 mHist[chan]->SetDirty();
             } else if (IsDirty() & kDirtyAll) {
                 mHist[chan]->SetDirty();

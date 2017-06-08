@@ -50,6 +50,7 @@ PHistImage::PHistImage(PImageWindow *owner, Widget canvas, int createCanvas)
 	mPlotCol        = TEXT_COL;
 	mFixedBins      = 0;
 	mCalcObj        = NULL;
+	mAutoScale      = 0;
 
 	if (!canvas && createCanvas) {
 		CreateCanvas("ehCanvas");
@@ -633,13 +634,22 @@ void PHistImage::DrawSelf()
 		mXScale = new PScale(mDrawable,GetFont(),x1,y2,x2+1,y2,mXScaleFlag);
 		if (!mXScale) return;
 	}
+	/* set the scale range (also draws it) */
+    mXScale->SetRng(GetScaleMin(),GetScaleMax());
+
 	if (!mYScale) {
 		mYScale = new PScale(mDrawable,GetFont(),x1,y1,x1,y2,
 									  INTEGER_SCALE | (mIsLog ? LOG_SCALE : 0));
 		if (!mYScale) return;
 	}
-	/* set the scale ranges (also draws them) */
-	mXScale->SetRng(GetScaleMin(),GetScaleMax());
+    if (mAutoScale && !(mGrabFlag & GRAB_Y_ACTIVE) && (IsDirty() & 0x01)) {
+        int min, max;
+        if (CalcAutoScale(&min, &max)) {
+            mYMin = min;
+            mYMax = max;
+            SetScaleLimits();
+    	}
+    }
 	mYScale->SetRng(GetYMin(),GetYMax());
 
     /* calculate histogram data if necessary */
@@ -934,39 +944,41 @@ void PHistImage::ScaleFullProc(Widget w, PHistImage *hist, caddr_t call_data)
 	setTextString(hist->sp_max,buff);
 }
 
-void PHistImage::ScaleAutoProc(Widget w, PHistImage *hist, caddr_t call_data)
+int PHistImage::CalcAutoScale(int *minPt, int *maxPt)
 {
-	char buff[256];
 	int min=0x7fffffff, max=0, counts;
 
-	if (hist->mNumBins) {
+	if (mNumBins) {
 		int noffset, nbin;
-		if (hist->mFixedBins) {
-		    noffset = (long)hist->GetScaleMin();
+		int ok = 0;
+		if (mFixedBins) {
+		    noffset = (long)GetScaleMin();
 		    if (noffset < 0) noffset = 0;
-		    nbin = (long)(hist->GetScaleMax() + 0.5) - noffset;
-		    if (nbin > hist->mNumBins) nbin = hist->mNumBins;
+		    nbin = (long)(GetScaleMax() + 0.5) - noffset;
+		    if (nbin > mNumBins) nbin = mNumBins;
 	    } else {
 		    noffset = 0;
-		    nbin = hist->mNumBins;
+		    nbin = mNumBins;
 		}
-		if (hist->mHistogram) {
-		    if (!hist->mCalcObj || !hist->mCalcObj->GetRange(hist, noffset, nbin, &min, &max)) {
-                for (int i=0; i<nbin; ++i) {
-                    counts = hist->mHistogram[i+noffset];
-                    if (max < counts) max = counts;
-                    if (min > counts) min = counts;
-                }
+        if (mCalcObj && mCalcObj->GetRange(this, noffset, nbin, &min, &max)) {
+            ok = 1;
+        } else if (mHistogram) {
+            for (int i=0; i<nbin; ++i) {
+                counts = mHistogram[i+noffset];
+                if (max < counts) max = counts;
+                if (min > counts) min = counts;
             }
+            ok = 1;
 		}
-		if (hist->mOverlay) {
+		if (mOverlay) {
 			for (int i=0; i<nbin; ++i) {
-				counts = hist->mOverlay[i+noffset];
+				counts = mOverlay[i+noffset];
 				if (max < counts) max = counts;
 				if (min > counts) min = counts;
 			}
+			ok = 1;
 		}
-		if (hist->mHistogram || hist->mOverlay) {
+		if (ok) {
 			int rng = max - min;
 			if (rng < 10) {
 				min = max - 9;
@@ -978,12 +990,25 @@ void PHistImage::ScaleAutoProc(Widget w, PHistImage *hist, caddr_t call_data)
 				if (min < 0) min = 0;
 				max += pad;
 			}
-			sprintf(buff,"%ld",(long)min);
-			setTextString(hist->sp_ymin,buff);
-		
-			sprintf(buff,"%ld",(long)max);
-			setTextString(hist->sp_ymax,buff);
+		    *minPt = min;
+		    *maxPt = max;
+		    return 1;
 		}
+	}
+	return 0;
+}
+
+void PHistImage::ScaleAutoProc(Widget w, PHistImage *hist, caddr_t call_data)
+{
+	char buff[256];
+	int min, max;
+
+	if (hist->CalcAutoScale(&min, &max)) {
+        sprintf(buff,"%ld",(long)min);
+        setTextString(hist->sp_ymin,buff);
+    
+        sprintf(buff,"%ld",(long)max);
+        setTextString(hist->sp_ymax,buff);
 	}
 }
 

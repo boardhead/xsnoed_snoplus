@@ -92,7 +92,9 @@ public:
 	virtual void	SetScaleLimits()			{ }
 	void			SetScaleLimits(float min, float max, float min_rng);
 	void			SetIntegerXScale(int is_int);
-	
+	int             CalcAutoScale(int *minPt, int *maxPt);
+	void            SetAutoScale(int on)        { mAutoScale = on; }
+
 	void            SetPlotCol(int col)         { mPlotCol = col; }
 	void            SetOverlayCol(int col)      { mOverlayCol = col; }
 	
@@ -130,6 +132,7 @@ protected:
 	Widget			sp_log, sp_min, sp_max;	// widgets for scale window
 	Widget          sp_ymin, sp_ymax;
 	PHistCalc     * mCalcObj;       // object used to recalculate 2D histogram
+	int             mAutoScale;     // flag to automatically scale when drawing
 	
 private:
 	static void		ScaleAutoProc(Widget w, PHistImage *hist, caddr_t call_data);

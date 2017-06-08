@@ -315,6 +315,8 @@ static XtResource sResourceList[] = {
  		XtRString, (XtPointer) "15" },
  {"caen_mask","CaenMask",XtRInt,sizeof(int),XtOffset(XSnoedResPtr,caen_mask),
  		XtRString, (XtPointer) "255" },
+ {"caen_auto","CaenAuto",XtRInt,sizeof(int),XtOffset(XSnoedResPtr,caen_auto),
+ 		XtRString, (XtPointer) "0" },
  {"caen0_min","Caen0Min",XtRInt,sizeof(int),XtOffset(XSnoedResPtr,caen_min[0]),
  		XtRString, (XtPointer) "0" },
  {"caen0_max","Caen0Max",XtRInt,sizeof(int),XtOffset(XSnoedResPtr,caen_max[0]),
