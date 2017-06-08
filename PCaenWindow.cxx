@@ -178,7 +178,6 @@ void PCaenWindow::DoMenuCommand(int anID)
 		case IDM_CAEN_AUTO:
 		    data->caen_auto ^= 1;
 		    if (data->caen_auto) SetDirty(kDirtyAll);
-		    printf("%d\n",data->caen_auto);
 		    break;
 		case IDM_CAEN_0:
 		case IDM_CAEN_1:
