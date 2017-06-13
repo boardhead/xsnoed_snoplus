@@ -258,7 +258,8 @@
 ** 5.0.7 (04/11/17) - PH Show RHDR GTID's in zdab dump
 ** 5.0.8 (05/18/17) - PH Update to SNO+ tube map
 ** 5.0.9 (05/31/17) - PH Added CAEN Scope summing feature
+** 5.1.0 (06/13/17) - PH Fixed some potential crash problems
 */
 
-#define XSNOED_VERSION      "5.0.9"     // xsnoed version number
+#define XSNOED_VERSION      "5.1.0"     // xsnoed version number
 
