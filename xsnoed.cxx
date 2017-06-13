@@ -4562,9 +4562,7 @@ void loadDatabases(ImageData *data, u_int32 run_num)
     
     DatabaseFile *new_db[kNumDBs];
     new_db[kPmtDB] = NULL;
-#ifndef SNOPLUS
     new_db[kNcdDB] = NULL;
-#endif
 
     if (run_num) {
         // find the proper databases for this run number
@@ -5075,7 +5073,7 @@ void freeCaenData(ImageData *data)
 {
     if (data->caen_size) {
         for (int i=0; i<kMaxCaenChannels; ++i) {
-            delete data->caen_data[i];
+            delete [] data->caen_data[i];
             data->caen_data[i] = NULL;
         }
         data->caen_size = 0;

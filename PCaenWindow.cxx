@@ -340,8 +340,9 @@ void PCaenWindow::DoCalc(PHistImage *hist)
         unsigned long *dst = (unsigned long *)hist->GetDataPt();
         if (!dst) break;
         long numPix = hist->GetNumPix();
+        if (!numPix) continue;
         unsigned long max = 0;
-        memset(dst, 0, numPix * caen_size * sizeof(long));
+        memset(dst, 0, numPix * caen_size * sizeof(unsigned long));
         for (int i=0; i<caen_size; ++i) {
             for (int j=0; j<4096; ++j) {
                 u_int32 val = src[i * 4096 + j];
