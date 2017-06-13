@@ -181,7 +181,7 @@ void PScale::DrawLinScale()
 ** End of old getSep() routine
 */
     int pow0 = power - FIRST_POW;
-    if (pow0 < 0 || pow0/3 >= 9) return;  // just to be safe
+    if ((pow0 < 0) || (pow0/3 >= 9)) return;  // just to be safe
 
 	sep	  *= sign;
 	step   = sep  * order;
