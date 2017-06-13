@@ -203,6 +203,8 @@ Face *PFlatImage::ReMap(Node *n0,Node *n1,Polyhedron *poly1,Polyhedron *poly2,No
 			return(f0);
 		}
 	}
+    out->x3 = out->y3 = 0;
+    out->z3 = 1;
 /*	return((Face *)0); */
 	return(NULL);
 }
@@ -234,8 +236,6 @@ void PFlatImage::TransformHits()
 			  	    ++failed_remaps;
 				    Printf("Remap failed for channel %d/%d/%d\n", hi->crate, hi->card, hi->channel);
 				}
-                nod.x3 = nod.y3 = 0;
-                nod.z3 = 1;
 			  }
 			  memcpy(data->remap_data + hi->index, &nod.x3, sizeof(Point3));
 			  data->remap_done[hi->index] = 1;

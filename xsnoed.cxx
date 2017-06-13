@@ -818,6 +818,7 @@ void setRconNodesVessel(RconEvent *event, float sphere_radius, float z_cutoff, f
 		event->num_nodes = 0;
 		return;	
 	}
+	memset(event->nodes, 0, event->num_nodes * sizeof(Node));
 /*
 ** First node is event location, second node is calculated
 ** position of intersection with sphere:
@@ -2346,7 +2347,8 @@ fclose(fp);
 		data->hits.hit_info  = (HitInfo *)XtMalloc(n * sizeof(HitInfo));
 		
 		if (!data->hits.nodes || !data->hits.hit_info) quit("Out of memory");
-		
+        memset(data->hits.nodes, 0, n * sizeof(Node));
+
 		hit_info = data->hits.hit_info;
 		cmos_rates_pt = data->cmos_rates;
 		for (i=0,n=0; i<data->hits.num_nodes; ++i,++n) {
@@ -2410,7 +2412,8 @@ fclose(fp);
 		data->hits.hit_info  = (HitInfo *)XtMalloc(data->hits.num_nodes*sizeof(HitInfo));
 		
 		if (!data->hits.nodes || !data->hits.hit_info) quit("Out of memory");
-		
+        memset(data->hits.nodes, 0, data->hits.num_nodes*sizeof(Node));
+
 		hit_info = data->hits.hit_info;
 		for (i=0,n=0; i<data->hits.num_nodes; ++i,++n) {
 			/* look for next non-zero entry in sum */
@@ -2623,6 +2626,7 @@ fclose(fp);
 		data->hits.nodes     = (Node *)   XtMalloc(data->hits.num_nodes*sizeof(Node));
 		data->hits.hit_info  = (HitInfo *)XtMalloc(data->hits.num_nodes*sizeof(HitInfo));
 		if (!data->hits.nodes || !data->hits.hit_info) quit("Out of memory");
+		memset(data->hits.nodes, 0, data->hits.num_nodes*sizeof(Node));
 		
 		/* get pointer to PMT data */
 		thePmtHits = (u_int32 *)(pmtRecord + 1);
@@ -3817,6 +3821,7 @@ int xsnoed_event2(ImageData *data, EventInfo *evt, RconEvent *rcon, int nrcon)
 	data->hits.nodes     = (Node *)   XtMalloc(data->hits.num_nodes*sizeof(Node));
 	data->hits.hit_info  = (HitInfo *)XtMalloc(data->hits.num_nodes*sizeof(HitInfo));
 	if (!data->hits.nodes || !data->hits.hit_info) quit("Out of memory");
+    memset(data->hits.nodes, 0, data->hits.num_nodes*sizeof(Node));
 	
 	memset(data->mtc_word, 0, 6*sizeof(u_int32));
 	data->trig_word = 0;
@@ -5537,7 +5542,9 @@ void loadUniformHits(ImageData *data)
 	data->hits.hit_info  = (HitInfo *)XtMalloc(data->hits.num_nodes*sizeof(HitInfo));
 	
 	if (!data->hits.nodes || !data->hits.hit_info) quit("Out of memory");
-	
+    memset(data->hits.nodes, 0, data->hits.num_nodes*sizeof(Node));
+
+
 	hit_info = data->hits.hit_info;
 	for (i=0,n=0; i<data->hits.num_nodes; ++i,++n) {
 		verify_tube_coordinates(data,n);
