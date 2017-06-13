@@ -919,10 +919,12 @@ void PEventControlWindow::SetTriggerMaskLogic(ImageData *data, char *str)
 				match_len = j;
 			}
 		}
+#ifndef SNOPLUS
 		// special case: expand "NCD" into NCDMUX and NCDSHAP bits
 		if ((match_mask & TRIGGER_NCD) && match_len <= 3) {
 		    match_mask = TRIGGER_NCD;
 		}
+#endif
 		if (match_mask) {
 			data->trigger_bitmask |= match_mask;
 			switch (type) {

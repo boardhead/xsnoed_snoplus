@@ -818,6 +818,7 @@ void setRconNodesVessel(RconEvent *event, float sphere_radius, float z_cutoff, f
 		event->num_nodes = 0;
 		return;	
 	}
+	memset(event->nodes, 0, event->num_nodes * sizeof(Node));
 /*
 ** First node is event location, second node is calculated
 ** position of intersection with sphere:
@@ -1804,6 +1805,7 @@ void xsnoed_add_rcons(ImageData *data, RconEvent *rcon, int nrcon, int update_di
 /*
 ** show the event
 ** Note: if data->sum is non-zero, the event is summed and not shown
+**       (and the summed event is shown if pmtRecord is null)
 **		 if the trigger is continuous -- set event_buff to NULL to show summed events
 ** Returns non-zero if event was drawn.
 */
@@ -1864,20 +1866,15 @@ static int showEvent(ImageData *data, HistoryEntry *event_buff)
 ** Handle the CAEN data
 */
 	u_int32 *caen = NULL;
+	TubiiRecord *tubii = NULL;
     if (pmtRecord) {
         if (!data->sum) {
             data->caenChannelMask = 0;
             data->caenPattern = 0;
             data->caenEventCount = 0;
             data->caenClock = 0;
-            data->tubiiTrig = 0;
-            data->tubiiGT = 0;
         }
-        TubiiRecord *tubii = (TubiiRecord *)PZdabFile::GetExtendedData(pmtRecord, SUB_TYPE_TUBII);
-        if (tubii) {
-            data->tubiiTrig = tubii->TrigWord;
-            data->tubiiGT = tubii->GTID;
-        }
+        tubii = (TubiiRecord *)PZdabFile::GetExtendedData(pmtRecord, SUB_TYPE_TUBII);
         caen = PZdabFile::GetExtendedData(pmtRecord, SUB_TYPE_CAEN);
         if (caen) {
             u_int32 len = (*(caen - 1) & SUB_LENGTH_MASK) - 1;
@@ -1912,6 +1909,31 @@ static int showEvent(ImageData *data, HistoryEntry *event_buff)
                                 data->caen_data[i] = NULL;
                             }
                             continue;
+                        }
+                        if (data->sum) {
+                            u_int32 *sumPt = data->sum_caen[i];
+                            if (sumPt && data->sum_caen_samples[i] != (u_int32)trace_samples) {
+                                free(data->sum_caen[i]);
+                                data->sum_caen_samples[i] = 0;
+                                data->sum_caen[i] = sumPt = 0;
+                            }
+                            if (!sumPt && !data->sum_caen_samples[i]) {
+                                data->sum_caen_samples[i] = trace_samples;
+                                data->sum_caen[i] = sumPt = (u_int32 *)XtMalloc(trace_samples * 4096 * sizeof(u_int32));
+                                if (sumPt) memset(sumPt, 0, trace_samples * 4096 * sizeof(u_int32));
+                            }
+                            if (sumPt) {
+                                u_int32 *wordPt = caen + 4 + n * trace_words;
+                                for (int j=0; j<trace_samples; ++wordPt) {
+                                    unsigned val = *(wordPt) & 0x0000ffff;
+                                    if (val > 4095) val = 4095;
+                                    ++sumPt[(j++) * 4096 + val];
+                                    val = *(wordPt) >> 16;
+                                    if (val > 4095) val = 4095;
+                                    ++sumPt[(j++) * 4096 + val];
+                                }
+                                ++data->sum_caen_count[i];
+                            }
                         }
                         if (!trace) {
                             // allocate memory for this trace
@@ -2134,7 +2156,14 @@ static int showEvent(ImageData *data, HistoryEntry *event_buff)
 		/* save necessary event information */
 		data->sum_run_number = pmtRecord->RunNumber;
 		data->sum_sub_run = pmtRecord->DaqStatus;
-		data->sum_event_id  = pmtRecord->TriggerCardData.BcGT;
+		data->sum_event_id = pmtRecord->TriggerCardData.BcGT;
+		if (tubii) {
+		    data->sum_tubiiGT = tubii->GTID;
+		    data->sum_tubiiTrig = tubii->TrigWord;
+		} else {
+		    data->sum_tubiiGT = 0;
+		    data->sum_tubiiTrig = 0;
+		}
 		data->sum_time = ((double) 4294967296.0 * pmtRecord->TriggerCardData.Bc10_2 + 
 							 pmtRecord->TriggerCardData.Bc10_1) * 1e-7;
 		data->sum_filename.SetString(event_buff->filename);
@@ -2273,6 +2302,13 @@ fclose(fp);
 		data->run_number = pmtRecord->RunNumber;
 		data->sub_run = pmtRecord->DaqStatus;
 		data->event_id  = pmtRecord->TriggerCardData.BcGT;
+        if (tubii) {
+            data->tubiiTrig = tubii->TrigWord;
+            data->tubiiGT = tubii->GTID;
+        } else {
+            data->tubiiTrig = 0;
+            data->tubiiGT = 0;
+        }
 		// set currently displayed filename for this event
 		data->mDispFile.SetString(event_buff->filename);
 	
@@ -2311,7 +2347,8 @@ fclose(fp);
 		data->hits.hit_info  = (HitInfo *)XtMalloc(n * sizeof(HitInfo));
 		
 		if (!data->hits.nodes || !data->hits.hit_info) quit("Out of memory");
-		
+        memset(data->hits.nodes, 0, n * sizeof(Node));
+
 		hit_info = data->hits.hit_info;
 		cmos_rates_pt = data->cmos_rates;
 		for (i=0,n=0; i<data->hits.num_nodes; ++i,++n) {
@@ -2361,6 +2398,8 @@ fclose(fp);
 		data->run_number = data->sum_run_number;
 		data->sub_run = data->sum_sub_run;
 		data->event_id = data->sum_event_id;
+		data->tubiiGT = data->sum_tubiiGT;
+		data->tubiiTrig = data->sum_tubiiTrig;
 		memcpy(data->mtc_word, data->sum_mtc_word, 6*sizeof(u_int32));
 		data->trig_word = data->sum_trig_word;
 		data->mDispFile.SetString(data->sum_filename);
@@ -2373,7 +2412,8 @@ fclose(fp);
 		data->hits.hit_info  = (HitInfo *)XtMalloc(data->hits.num_nodes*sizeof(HitInfo));
 		
 		if (!data->hits.nodes || !data->hits.hit_info) quit("Out of memory");
-		
+        memset(data->hits.nodes, 0, data->hits.num_nodes*sizeof(Node));
+
 		hit_info = data->hits.hit_info;
 		for (i=0,n=0; i<data->hits.num_nodes; ++i,++n) {
 			/* look for next non-zero entry in sum */
@@ -2586,6 +2626,7 @@ fclose(fp);
 		data->hits.nodes     = (Node *)   XtMalloc(data->hits.num_nodes*sizeof(Node));
 		data->hits.hit_info  = (HitInfo *)XtMalloc(data->hits.num_nodes*sizeof(HitInfo));
 		if (!data->hits.nodes || !data->hits.hit_info) quit("Out of memory");
+		memset(data->hits.nodes, 0, data->hits.num_nodes*sizeof(Node));
 		
 		/* get pointer to PMT data */
 		thePmtHits = (u_int32 *)(pmtRecord + 1);
@@ -2759,7 +2800,7 @@ void clearSum(ImageData *data)
 #ifdef OPTICAL_CAL
 	data->missed_window_count = 0;
 #endif
-	
+
 	if (data->sum) {
 		memset(data->sum_tac,  0, NUM_TOTAL_CHANNELS * sizeof(u_int32));
 		memset(data->sum_qhs,  0, NUM_TOTAL_CHANNELS * sizeof(u_int32));
@@ -2776,12 +2817,20 @@ void clearSum(ImageData *data)
 		data->sum_run_number = 0;
 		data->sum_sub_run = -1;
 		data->sum_event_id = 0;
+		data->sum_tubiiGT = 0;
+		data->sum_tubiiTrig = 0;
 		data->sum_filename.Release();
 		releaseHistoryEntry(data->sum_event);
 		data->sum_event = NULL;
 		data->sum_ncdData = NULL;
 #ifdef SNOPLUS
         data->sum_caenData = NULL;
+		for (int i=0; i<kMaxCaenChannels; ++i) {
+		    if (data->sum_caen[i] && data->sum_caen_samples[i]) {
+		        memset(data->sum_caen[i], 0, data->sum_caen_samples[i] * 4096 * sizeof(u_int32));
+		    }
+		    data->sum_caen_count[i] = 0;
+		}
 #endif
 		memset(data->sum_mtc_word, 0, 6*sizeof(u_int32));
 		data->sum_trig_word = 0;
@@ -3772,6 +3821,7 @@ int xsnoed_event2(ImageData *data, EventInfo *evt, RconEvent *rcon, int nrcon)
 	data->hits.nodes     = (Node *)   XtMalloc(data->hits.num_nodes*sizeof(Node));
 	data->hits.hit_info  = (HitInfo *)XtMalloc(data->hits.num_nodes*sizeof(HitInfo));
 	if (!data->hits.nodes || !data->hits.hit_info) quit("Out of memory");
+    memset(data->hits.nodes, 0, data->hits.num_nodes*sizeof(Node));
 	
 	memset(data->mtc_word, 0, 6*sizeof(u_int32));
 	data->trig_word = 0;
@@ -4517,9 +4567,7 @@ void loadDatabases(ImageData *data, u_int32 run_num)
     
     DatabaseFile *new_db[kNumDBs];
     new_db[kPmtDB] = NULL;
-#ifndef SNOPLUS
     new_db[kNcdDB] = NULL;
-#endif
 
     if (run_num) {
         // find the proper databases for this run number
@@ -5030,7 +5078,7 @@ void freeCaenData(ImageData *data)
 {
     if (data->caen_size) {
         for (int i=0; i<kMaxCaenChannels; ++i) {
-            delete data->caen_data[i];
+            delete [] data->caen_data[i];
             data->caen_data[i] = NULL;
         }
         data->caen_size = 0;
@@ -5482,6 +5530,8 @@ void loadUniformHits(ImageData *data)
 	data->run_number = 0;
 	data->sub_run = -1;
 	data->event_id = 0;
+	data->tubiiGT = 0;
+	data->tubiiTrig = 0;
 	memset(data->mtc_word, 0, 6*sizeof(u_int32));
 	data->trig_word = 0;
 	
@@ -5492,7 +5542,9 @@ void loadUniformHits(ImageData *data)
 	data->hits.hit_info  = (HitInfo *)XtMalloc(data->hits.num_nodes*sizeof(HitInfo));
 	
 	if (!data->hits.nodes || !data->hits.hit_info) quit("Out of memory");
-	
+    memset(data->hits.nodes, 0, data->hits.num_nodes*sizeof(Node));
+
+
 	hit_info = data->hits.hit_info;
 	for (i=0,n=0; i<data->hits.num_nodes; ++i,++n) {
 		verify_tube_coordinates(data,n);

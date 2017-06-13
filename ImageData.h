@@ -461,7 +461,7 @@ struct ImageData : XSnoedResource {
 	FILE		  *	infile;				// input file (or NULL if none open)
 	double			sno_time_zero;		// zero time for 10 MHz clock
 	long			event_num;			// number of event in file
-	long			event_id;			// event global trigger ID
+	long			event_id;			// global trigger ID of currently displayed event
 	int				non_seq_file;		// flag indicates that events in file are non-sequential
 	int				require_rewind;		// flag indicates that file needs rewinding before next get_event
 	long			last_seq_gtid;		// id of last event read from file (reset on rewind)
@@ -505,15 +505,20 @@ struct ImageData : XSnoedResource {
 	int				sum_sub_run;		// sub-run number of last event summed
 	PSharedString	sum_filename;		// filename for last event of sum
 	u_int32			sum_event_id;		// event id of last event summed
+	u_int32         sum_tubiiGT;        // TUBII GT of last event summed
+	u_int32         sum_tubiiTrig;      // tubii trigger word of last event summed
 	u_int32			sum_mtc_word[6];	// mtc word from last event summed
 	u_int32         sum_trig_word;      // trig word from last event summed
 	u_int32			sum_event_count;	// number of events summed
 	u_int32			sum_nhit_count;		// total number of tubes hit
 	u_int32		  *	sum_nhit;			// allocated all the time (also used for int32 cmos rates)
-	u_int32		  *	sum_tac;			// only allocated while wSum = 1
-	u_int32		  *	sum_qhs;			// only allocated while wSum = 1
-	u_int32		  *	sum_qhl;			// only allocated while wSum = 1
-	u_int32		  *	sum_qlx;			// only allocated while wSum = 1
+	u_int32		  *	sum_tac;			// only allocated while sum = 1
+	u_int32		  *	sum_qhs;			// only allocated while sum = 1
+	u_int32		  *	sum_qhl;			// only allocated while sum = 1
+	u_int32		  *	sum_qlx;			// only allocated while sum = 1
+	u_int32       * sum_caen[kMaxCaenChannels]; // only allocated while sum = 1
+	u_int32         sum_caen_count[kMaxCaenChannels];  // total traces summed for each CAEN channel
+	u_int32         sum_caen_samples[kMaxCaenChannels];// number of samples in each CAEN sum
 	u_int32       * sum_ncdData;        // ncd data of last event summed
     u_int32       * sum_caenData;       // summed trigger sums
 	u_int16       * caen_data[kMaxCaenChannels];  // raw scope data arrays

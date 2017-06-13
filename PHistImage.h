@@ -13,11 +13,26 @@ enum {
 
 enum EHistStyle {
 	kHistStyleBars,
-	kHistStyleSteps
+	kHistStyleSteps,
+	kHistStyle2D
 };
 
-class PScale;
 struct ImageData;
+class PScale;
+class PHistImage;
+
+const int kDirtyHistCalc = 0x80;  // indicates the 2D hist may require calculating
+
+class PHistCalc {
+public:
+    virtual void    DoCalc(PHistImage *hist) { };
+    virtual int     GetRange(PHistImage *hist, int noffset, int nbin, int *min, int *max) { return 0; }
+    
+    unsigned long   GetMaxVal()     { return mMaxVal; }
+
+protected:
+    unsigned long   mMaxVal;
+};
 
 class PHistImage : public PImageCanvas {
 public:
@@ -59,20 +74,27 @@ public:
 	void			SetUnderscale(long num)		{ mUnderscale = num; }
 	void			SetOverscale(long num)		{ mOverscale = num; }
 	void			SetStyle(EHistStyle style)	{ mStyle = style; }
+	void            SetNumTraces(long num)      { mNumTraces = num; }
 	void			SetLog(int on);
+	void            SetCalcObj(PHistCalc *obj)  { mCalcObj = obj; }
 	
-	void			CreateData(int numbins);
+	void			CreateData(int numbins, int twoD=0);
 	void            CreateOverlay(int numbins);
 	void            SetFixedBins(int on=1)      { mFixedBins = on; }
 	long		  *	GetDataPt()					{ return mHistogram; }
 	long          * GetOverlayPt()              { return mOverlay; }
 	int				GetNumBins()				{ return mNumBins; }
+	int             GetNumPix()                 { return mNumPix; }
 	int				GetGrabFlag()				{ return mGrabFlag; }
+	int             GetPix(long val);
+	long            GetNumTraces()              { return mNumTraces; }
 	
 	virtual void	SetScaleLimits()			{ }
 	void			SetScaleLimits(float min, float max, float min_rng);
 	void			SetIntegerXScale(int is_int);
-	
+	int             CalcAutoScale(int *minPt, int *maxPt);
+	void            SetAutoScale(int on)        { mAutoScale = on; }
+
 	void            SetPlotCol(int col)         { mPlotCol = col; }
 	void            SetOverlayCol(int col)      { mOverlayCol = col; }
 	
@@ -86,6 +108,8 @@ protected:
 	long			mOverscale;		// number of overscale entries
 	long			mUnderscale;	// number of underscale entries
 	int				mNumBins;		// number of histogram bins
+	int             mNumPix;        // number of pixels for 2D plot
+	long            mNumTraces;     // number of traces for 2D plot
 	int			  *	mHistCols;		// colours for drawing histogram (underscale,regular,overscale)
 	int             mPlotCol;       // plot color for kHistStyleLines
 	int				mOverlayCol;	// pixel value for overlay colour
@@ -107,6 +131,8 @@ protected:
 	int             mFixedBins;     // false if data is rebinned on x scale change
 	Widget			sp_log, sp_min, sp_max;	// widgets for scale window
 	Widget          sp_ymin, sp_ymax;
+	PHistCalc     * mCalcObj;       // object used to recalculate 2D histogram
+	int             mAutoScale;     // flag to automatically scale when drawing
 	
 private:
 	static void		ScaleAutoProc(Widget w, PHistImage *hist, caddr_t call_data);

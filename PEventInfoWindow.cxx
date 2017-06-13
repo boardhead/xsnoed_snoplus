@@ -369,7 +369,9 @@ void PEventInfoWindow::UpdateSelf()
 	tw_gtid.SetStringNow(buff);
 #ifdef SNOPLUS
     u_int32 *caen = data->caenData;
-    if (caen) {
+    // (dont show during a sum until we can figure out how to avoid
+    // freeing the displayed CAEN data in this mode)
+    if (caen && !data->sum) {
 	    sprintf(buff,data->hex_id ? "0x%.6x" : "%d",(unsigned)caen[2]);
     } else {
         strcpy(buff, "-");

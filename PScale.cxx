@@ -53,7 +53,7 @@ PScale::PScale(PDrawable *drawable,XFontStruct *font,int xa,int ya,int xb,int yb
 		}
 		dlbl = (int)(font_height * spacing);
 	}
-	min_val = max_val = 0;
+	min_val = max_val = val_rng = 0;
 }
 
 
@@ -180,15 +180,18 @@ void PScale::DrawLinScale()
 /*
 ** End of old getSep() routine
 */
+    int pow0 = power - FIRST_POW;
+    if (pow0 < 0 || pow0/3 >= 9) return;  // just to be safe
+
 	sep	  *= sign;
 	step   = sep  * order;
 	ival   = (int)floor(min_val/step);
 	val	   = ival * step;			// value for first label below scale
 	tstep  = step/ticks;
 	ival  *= sep;
-	suffix = symbols[(power-FIRST_POW)/3];
+	suffix = symbols[pow0/3];
 
-	switch ((power-FIRST_POW)%3) {
+	switch (pow0 % 3) {
 		case 0:
 			break;
 		case 1:
@@ -197,7 +200,7 @@ void PScale::DrawLinScale()
 			break;
 		case 2:
 			if (suffix) {			// avoid extra trailing zeros if suffix
-				suffix= symbols[(power-FIRST_POW)/3+1];		// next suffix
+				suffix= symbols[pow0/3+1];		// next suffix
 				dec   = 1;			// use decimal point (/10)
 			} else {
 				ival *= 100;

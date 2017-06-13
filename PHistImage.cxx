@@ -49,6 +49,8 @@ PHistImage::PHistImage(PImageWindow *owner, Widget canvas, int createCanvas)
 	mOverlayCol     = SCALE_COL3;
 	mPlotCol        = TEXT_COL;
 	mFixedBins      = 0;
+	mCalcObj        = NULL;
+	mAutoScale      = 0;
 
 	if (!canvas && createCanvas) {
 		CreateCanvas("ehCanvas");
@@ -77,21 +79,31 @@ PHistImage::~PHistImage()
 }
 
 // CreateData - create histogram data (can be used to delete data if numbins=0)
-void PHistImage::CreateData(int numbins)
+void PHistImage::CreateData(int numbins, int twoD)
 {
-	if (numbins != mNumBins) {
+    int numPix;
+    if (twoD) {
+        numPix = mHeight + 1 - HIST_MARGIN_BOTTOM - HIST_MARGIN_TOP;
+        if (numPix < 0) numPix = 0;
+    } else {
+        numPix = 0;
+    }
+	if (numbins != mNumBins || numPix != mNumPix) {
 		delete [] mHistogram;
 		delete [] mOverlay;
-		mHistogram = NULL;
+		mHistogram = NULL;  // (mOverlay is reset below)
 	}
     if (numbins && !mHistogram) {
-        mHistogram = new long[numbins];
+        mHistogram = new long[numbins * (numPix ? numPix : 1)];
         // resize overlay if it was created before
         if (mOverlay && numbins!=mNumBins) mOverlay = new long[numbins];
         mNumBins = numbins;
+        mNumPix = numPix;
+        mNumTraces = 0;
     } else {
         mOverlay = NULL;
     }
+    if (!mHistogram) mNumPix = 0;
 }
 
 // CreateOverlay - create overlay data the same size as the histogram array
@@ -101,6 +113,7 @@ void PHistImage::CreateOverlay(int numbins)
 		delete [] mHistogram;
 		delete [] mOverlay;
 		mOverlay = NULL;
+		mNumPix = 0;
 	}
     if (numbins && !mOverlay) {
         mOverlay = new long[numbins];
@@ -549,7 +562,7 @@ void PHistImage::HandleEvents(XEvent *event)
 				// redraw histogram if either scale changed
 				if (doUpdate) {
 					wasChanged = 1;
-					SetDirty();
+					SetDirty(kDirtyHistCalc);
 				}
 			} else {
 				SetCursorForPos(event->xbutton.x, event->xbutton.y);
@@ -593,7 +606,7 @@ void PHistImage::DoGrabY(double newMin, double newMax)
 */
 void PHistImage::DrawSelf()
 {
-	int				i,n,x,y,dx,dy;
+	int				i,j,n,x,y,dx,dy;
 	int				lastx, lasty;
 	int				x1,y1,x2,y2;
 	long			counts;
@@ -601,7 +614,7 @@ void PHistImage::DrawSelf()
 #ifdef PRINT_DRAWS
 	Printf("drawHist\n");
 #endif
-	
+
 	MakeHistogram();
 	SetHistogramLabel();
 
@@ -621,15 +634,29 @@ void PHistImage::DrawSelf()
 		mXScale = new PScale(mDrawable,GetFont(),x1,y2,x2+1,y2,mXScaleFlag);
 		if (!mXScale) return;
 	}
+	/* set the scale range (also draws it) */
+    mXScale->SetRng(GetScaleMin(),GetScaleMax());
+
 	if (!mYScale) {
 		mYScale = new PScale(mDrawable,GetFont(),x1,y1,x1,y2,
 									  INTEGER_SCALE | (mIsLog ? LOG_SCALE : 0));
 		if (!mYScale) return;
 	}
-	/* set the scale ranges (also draws them) */
-	mXScale->SetRng(GetScaleMin(),GetScaleMax());
+    if (mAutoScale && !(mGrabFlag & GRAB_Y_ACTIVE) && (IsDirty() & 0x01)) {
+        int min, max;
+        if (CalcAutoScale(&min, &max)) {
+            mYMin = min;
+            mYMax = max;
+            SetScaleLimits();
+    	}
+    }
 	mYScale->SetRng(GetYMin(),GetYMax());
-	
+
+    /* calculate histogram data if necessary */
+    if ((IsDirty() & kDirtyHistCalc) && mCalcObj) {
+        mCalcObj->DoCalc(this);
+    }
+
 	if (mNumBins) {
 
 		int nbin, noffset;
@@ -647,7 +674,69 @@ void PHistImage::DrawSelf()
 		if (dx < GetScaling()) dx = GetScaling();			/* limit minimum bin size */
 		else if (dx == GetScaling()) dx = 2*GetScaling();
 
-		if (mStyle == kHistStyleBars) {
+        if (mStyle == kHistStyle2D) {
+
+            // draw 2-dimensional histogram
+            if (mNumPix && mHistogram) {
+                // create array to hold line segments for each colour
+                unsigned ncols = (unsigned)mOwner->GetData()->num_cols;
+                XSegment **spp = new XSegment*[ncols];
+                int *nseg = new int[ncols];
+                if (spp && nseg){
+                    memset(spp, 0, ncols * sizeof(XSegment*));
+                    memset(nseg, 0, ncols * sizeof(int));
+                } else {
+                    nbin = 0;   // (don't draw anything)
+                }
+                unsigned col = 0;
+                unsigned long max = mCalcObj ? mCalcObj->GetMaxVal() : mNumTraces;
+                int defCol = mNumTraces > 1 ? ncols - 1 : 0;
+                const int kSegMax = 100;    // draw up to 100 line segments at a time
+
+                for (i=0, lastx=x1; i<nbin; ++i) {
+                    unsigned long *dat = (unsigned long *)mHistogram + (i + noffset) * mNumPix;
+                    x = x1 + ((i+1)*(x2-x1)+nbin/2)/nbin + 1;
+                    for (j=0; j<mNumPix; ++j) {
+                        if (!dat[j]) continue;
+                        if (dat[j] == 1) {
+                            col = 0;
+                        } else if (max) { // (may be 0 if all points are offscale)
+                            col = (dat[j] * ncols) / max;
+                            if (col >= ncols) col = ncols - 1;
+                        } else {
+                            col = defCol;
+                        }
+                        if (!spp[col]) {
+                            spp[col] = new XSegment[kSegMax];
+                            if (!spp[col]) break;
+                        }
+                        if (nseg[col] >= kSegMax) {
+                            SetForeground(FIRST_SCALE_COL + col);
+                            DrawSegments(spp[col], kSegMax);
+                            nseg[col] = 0;
+                        }
+                        XSegment *sp = spp[col] + nseg[col]++;
+                        sp->x1 = lastx;
+                        sp->x2 = x;
+                        sp->y1 = sp->y2 = y2 - j;
+                    }
+                    lastx = x;
+                }
+                if (nbin) {
+                    for (col=0; col<ncols; ++col) {
+                        if (nseg[col]) {
+                            SetForeground(FIRST_SCALE_COL + col);
+                            DrawSegments(spp[col], nseg[col]);
+                            delete [] spp[col];
+                        }
+                    }
+                }
+                delete [] nseg;
+                delete [] spp;
+                SetForeground(TEXT_COL);
+            }
+
+		} else if (mStyle == kHistStyleBars) {
 		
 			if (mHistogram) {
 				for (i=0; i<nbin; ++i) {
@@ -783,7 +872,7 @@ void PHistImage::Resize()
 		delete mYScale;
 		mYScale = NULL;
 	}
-	SetDirty();
+	SetDirty(kDirtyHistCalc);
 }
 
 // this must only be called when the scale window is open
@@ -815,9 +904,14 @@ void PHistImage::ReadScaleValues()
 	DoGrab(xmin, xmax);
 	DoGrabY(ymin, ymax);
 	mGrabFlag &= ~GRABS_ACTIVE;
-	SetDirty();
+	SetDirty(kDirtyHistCalc);
 	DoneGrab();
 	UpdateScaleInfo();
+}
+
+int PHistImage::GetPix(long val)
+{
+    return mHeight - HIST_MARGIN_BOTTOM - mYScale->GetPix((double)val);
 }
 
 void PHistImage::CheckScaleRange()
@@ -850,37 +944,41 @@ void PHistImage::ScaleFullProc(Widget w, PHistImage *hist, caddr_t call_data)
 	setTextString(hist->sp_max,buff);
 }
 
-void PHistImage::ScaleAutoProc(Widget w, PHistImage *hist, caddr_t call_data)
+int PHistImage::CalcAutoScale(int *minPt, int *maxPt)
 {
-	char buff[256];
 	int min=0x7fffffff, max=0, counts;
 
-	if (hist->mNumBins) {
+	if (mNumBins) {
 		int noffset, nbin;
-		if (hist->mFixedBins) {
-		    noffset = (long)hist->GetScaleMin();
+		int ok = 0;
+		if (mFixedBins) {
+		    noffset = (long)GetScaleMin();
 		    if (noffset < 0) noffset = 0;
-		    nbin = (long)(hist->GetScaleMax() + 0.5) - noffset;
-		    if (nbin > hist->mNumBins) nbin = hist->mNumBins;
+		    nbin = (long)(GetScaleMax() + 0.5) - noffset;
+		    if (nbin > mNumBins) nbin = mNumBins;
 	    } else {
 		    noffset = 0;
-		    nbin = hist->mNumBins;
+		    nbin = mNumBins;
 		}
-		if (hist->mHistogram) {
+        if (mCalcObj && mCalcObj->GetRange(this, noffset, nbin, &min, &max)) {
+            ok = 1;
+        } else if (mHistogram) {
+            for (int i=0; i<nbin; ++i) {
+                counts = mHistogram[i+noffset];
+                if (max < counts) max = counts;
+                if (min > counts) min = counts;
+            }
+            ok = 1;
+		}
+		if (mOverlay) {
 			for (int i=0; i<nbin; ++i) {
-				counts = hist->mHistogram[i+noffset];
+				counts = mOverlay[i+noffset];
 				if (max < counts) max = counts;
 				if (min > counts) min = counts;
 			}
+			ok = 1;
 		}
-		if (hist->mOverlay) {
-			for (int i=0; i<nbin; ++i) {
-				counts = hist->mOverlay[i+noffset];
-				if (max < counts) max = counts;
-				if (min > counts) min = counts;
-			}
-		}
-		if (hist->mHistogram || hist->mOverlay) {
+		if (ok) {
 			int rng = max - min;
 			if (rng < 10) {
 				min = max - 9;
@@ -892,12 +990,25 @@ void PHistImage::ScaleAutoProc(Widget w, PHistImage *hist, caddr_t call_data)
 				if (min < 0) min = 0;
 				max += pad;
 			}
-			sprintf(buff,"%ld",(long)min);
-			setTextString(hist->sp_ymin,buff);
-		
-			sprintf(buff,"%ld",(long)max);
-			setTextString(hist->sp_ymax,buff);
+		    *minPt = min;
+		    *maxPt = max;
+		    return 1;
 		}
+	}
+	return 0;
+}
+
+void PHistImage::ScaleAutoProc(Widget w, PHistImage *hist, caddr_t call_data)
+{
+	char buff[256];
+	int min, max;
+
+	if (hist->CalcAutoScale(&min, &max)) {
+        sprintf(buff,"%ld",(long)min);
+        setTextString(hist->sp_ymin,buff);
+    
+        sprintf(buff,"%ld",(long)max);
+        setTextString(hist->sp_ymax,buff);
 	}
 }
 
