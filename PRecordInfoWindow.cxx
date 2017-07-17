@@ -200,7 +200,18 @@ void PRecordInfoWindow::UpdateSelf()
 			case kHdrRec_RHDR: {
 				SBankRHDR *rhdr = (SBankRHDR *)data->mHdrRec[index];
 				pt += sprintf(pt,"%lu\n",(unsigned long)rhdr->RunNumber);
-				
+
+#ifdef SNOPLUS
+				u_int32 tmp = rhdr->Date;
+				long year = (tmp >> 24) + 1852; // (I agree, this is odd)
+				long month = ((tmp >> 16) & 0xff) + 1;
+				long day = (tmp >> 8) & 0xff;
+				tmp = rhdr->Time;
+				long hour = tmp >> 24;
+				long min = (tmp >> 16) & 0xff;
+				long sec = (tmp >> 8) & 0xff;
+				long frac = 0;
+#else
 				u_int32 tmp = rhdr->Date;
 				long year = tmp / 10000UL;
 				tmp -= year * 10000UL;
@@ -215,8 +226,9 @@ void PRecordInfoWindow::UpdateSelf()
 				long sec = tmp / 100UL;
 				tmp -= sec * 100UL;
 				long frac = tmp;
+#endif
 		
-				// convert to our time zone
+				// convert UTC time to tms structure in local time zone
 				struct tm tms;
 				tms.tm_sec = sec;
 				tms.tm_min = min;
@@ -226,10 +238,19 @@ void PRecordInfoWindow::UpdateSelf()
 				tms.tm_year = year - 1900;
 				tms.tm_isdst = 0;
 				time_t theTime = mktime(&tms);
-#ifdef __MACHTEN__
-				theTime -= 5 * 3600L;	// convert to GMT
+#ifdef SNOPLUS
+                // SNO+ stores sudbury time, so adjust for that
+                if (rhdr->Date & 0xff) {    // check DST flag
+                    theTime += 4 * 3600L;
+                } else {
+                    theTime += 5 * 3600L;
+                }
+#endif
+
+#if defined __MACHTEN__
+				theTime -= 5 * 3600L;	// convert to back to UTC
 #else
-				theTime	-= timezone;	// convert to GMT
+				theTime	-= timezone;	// convert to back to UTC
 #endif
 		
 				struct tm *tm2 = getTms((double)theTime, mData->time_zone);
