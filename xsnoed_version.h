@@ -259,7 +259,8 @@
 ** 5.0.8 (05/18/17) - PH Update to SNO+ tube map
 ** 5.0.9 (05/31/17) - PH Added CAEN Scope summing feature
 ** 5.1.0 (06/13/17) - PH Fixed some potential crash problems
+** 5.1.1 (07/19/17) - PH Fixed decoding of RHDR date/time for SNO+
 */
 
-#define XSNOED_VERSION      "5.1.0"     // xsnoed version number
+#define XSNOED_VERSION      "5.1.1"     // xsnoed version number
 
