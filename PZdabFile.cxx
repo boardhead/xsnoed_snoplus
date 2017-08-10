@@ -597,9 +597,9 @@ void PZdabFile::DumpRecord(u_int32 *bankData, int bankSize, u_int32 bankName, u_
 				sprintf(buff,"Status=0x%lx",(long)cast->status);
 				pt = buff;
 			}
-			Printf("%s at GT %.8ld: ID=%ld %s Pos=(%.1f,%.1f,%.1f)\n",
-					BankNameString(bankName), (long)lastGTID, cast->sourceID,
-					pt,cast->position[0],cast->position[1],cast->position[2]);
+			Printf("%s at GT %.8ld: ID=%u.%u %s Pos=(%.1f,%.1f,%.1f)\n",
+					BankNameString(bankName), (long)lastGTID, (cast->sourceID >> 16),
+					(cast->sourceID & 0xffff),pt,cast->position[0],cast->position[1],cast->position[2]);
 		} break;
 		
 		case CAAC_RECORD:
