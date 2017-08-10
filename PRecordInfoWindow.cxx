@@ -379,7 +379,7 @@ void PRecordInfoWindow::UpdateSelf()
 			
 			case kHdrRec_CAST: {
 				SBankCAST *cast = (SBankCAST *)data->mHdrRec[index];
-				pt += sprintf(pt,"%ld\n",(long)cast->sourceID);
+				pt += sprintf(pt,"%u.%u\n",(unsigned)(cast->sourceID >> 16),(unsigned)(cast->sourceID & 0xffff));
 				if ((unsigned)cast->status < kNumManipStatus) {
 					pt += sprintf(pt,"%s\n",SnoStr::sManipStatus[cast->status]);
 				} else {
@@ -429,7 +429,7 @@ void PRecordInfoWindow::UpdateSelf()
 				
 			case kHdrRec_SOSL: {
 				SBankSOSL *sosl = (SBankSOSL *)data->mHdrRec[index];
-				pt += sprintf(pt,"%ld\n",(long)sosl->sourceID);
+				pt += sprintf(pt,"%u.%u\n",(unsigned)(sosl->sourceID >> 16), (unsigned)(sosl->sourceID & 0xffff));
 				pt += sprintf(pt,"0x%lx\n",(long)sosl->status);
 				pt += sprintf(pt,"%ld\n",(long)sosl->dyeCellNumber);
 				pt += sprintf(pt,"%ld, %ld\n",(long)sosl->filterWheel1Position,(long)sosl->filterWheel2Position);
