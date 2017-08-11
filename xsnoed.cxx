@@ -175,6 +175,8 @@
 //  so accept any modifier key just to be safe)
 #define AnyModMask			(Mod1Mask | Mod2Mask | Mod3Mask | Mod4Mask | Mod5Mask)
 
+const int kFecdCrate = 17;
+const int kFecdSlot = 15;
 
 /*-------------------------------------------------------------------------------
 */
@@ -2221,7 +2223,7 @@ Printf("Sorry, can't yet window OCA with SNOMAN calibration\n");
 				continue;
 			}
 #ifdef SNOPLUS
-            if (cr == 17 && sl == 15 && SnoStr::sFECD[ch][0]) {
+            if (cr == kFecdCrate && sl == kFecdSlot && SnoStr::sFECD[ch][0]) {
                 data->sum_fecdTrig |= (1 << ch);
             }
 #endif
@@ -2660,7 +2662,7 @@ fclose(fp);
 				continue;
 			}
 #ifdef SNOPLUS
-            if (cr == 17 && sl == 15 && SnoStr::sFECD[ch][0]) {
+            if (cr == kFecdCrate && sl == kFecdSlot && SnoStr::sFECD[ch][0]) {
                 data->fecdTrig |= (1 << ch);
             }
 #endif
