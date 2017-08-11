@@ -69,7 +69,7 @@ PEventInfoWindow::PEventInfoWindow(ImageData *data)
 	XtCreateManagedWidget("Prev/Next:",  xmLabelWidgetClass,rc1,NULL,0);
 	XtCreateManagedWidget("Trigger:",  	 xmLabelWidgetClass,rc1,NULL,0);
 #ifdef SNOPLUS
-	XtCreateManagedWidget("FECD:",  	 xmLabelWidgetClass,rc1,NULL,0);
+	XtCreateManagedWidget("FECD Trig:",  xmLabelWidgetClass,rc1,NULL,0);
 	XtCreateManagedWidget("TUBII Trig:", xmLabelWidgetClass,rc1,NULL,0);
 #endif
 	XtCreateManagedWidget("Pk/Int/Dif:", xmLabelWidgetClass,rc1,NULL,0);
