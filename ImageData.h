@@ -505,6 +505,7 @@ struct ImageData : XSnoedResource {
 	int				sum_sub_run;		// sub-run number of last event summed
 	PSharedString	sum_filename;		// filename for last event of sum
 	u_int32			sum_event_id;		// event id of last event summed
+	u_int32         sum_fecdTrig;       // fecd triggers in last summed event
 	u_int32         sum_tubiiGT;        // TUBII GT of last event summed
 	u_int32         sum_tubiiTrig;      // tubii trigger word of last event summed
 	u_int32			sum_mtc_word[6];	// mtc word from last event summed
@@ -527,6 +528,7 @@ struct ImageData : XSnoedResource {
 	u_int32         caenPattern;
 	u_int32         caenEventCount;
 	u_int32         caenClock;	
+    u_int32         fecdTrig;
     u_int32         tubiiTrig;
     u_int32         tubiiGT;
 	HistoryEntry  * sum_event;          // history entry for last event summed

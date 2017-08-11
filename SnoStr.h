@@ -43,6 +43,9 @@ public:
 	static char			  *	sRunType[32];
 	static char			  *	sTrigMask[32];
 	static char			  *	sXsnoedTrig[32];
+#ifdef SNOPLUS
+	static char           * sFECD[32];
+#endif
 	static char			  *	sSourceMask[32];
 	static char			  *	sManipStatus[kNumManipStatus];
 	static char			  *	sEPEDFlag[kNumEPEDFlags];

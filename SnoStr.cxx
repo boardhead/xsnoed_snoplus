@@ -31,7 +31,21 @@ char *SnoStr::sXsnoedTrig[32] = {
 	"20LB",				"ESUML",			"ESUMH",			"OWLN"
 #endif
 };
-							
+
+#ifdef SNOPLUS
+// FECD channel assignments (crate 17 slot 15)
+char *SnoStr::sFECD[32] = {
+    "",                 "",                 "",                 "",
+    "",                 "",                 "",                 "",
+    "",                 "",                 "",                 "",
+    "",                 "",                 "",                 "",
+    "",                 "N20L",             "",                 "N20",
+    "",                 "",                 "",                 "GT",
+    "",                 "",                 "",                 "",
+    "N100L",            "N100M",            "",                 "N100H"
+};
+#endif
+
 // TRIG bank 'TriggerMask' strings
 char *SnoStr::sTrigMask[32] = { 
 #ifdef SNOPLUS

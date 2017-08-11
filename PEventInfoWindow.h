@@ -41,7 +41,7 @@ private:
 	PLabel			tw_nhit, tw_gtid, tw_run, tw_evt;
 	PLabel			tw_time, tw_diff, tw_date, tw_trig, tw_peak;
 #ifdef SNOPLUS
-    PLabel          tw_caen, tw_tubii;
+    PLabel          tw_caen, tw_tubii, tw_fecd;
 #endif
 	PLabel			tw_evtnum_label, tw_time_label;
 	SPmtCount		tw_pmt_count[kNumPmtCounts];

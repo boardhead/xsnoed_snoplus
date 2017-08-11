@@ -144,6 +144,7 @@
 #include "XSnoedImage.h"
 #include "XSnoedWindow.h"
 #include "PCalSimple.h"
+#include "SnoStr.h"
 
 #if defined(LOAD_CALIBRATION) && defined(ROOT_FILE)
 #include "QPMT.h"
@@ -2157,6 +2158,7 @@ static int showEvent(ImageData *data, HistoryEntry *event_buff)
 		data->sum_run_number = pmtRecord->RunNumber;
 		data->sum_sub_run = pmtRecord->DaqStatus;
 		data->sum_event_id = pmtRecord->TriggerCardData.BcGT;
+		data->sum_fecdTrig = 0;
 		if (tubii) {
 		    data->sum_tubiiGT = tubii->GTID;
 		    data->sum_tubiiTrig = tubii->TrigWord;
@@ -2218,6 +2220,11 @@ Printf("Sorry, can't yet window OCA with SNOMAN calibration\n");
 				++bad_hits;
 				continue;
 			}
+#ifdef SNOPLUS
+            if (cr == 17 && sl == 15 && SnoStr::sFECD[ch][0]) {
+                data->sum_fecdTrig |= (1 << ch);
+            }
+#endif
 			n = (cr * NUM_CRATE_CARDS + sl) * NUM_CARD_CHANNELS + ch;
 #ifdef OPTICAL_CAL
 			if (doWindow) {
@@ -2302,6 +2309,7 @@ fclose(fp);
 		data->run_number = pmtRecord->RunNumber;
 		data->sub_run = pmtRecord->DaqStatus;
 		data->event_id  = pmtRecord->TriggerCardData.BcGT;
+		data->fecdTrig = 0;
         if (tubii) {
             data->tubiiTrig = tubii->TrigWord;
             data->tubiiGT = tubii->GTID;
@@ -2398,6 +2406,7 @@ fclose(fp);
 		data->run_number = data->sum_run_number;
 		data->sub_run = data->sum_sub_run;
 		data->event_id = data->sum_event_id;
+		data->fecdTrig = data->sum_fecdTrig;
 		data->tubiiGT = data->sum_tubiiGT;
 		data->tubiiTrig = data->sum_tubiiTrig;
 		memcpy(data->mtc_word, data->sum_mtc_word, 6*sizeof(u_int32));
@@ -2650,6 +2659,11 @@ fclose(fp);
 				++bad_hits;
 				continue;
 			}
+#ifdef SNOPLUS
+            if (cr == 17 && sl == 15 && SnoStr::sFECD[ch][0]) {
+                data->fecdTrig |= (1 << ch);
+            }
+#endif
 			n = (cr * NUM_CRATE_CARDS + sl) * NUM_CARD_CHANNELS + ch;
 			
 			/* increment hit counter and keep track of maximum hits per tube */
@@ -2817,6 +2831,7 @@ void clearSum(ImageData *data)
 		data->sum_run_number = 0;
 		data->sum_sub_run = -1;
 		data->sum_event_id = 0;
+		data->sum_fecdTrig = 0;
 		data->sum_tubiiGT = 0;
 		data->sum_tubiiTrig = 0;
 		data->sum_filename.Release();
@@ -5530,6 +5545,7 @@ void loadUniformHits(ImageData *data)
 	data->run_number = 0;
 	data->sub_run = -1;
 	data->event_id = 0;
+	data->fecdTrig = 0;
 	data->tubiiGT = 0;
 	data->tubiiTrig = 0;
 	memset(data->mtc_word, 0, 6*sizeof(u_int32));

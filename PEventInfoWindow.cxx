@@ -69,6 +69,7 @@ PEventInfoWindow::PEventInfoWindow(ImageData *data)
 	XtCreateManagedWidget("Prev/Next:",  xmLabelWidgetClass,rc1,NULL,0);
 	XtCreateManagedWidget("Trigger:",  	 xmLabelWidgetClass,rc1,NULL,0);
 #ifdef SNOPLUS
+	XtCreateManagedWidget("FECD:",  	 xmLabelWidgetClass,rc1,NULL,0);
 	XtCreateManagedWidget("TUBII Trig:", xmLabelWidgetClass,rc1,NULL,0);
 #endif
 	XtCreateManagedWidget("Pk/Int/Dif:", xmLabelWidgetClass,rc1,NULL,0);
@@ -114,6 +115,7 @@ PEventInfoWindow::PEventInfoWindow(ImageData *data)
 	tw_diff		.CreateLabel("diff", 	 rc2,NULL,0);
 	tw_trig		.CreateLabel("trig", 	 rc2,NULL,0);
 #ifdef SNOPLUS
+	tw_fecd     .CreateLabel("fecd",     rc2,NULL,0);
 	tw_tubii	.CreateLabel("tubii", 	 rc2,NULL,0);
 #endif
 	tw_peak		.CreateLabel("peak", 	 rc2,NULL,0);
@@ -377,6 +379,12 @@ void PEventInfoWindow::UpdateSelf()
         strcpy(buff, "-");
     }
 	tw_caen.SetStringNow(buff);
+    if (data->fecdTrig) {
+        SnoStr::GetList(buff, SnoStr::sFECD, data->fecdTrig);
+    } else {
+        strcpy(buff, "-");
+    }
+	tw_fecd.SetStringNow(buff);
     if (data->tubiiGT) {
 	    sprintf(buff, "0x%.6x", (int)data->tubiiTrig);
 	    if (data->event_id != data->tubiiGT) {
