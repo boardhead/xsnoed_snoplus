@@ -2783,6 +2783,9 @@ void clearEvent(ImageData *data)
 	data->calHits = NULL;
 	data->ncdData = NULL;
 #ifdef SNOPLUS
+	data->fecdTrig = 0;
+	data->tubiiGT = 0;
+	data->tubiiTrig = 0;
     data->caenData = NULL;
 #endif
 	data->extra_hit_num = 0;		// reset counter for available extra hit data
