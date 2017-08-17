@@ -120,7 +120,7 @@ char *SnoStr::sSourceOrientation[kNumSourceOrientations] = {
 
 // SNO+ manipulator source ID's
 char *SnoStr::sManipSource[kNumManipSources] = {
-    "Unknown",    "Dummy",    "Thing",   "TestURM",
+    "<unknown>",  "Dummy",    "Thing",   "TestURM",
     "Footswitch", "Bucket",   "Skippy",  "Laserball",
     "Lasermask",  "Sonoball", "N16",     "N17",
     "Li8",        "P-T",      "Th",      "U",
