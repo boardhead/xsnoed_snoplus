@@ -6,6 +6,7 @@
 const unsigned kNumInteractionTypes	= 62;
 const unsigned kNumParticleTypes	= 24;
 const unsigned kNumManipStatus		= 16;
+const unsigned kNumManipSources     = 23;
 const unsigned kNumEPEDTypes		= 4;
 const unsigned kNumEPEDFlags		= 5;
 
@@ -51,6 +52,7 @@ public:
 	static char			  *	sEPEDFlag[kNumEPEDFlags];
 	static char			  *	sEPEDType[kNumEPEDTypes];
 	static char           * sSourceOrientation[kNumSourceOrientations];
+	static char           * sManipSource[kNumManipSources];
 };
 
 #endif // __SnoStr_h__

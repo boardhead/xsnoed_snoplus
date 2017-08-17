@@ -171,7 +171,7 @@ void PRecordInfoWindow::UpdateSelf()
 {
 	int			i, n;
 	u_int32		t32;
-	char		*pt, buff[1024];
+	char		*pt, buff[2048];
 	ImageData	*data = mData;
 	int			index = data->record_index;
 	
@@ -379,7 +379,9 @@ void PRecordInfoWindow::UpdateSelf()
 			
 			case kHdrRec_CAST: {
 				SBankCAST *cast = (SBankCAST *)data->mHdrRec[index];
-				pt += sprintf(pt,"%u.%u\n",(unsigned)(cast->sourceID >> 16),(unsigned)(cast->sourceID & 0xffff));
+				unsigned src = cast->sourceID >> 16;
+				pt += sprintf(pt,"%u.%u (%s)\n", src, (unsigned)(cast->sourceID & 0xffff),
+				    src < kNumManipSources ? SnoStr::sManipSource[src] : "?");				    
 				if ((unsigned)cast->status < kNumManipStatus) {
 					pt += sprintf(pt,"%s\n",SnoStr::sManipStatus[cast->status]);
 				} else {

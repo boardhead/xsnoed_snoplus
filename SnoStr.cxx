@@ -118,6 +118,16 @@ char *SnoStr::sSourceOrientation[kNumSourceOrientations] = {
     "West"
 };
 
+// SNO+ manipulator source ID's
+char *SnoStr::sManipSource[kNumManipSources] = {
+    "Unknown",    "Dummy",    "Thing",   "TestURM",
+    "Footswitch", "Bucket",   "Skippy",  "Laserball",
+    "Lasermask",  "Sonoball", "N16",     "N17",
+    "Li8",        "P-T",      "Th",      "U",
+    "Acrylic",    "CoolCF",   "AmBe",    "AmBe100",
+    "NaI",        "Rock",     "NCD"
+};
+
 // EPED bank 'CalibrationType' strings
 char *SnoStr::sEPEDType[kNumEPEDTypes] = { "<unknown>", "QSLOPE", "TSLOPE", "PED" };
 

@@ -262,7 +262,8 @@
 ** 5.1.1 (07/19/17) - PH Fixed decoding of RHDR date/time for SNO+
 ** 5.1.2 (08/10/17) - PH Print CAST/SOSL sourceID as 2 16-bit integers
 ** 5.1.3 (08/11/17) - PH Added FECD trigger display to Event Info window
+** 5.1.4 (08/17/17) - PH Added source name to CAST record display
 */
 
-#define XSNOED_VERSION      "5.1.3"     // xsnoed version number
+#define XSNOED_VERSION      "5.1.4"     // xsnoed version number
 
