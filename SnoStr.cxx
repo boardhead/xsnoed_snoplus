@@ -118,7 +118,7 @@ char *SnoStr::sSourceOrientation[kNumSourceOrientations] = {
     "West"
 };
 
-// SNO+ manipulator source ID's
+// CAST bank SNO+ manipulator source ID's
 char *SnoStr::sManipSource[kNumManipSources] = {
     "<unknown>",  "Dummy",    "Thing",   "TestURM",
     "Footswitch", "Bucket",   "Skippy",  "Laserball",
