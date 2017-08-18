@@ -54,7 +54,7 @@ char *SnoStr::sTrigMask[32] = {
  	"OWLEL",			"OWLEH",			"PULGT",			"PRESCL",
  	"PED",				"PONG",				"SYNC",				"EXTA",
  	"HYDRO",			"EXT3",				"EXT4",				"EXT5",
- 	"NO_CLK",			"EXT7",			    "EXT8",				"SRAW",
+ 	"EXT6", 			"EXT7",			    "EXT8",				"SRAW",
  	"NCD",  			"SOFGT",			"<26>",				"<27>",
  	"<28>",				"<29>",				"<30>",				"<31>"
 #else
