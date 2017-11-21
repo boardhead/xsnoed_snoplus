@@ -44,9 +44,9 @@ static MenuStruct rec_main_menu[] = {
 	{ "-------------------------",	0, 0,	0, 	rec_type_menu, 	XtNumber(rec_type_menu), 0 },
 };
 static char *ropeIDs[] = {
-    "Unknown", "North", "South", "East", "West", "Central1", "Central2", "Central3",
+    "Unknown", "North", "South", "East", "West", "URM1", "URM2", "URM3",
     "GuideTube1", "GuideTube2", "GuideTube3", "GuideTube4", "GuideTube5", "GuideTube6",
-    "GasUmbilical", "LaserUmbilical", "RotatingUmbilical"
+    "URM1Umbilical", "URM2Umbilical", "URM3Umbilical"
 };
 
 

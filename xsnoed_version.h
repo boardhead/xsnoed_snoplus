@@ -264,7 +264,8 @@
 ** 5.1.3 (08/11/17) - PH Added FECD trigger display to Event Info window
 ** 5.1.4 (08/17/17) - PH Added source name to CAST record display
 ** 5.1.5 (08/18/17) - PH Changed "EXT6" to "NO_CLK"
+** 5.1.6 (11/21/17) - PH Updated manipulator rope names
 */
 
-#define XSNOED_VERSION      "5.1.5"     // xsnoed version number
+#define XSNOED_VERSION      "5.1.6"     // xsnoed version number
 
