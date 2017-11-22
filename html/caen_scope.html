@@ -40,16 +40,24 @@
 <P>The CAEN Scope window shows digitized trigger waveforms for up to 8 trigger
 channels. The scales of each channel may be set independently, and are saved
 with the XSnoed settings.  The channel labels may be set by editing the XSnoed
-resource file and re-running XSnoed. In sum mode the trigger data for the most
-recent event is displayed.
+resource file and re-running XSnoed. In sum mode (set from <B>File/Sum Events</B>
+in the main window menu) the scope overlays all traces with a colour scale to
+indicate the density of traces.
 
-<P>The trace color may be set via the <a href="color_window.html">Colors settings</a>.
+<P>The trace colors may be set via the
+<a href="color_window.html">Colors settings</a>.  The colors used in sum mode
+are the same as for the PMT hits.
 
 <P>The <B>Display</B> menu in this window allows you to set the channels to be
 displayed.  By default the previously selected channels are displayed, but this
 can be changed to display any combination of channels, or only channels with
 data. Note that if <B>Channels with Data</B> is selected, the displayed channels
 will only change if data is available (so zero channels will not be displayed).
+
+<P>The <B>Auto Scale</B> menu option causes the hisogram Y axes to automatically
+rescale to suit the range of the data.
+
+<P>The <B>Log Color Sum</B> menu option sets a log scale for the colours in sum mode.
 
 <BR CLEAR=ALL><P>
 <HR>

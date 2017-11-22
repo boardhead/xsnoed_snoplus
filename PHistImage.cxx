@@ -51,6 +51,7 @@ PHistImage::PHistImage(PImageWindow *owner, Widget canvas, int createCanvas)
 	mFixedBins      = 0;
 	mCalcObj        = NULL;
 	mAutoScale      = 0;
+	mLogScale       = 0;
 
 	if (!canvas && createCanvas) {
 		CreateCanvas("ehCanvas");
@@ -642,7 +643,7 @@ void PHistImage::DrawSelf()
 									  INTEGER_SCALE | (mIsLog ? LOG_SCALE : 0));
 		if (!mYScale) return;
 	}
-    if (mAutoScale && !(mGrabFlag & GRAB_Y_ACTIVE) && (IsDirty() & 0x01)) {
+    if (mAutoScale && !(mGrabFlag & GRAB_Y_ACTIVE) && (IsDirty() & kDirtyNormal)) {
         int min, max;
         if (CalcAutoScale(&min, &max)) {
             mYMin = min;
@@ -692,7 +693,8 @@ void PHistImage::DrawSelf()
                 unsigned long max = mCalcObj ? mCalcObj->GetMaxVal() : mNumTraces;
                 int defCol = mNumTraces > 1 ? ncols - 1 : 0;
                 const int kSegMax = 100;    // draw up to 100 line segments at a time
-
+                double logMax;
+                if (mLogScale) logMax = log(max+1);
                 for (i=0, lastx=x1; i<nbin; ++i) {
                     unsigned long *dat = (unsigned long *)mHistogram + (i + noffset) * mNumPix;
                     x = x1 + ((i+1)*(x2-x1)+nbin/2)/nbin + 1;
@@ -701,7 +703,11 @@ void PHistImage::DrawSelf()
                         if (dat[j] == 1) {
                             col = 0;
                         } else if (max) { // (may be 0 if all points are offscale)
-                            col = (dat[j] * ncols) / max;
+                            if (mLogScale) {
+                                col = log(dat[j]+1) * ncols / logMax;
+                            } else {
+                                col = (dat[j] * ncols) / max;
+                            }
                             if (col >= ncols) col = ncols - 1;
                         } else {
                             col = defCol;

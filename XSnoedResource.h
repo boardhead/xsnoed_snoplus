@@ -159,6 +159,7 @@ struct XSnoedResource {
 	int             ncd_scope_mask;             // mask of scope channels currently displayed
 	int             caen_mask;                  // mask of CAEN channels displayed
 	int             caen_auto;                  // auto-scaling option for CAEN window
+	int             caen_log;                   // log colour scale for CAEN sum
 	int             caen_min[kCaenRsrcNum];     // CAEN scale minimums
 	int             caen_max[kCaenRsrcNum];     // CAEN scale maximums
 	char          * caen_lbl[kCaenRsrcNum];     // CAEN trace labels

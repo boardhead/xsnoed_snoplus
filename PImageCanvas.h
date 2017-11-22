@@ -21,8 +21,8 @@ enum EPrintFlags {
 };
 
 enum EDirtyFlags {
-	kDirtyNormal	= 0x0001,
-	kDirtyPix		= 0x8000
+	kDirtyNormal	= 0x0001,   // image requires redrawing
+	kDirtyPix		= 0x8000    // pixmap requires redrawing
 };
 
 class PImageWindow;

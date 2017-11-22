@@ -74,6 +74,7 @@ public:
 	void			SetUnderscale(long num)		{ mUnderscale = num; }
 	void			SetOverscale(long num)		{ mOverscale = num; }
 	void			SetStyle(EHistStyle style)	{ mStyle = style; }
+	void            SetLogScale(int doLog)      { mLogScale = doLog; }
 	void            SetNumTraces(long num)      { mNumTraces = num; }
 	void			SetLog(int on);
 	void            SetCalcObj(PHistCalc *obj)  { mCalcObj = obj; }
@@ -133,6 +134,7 @@ protected:
 	Widget          sp_ymin, sp_ymax;
 	PHistCalc     * mCalcObj;       // object used to recalculate 2D histogram
 	int             mAutoScale;     // flag to automatically scale when drawing
+	int             mLogScale;      // flag for log scale for 2D histogram colours
 	
 private:
 	static void		ScaleAutoProc(Widget w, PHistImage *hist, caddr_t call_data);

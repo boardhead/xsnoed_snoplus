@@ -26,6 +26,7 @@ static MenuStruct channels_menu[] = {
 	{ "Channels with Data",0, XK_D,IDM_CAEN_ACTIVE, NULL, 0, 0 },
 	{ NULL, 				0, 0,		0,					NULL, 0, 0},
 	{ "Auto Scale",  0, XK_u,IDM_CAEN_AUTO, NULL, 0, MENU_TOGGLE },
+	{ "Log Color Sum", 0, XK_L,IDM_CAEN_LOG,  NULL, 0, MENU_TOGGLE },
 	{ NULL, 				0, 0,		0,					NULL, 0, 0},
 	{ "Channel 0",	 0, XK_0,IDM_CAEN_0,    NULL, 0, MENU_TOGGLE | MENU_TOGGLE_ON },
 	{ "Channel 1",	 0, XK_1,IDM_CAEN_1,    NULL, 0, MENU_TOGGLE | MENU_TOGGLE_ON },
@@ -84,6 +85,7 @@ PCaenWindow::PCaenWindow(ImageData *data)
         GetMenu()->SetLabel(IDM_CAEN_0+i, buff);
     }
     GetMenu()->SetToggle(IDM_CAEN_AUTO, data->caen_auto);
+    GetMenu()->SetToggle(IDM_CAEN_LOG,  data->caen_log);
 
 	n = 0;
     XtSetArg(wargs[n], XmNtopAttachment, 	XmATTACH_WIDGET);    ++n;
@@ -178,6 +180,10 @@ void PCaenWindow::DoMenuCommand(int anID)
 		case IDM_CAEN_AUTO:
 		    data->caen_auto ^= 1;
 		    if (data->caen_auto) SetDirty(kDirtyAll);
+		    break;
+		case IDM_CAEN_LOG:
+		    data->caen_log ^= 1;
+		    SetDirty(kDirtyAll);
 		    break;
 		case IDM_CAEN_0:
 		case IDM_CAEN_1:
@@ -388,6 +394,7 @@ void PCaenWindow::UpdateSelf()
                 mHist[chan]->SetDirty();
             }
             mHist[chan]->SetStyle(data->sum ? kHistStyle2D : kHistStyleSteps);
+            mHist[chan]->SetLogScale(data->caen_log);
         }
         long caen_size = data->caen_size;
         if (caen_size || data->sum) {
