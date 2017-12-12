@@ -3795,6 +3795,11 @@ void xsnoed_service(int service_all)
 	if (!the_app) return;
 	if (service_all || XtAppPending(the_app)) {
 		XtAppNextEvent(the_app, &theEvent);
+        // fast-forward to most recent pointer motion event (avoids
+        // falling behind current mouse position if drawing is slow)
+        if (theEvent.type == MotionNotify) {
+            while (XCheckTypedEvent(PResourceManager::sResource.display, MotionNotify, &theEvent)) { }
+        }
 #ifdef OPTICAL_CAL
 		if (theEvent.type == PropertyNotify &&
 			theEvent.xany.window==DefaultRootWindow(PResourceManager::sResource.display) &&
@@ -3808,8 +3813,8 @@ void xsnoed_service(int service_all)
 		// dispatch the event
 		dispatchEvent(&theEvent);
 		
-		// update windows now if necessary
-		PWindow::HandleUpdates();
+        // update windows now if necessary (but only after all X events have been dispatched)
+        if (!XtAppPending(the_app)) PWindow::HandleUpdates();
 	}
 }
 

@@ -3,6 +3,17 @@ XSnoed.resource_version:			3.5
 XSnoed.title:					S.N.O. Event Display
 XSnoed.geometry:				320x320+20+20
 *background:					Grey
+
+*renderTable xft
+*xft*fontType FONT_IS_XFT
+*xft*fontName Verdana
+*xft*fontSize 8
+
+*.renderTable: variable
+*.renderTable.variable.fontName: Sans
+*.renderTable.variable.fontSize: 10
+*.renderTable.variable.fontType: FONT_IS_XFT
+
 *fontList:					-*-helvetica-bold-r-normal--14-*,\
 						-*-helvetica-medium-r-normal--12-*:SMALL,\
 						-*-clean-medium-r-*-*-12-*:FIXED
