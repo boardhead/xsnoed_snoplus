@@ -1567,6 +1567,7 @@ void sendMessage(ImageData *data, int message, void *dataPt)
 // - uses SNO_LATITUDE, SNO_LONGITUDE and LAB_ROTATION constants to specify SNO lab frame
 // - non-accurate method assumes circular orbit, and is good to about 5 degrees
 // - accurate method is more time consuming, but is good to about 0.03 degrees
+// - (the angular diameter of the sun is about 0.5 degrees for comparison)
 static void calcSunDirection(Vector3 sun_dir, time_t the_time, int useAccurateMethod=0)
 {
 	Vector3			d1;
