@@ -830,7 +830,7 @@ void PScopeImage::DrawWaveform(int ch, int ind)
       }
       
       DrawSegments(seg,nseg); 
-      delete seg;     
+      delete [] seg;     
    
    } //end if(mRunStop)
    //if(1){

@@ -313,7 +313,7 @@ typedef struct ManipStatus {
 	float			position[3];	// x, y, z position
 	float			destination[3];
 	float			positionError;
-	float			obsoletePosErr[3];
+	float			sourceOffset[3];// PH 2018-06-20 (was obsoletePosErr)
     float			orientation;	// source orientation (0=unknown, 1=north...)
     float           spare;
 	u_int32			tail;

@@ -25,7 +25,7 @@ char *PRecordInfoWindow::sRecLabel[kNumHdrRec] = {
 	    "NHIT20LB:\nESUMLO:\nESUMHI:\nOWLN:\nOWLELO:\nOWLEHI:\n"
 	    "Pulser Rate:\nControl Register:\nLockout Width:\nPrescale:\nGTID:",
 	"Ped Width:\nCoarse Delay:\nFine Delay:\nQ DAC Setting:\nCrate/Cards:\nType:\nFlag:\nGTID:",
-	"Source:\nStatus:\nNum Ropes:\nPosition:\nError:\nOrientation:\n"
+	"Source:\nStatus:\nNum Ropes:\nPosition:\nError:\nSource Offset:\nOrientation:\n"
 	    "Rope ID's:\nRope Lengths:\nRope Errors:",
 	"Position:\nRotation:\nRope Lengths:",
 	"Source:\nStatus:\nDye Cell:\nFilters:\nN2 Pressure:\nN2 Flow:"
@@ -389,6 +389,7 @@ void PRecordInfoWindow::UpdateSelf()
 				}
 				pt += sprintf(pt,"%ld\n",(long)cast->numRopes);
 				pt += sprintf(pt,"(%.1f,%.1f,%.1f)\n",cast->position[0],cast->position[1],cast->position[2]);
+				pt += sprintf(pt,"(%.1f,%.1f,%.1f)\n",cast->sourceOffset[0],cast->sourceOffset[1],cast->sourceOffset[2]);
 				pt += sprintf(pt,"%.1f\n",cast->positionError);
 				unsigned orientation = (unsigned)cast->orientation;
 				if (orientation < kNumSourceOrientations) {

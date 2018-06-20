@@ -1522,7 +1522,7 @@ void PResourceManager::CopyColours()
 					sResource.colour[i] = sResource.colset[set][i];
 				}
 			}
-			delete tmp_cols;
+			delete [] tmp_cols;
 		} else {
 			Printf("Not enough memory to copy colours!");
 		}

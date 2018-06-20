@@ -265,7 +265,8 @@
 ** 5.1.4 (08/17/17) - PH Added source name to CAST record display
 ** 5.1.5 (08/18/17) - PH Changed "EXT6" to "NO_CLK"
 ** 5.1.6 (11/21/17) - PH Updated manipulator rope names and added CAEN Log Color Sum option
+** 5.1.7 (06/20/18) - PH Updated Record Info window to show new CAST sourceOffset
 */
 
-#define XSNOED_VERSION      "5.1.6"     // xsnoed version number
+#define XSNOED_VERSION      "5.1.7"     // xsnoed version number
 
