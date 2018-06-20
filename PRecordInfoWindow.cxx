@@ -389,8 +389,8 @@ void PRecordInfoWindow::UpdateSelf()
 				}
 				pt += sprintf(pt,"%ld\n",(long)cast->numRopes);
 				pt += sprintf(pt,"(%.1f,%.1f,%.1f)\n",cast->position[0],cast->position[1],cast->position[2]);
-				pt += sprintf(pt,"(%.1f,%.1f,%.1f)\n",cast->sourceOffset[0],cast->sourceOffset[1],cast->sourceOffset[2]);
 				pt += sprintf(pt,"%.1f\n",cast->positionError);
+				pt += sprintf(pt,"(%.1f,%.1f,%.1f)\n",cast->sourceOffset[0],cast->sourceOffset[1],cast->sourceOffset[2]);
 				unsigned orientation = (unsigned)cast->orientation;
 				if (orientation < kNumSourceOrientations) {
 				    pt += sprintf(pt,"%s\n", SnoStr::sSourceOrientation[orientation]);
