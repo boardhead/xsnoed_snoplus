@@ -600,7 +600,7 @@ void PZdabFile::DumpRecord(u_int32 *bankData, int bankSize, u_int32 bankName, u_
 			int id = cast->sourceID >> 16;
 			Printf("%s at GT %.8ld: ID=%u.%u (%s) %s Pos=(%.1f,%.1f,%.1f)\n",
 					BankNameString(bankName), (long)lastGTID, id, (cast->sourceID & 0xffff),
-					id < kNumManipSources ? SnoStr::sManipSource[id] : "?",
+					id < (int)kNumManipSources ? SnoStr::sManipSource[id] : "?",
 					pt,cast->position[0],cast->position[1],cast->position[2]);
 		} break;
 		

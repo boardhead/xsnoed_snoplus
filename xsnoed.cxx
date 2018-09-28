@@ -2224,7 +2224,7 @@ Printf("Sorry, can't yet window OCA with SNOMAN calibration\n");
 				continue;
 			}
 #ifdef SNOPLUS
-            if (cr == kFecdCrate && sl == kFecdSlot && SnoStr::sFECD[ch][0]) {
+            if ((int)cr == kFecdCrate && (int)sl == kFecdSlot && SnoStr::sFECD[ch][0]) {
                 data->sum_fecdTrig |= (1 << ch);
             }
 #endif
@@ -2663,7 +2663,7 @@ fclose(fp);
 				continue;
 			}
 #ifdef SNOPLUS
-            if (cr == kFecdCrate && sl == kFecdSlot && SnoStr::sFECD[ch][0]) {
+            if ((int)cr == kFecdCrate && (int)sl == kFecdSlot && SnoStr::sFECD[ch][0]) {
                 data->fecdTrig |= (1 << ch);
             }
 #endif
