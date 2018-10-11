@@ -260,13 +260,13 @@ int main (int argc, char *argv[])
 	int iaddr;						/* temporary variable for IP address */
 	DispEntry *x;					/* temporary variable for dispatcher entry */
 	int repeat;
-    int realtime;                   /* flag indicating dispatch rate governed by 50MHz timestamp */
+        int realtime;                   /* flag indicating dispatch rate governed by 50MHz timestamp */
 	int was_dest;					/* flag indicating a target has been specified */
 	char *host;						/* temporary variable for host name */
 	int i, n;						/* temporary variables */
 	u_int32 sleep_time;				/* microseconds to sleep between sending events */
-    u_int32 rsleep_time;            /* seconds to sleep when dispatching 'realtime'*/
-    double last50MHzTime=0;         /* 50MHZ timestamp of previously dispatched event */
+        u_int32 rsleep_time;            /* seconds to sleep when dispatching 'realtime'*/
+        double last50MHzTime=0;         /* 50MHZ timestamp of previously dispatched event */
 	FILE *fp;						/* zdab file */
 	aPmtEventRecord *aPmt, *per;	/* pointers to SNO PMT records */
 	aGenericRecordHeader	*grh;	/* pointers to generic records */
@@ -275,6 +275,9 @@ int main (int argc, char *argv[])
 	struct sigaction act;
 	int dataless = 0;
 	PZdabFile	zdab_file;
+        int min_nhit = 0;               /* skip events with an nhit less than min_nhit */
+        u_int32 max_sleep_time = 0;     /* maximum sleep time in microseconds. */
+        int skip_pedestals = 0;         /* skip pedestal events. */
  
 	int my_iaddr = my_inet_addr();	/* IP address of machine running this program */
 	
@@ -300,11 +303,11 @@ int main (int argc, char *argv[])
 	
 	was_dest = 0;
 	repeat = 0;
-    realtime = 0;
+        realtime = 0;
 	disp_source.socket = -1;
 	disp_source.hostname = NULL;
 	
-    // Set up SIGPIPE handler
+        // Set up SIGPIPE handler
 	sigemptyset(&act.sa_mask);
 	act.sa_flags = 0;
 	act.sa_handler = sigPipeHandler;
@@ -314,91 +317,130 @@ int main (int argc, char *argv[])
 	}
 	
 	for (i=1; i<=argc; ++i) {
-		if ((i==argc && argc==1) || (i<argc && !strcmp(argv[i],"-h"))) {
-			printf("Syntax: %s [-d <target>...] [-t <time>] [-r] [-h] <source>\n",progname);
-			printf("    -d  target dispatcher (may be many -d options)\n");
-            printf("    -t  time period to wait between sending events in steady rate mode (sec)\n");
-            printf("    -R  dispatch events at rate determined by 50 MHz timestamps\n");
-			printf("    -r  repeat source file indefinitely (only valid for file source)\n");
-            printf("    -s  subscription string (default \"w RAWDATA w CMOSDATA w RECHDR w REDCMD\")\n");
-			printf("    -h  show this help information\n");
-			printf("    <source>  ZDAB file name or dispatcher address\n");
-			printf("    <target>  dispatcher address\n");
-			printf("    <time>  floating point number of seconds\n");
-			printf("If no source or target is specified, '%s' is assumed\n",DEFAULT_DISP);
-			dropAll();
-    		exit(0);
-	    } else if (i==argc || !strcmp(argv[i],"-d")) {
-			if (i==argc) {
-				if (was_dest != 0) break;
-				host = DEFAULT_DISP;
-				rPrintf("No target dispatcher specified.  Using default target %s\n",host);
-			} else if (i < argc-1) {
-				was_dest = 1;
-				host = argv[++i];
-			} else {
-				continue;
-			}
-				
-		    iaddr = his_inet_addr(host);
-		    if( iaddr == 0 ) {
-		    	rPrintf("Unknown host %s ignored in argument list.\n",host);
-		    	continue;
-		    }
-		    for (x=disp_queue; x!=NULL; x=x->next) {
-		    	if (x->iaddr == iaddr) {
-		    		rPrintf("Second reference to host %s ignored in argument list.\n",host);
-		        	break;
-		        }
-		    }
-		    if( x != NULL ) continue;	/* ignoring this entry */
-		    
-		    x = (DispEntry *)malloc(sizeof(DispEntry));
-		    if (x == NULL) {
-		    	rPrintf("Out of memory!\n");
-		    	quit();
-		    }
-		    
-		    x->hostname = host;
-		    x->iaddr = iaddr;
-		    x->socket = dispconnect(host);
-		    x->next = disp_queue;
-		    x->dispatch_time = dispatch_time;
-		    x->next_time = 0;
-		    x->event_size = 0;
-			x->buffer = (char *)malloc(EVENT_BUFFSIZE);
-			if (x->buffer == NULL) {
-				rPrintf("Not enough memory for event buffers\n");
-				quit();
-			}
-		    disp_queue = x;
-		    
-			if (x->socket < 0) {
-				rPrintf("Could not connect to %s -- will keep trying\n",host);
-				x->retry_time = double_time() + CONNECT_DST_RETRY;
-			} else if (dispsend(x->socket,DISPTAG_MyId,dstid,strlen(dstid)) <= 0) {
-		    	broken(x);
-		    }
-		} else if (!strcmp(argv[i],"-t") && i < argc-1) {
-	        dispatch_time = atof(argv[++i]);
-	    } else if (!strcmp(argv[i],"-r")) {
-	    	repeat = 1;
-        } else if (!strcmp(argv[i],"-R")) {
-            realtime = 1;
-	    } else if (!strcmp(argv[i],"-s") && i < argc-1) {
-	        subs = argv[++i];
-	        printf("Subscription string set to \"%s\"\n", subs);
+            if (i == argc || !strcmp(argv[i],"-d")) {
+                if (i == argc) {
+                    if (was_dest != 0) break;
+                    host = DEFAULT_DISP;
+                    rPrintf("No target dispatcher specified.  Using default target %s\n",host);
+                } else if (i < argc-1) {
+                    was_dest = 1;
+                    host = argv[++i];
+                } else {
+                    continue;
+                }
+
+                iaddr = his_inet_addr(host);
+                if (iaddr == 0) {
+                    rPrintf("Unknown host %s ignored in argument list.\n",host);
+                    continue;
+                }
+
+                for (x=disp_queue; x!=NULL; x=x->next) {
+                    if (x->iaddr == iaddr) {
+                        rPrintf("Second reference to host %s ignored in argument list.\n",host);
+                        break;
+                    }
+                }
+
+                x = (DispEntry *)malloc(sizeof(DispEntry));
+                if (x == NULL) {
+                    rPrintf("Out of memory!\n");
+                    quit();
+                }
+
+                x->hostname = host;
+                x->iaddr = iaddr;
+                x->socket = dispconnect(host);
+                x->next = disp_queue;
+                x->dispatch_time = dispatch_time;
+                x->next_time = 0;
+                x->event_size = 0;
+                x->buffer = (char *)malloc(EVENT_BUFFSIZE);
+                if (x->buffer == NULL) {
+                    rPrintf("Not enough memory for event buffers\n");
+                    quit();
+                }
+                disp_queue = x;
+
+                if (x->socket < 0) {
+                    rPrintf("Could not connect to %s -- will keep trying\n",host);
+                    x->retry_time = double_time() + CONNECT_DST_RETRY;
+                } else if (dispsend(x->socket,DISPTAG_MyId,dstid,strlen(dstid)) <= 0) {
+                    broken(x);
+                }
+
+                continue;
+            }
+
+            if (!strncmp(argv[i], "--", 2)) {
+                /* Long option. */
+                if ((i+1 < argc) && !strcmp(argv[i]+2, "min-nhit")) {
+                    min_nhit = atoi(argv[++i]);
+                } else if ((i+1 < argc) && !strcmp(argv[i]+2, "max-sleep-time")) {
+                    max_sleep_time = atof(argv[++i])*1e6;
+                } else if (!strcmp(argv[i]+2, "skip-pedestals")) {
+                    skip_pedestals = 1;
+                } else {
+                    printf("unknown command line argument '%s'\n", argv[i]);
+                    exit(1);
+                }
+
+                continue;
+            }
+
+            if (argv[i][0] == '-') {
+                switch (argv[i][1]) {
+                case 'h':
+                    printf("Syntax: %s [-d <target>...] [-t <time>] [-r] [-h] <source>\n",progname);
+                    printf("    -d  target dispatcher (may be many -d options)\n");
+                    printf("    -t  time period to wait between sending events in steady rate mode (sec)\n");
+                    printf("    -R  dispatch events at rate determined by 50 MHz timestamps\n");
+                    printf("    -r  repeat source file indefinitely (only valid for file source)\n");
+                    printf("    -s  subscription string (default \"w RAWDATA w CMOSDATA w RECHDR w REDCMD\")\n");
+                    printf("    --min-nhit        minimum nhit to redispatch\n");
+                    printf("    --max-sleep-time  maximum number of seconds to sleep\n");
+                    printf("    --skip-pedestals  don't redispatch pedestal events\n");
+                    printf("    -h  show this help information\n");
+                    printf("    <source>  ZDAB file name or dispatcher address\n");
+                    printf("    <target>  dispatcher address\n");
+                    printf("    <time>  floating point number of seconds\n");
+                    printf("If no source or target is specified, '%s' is assumed\n",DEFAULT_DISP);
+                    dropAll();
+                    exit(0);
+                case 't':
+                    if (i < argc-1) {
+                        dispatch_time = atof(argv[++i]);
+                    }
+                    break;
+                case 'r':
+                    repeat = 1;
+                    break;
+                case 'R':
+                    realtime = 1;
+                    break;
+                case 's':
+                    if (i < argc-1) {
+                        subs = argv[++i];
+                        printf("Subscription string set to \"%s\"\n", subs);
+                    }
+                    break;
+                default:
+                    printf("unknown command line argument '%s'\n", argv[i]);
+                    exit(1);
+                }
 	    } else {
 	    	disp_source.hostname = argv[i];
 	    }
 	}
+
 	if (disp_source.hostname == NULL) {
-		disp_source.hostname = DEFAULT_DISP;
-		rPrintf("No source specified.  Using default source %s\n",disp_source.hostname);
+            disp_source.hostname = DEFAULT_DISP;
+            rPrintf("No source specified.  Using default source %s\n",disp_source.hostname);
 	}
+
 	if (!disp_queue) {
-		rPrintf("No target dispatcher(s) connected\n");
-		quit();
+            rPrintf("No target dispatcher(s) connected\n");
+            quit();
 	}
 	
  	/* first try to open source as a file */
@@ -447,14 +489,15 @@ int main (int argc, char *argv[])
 					memcpy(per,aPmt,n);
 					// swap event to network byte-ordering
 					SWAP_INT32(per, (n + sizeof(u_int32) - 1) / sizeof(u_int32));
+                                        if (min_nhit > 0 && aPmt->NPmtHit < min_nhit) continue;
+                                        if (skip_pedestals > 0 && aPmt->TriggerCardData.Pedestal) continue;
 					sendToAll("RAWDATA",buffer,n+sizeof(aGenericRecordHeader));
 
                     if (realtime == 1) {
                         rsleep_time = (u_int32)((get50MHzTime(aPmt)-last50MHzTime)*1e6);
-                        if ( (int)rsleep_time > 0) {
-                            if ( (last50MHzTime != 0) && (get50MHzTime(aPmt) != 0) ) {
-                                usleep_ph(rsleep_time);
-                            }
+                        if (max_sleep_time > 0 && rsleep_time > max_sleep_time) rsleep_time = max_sleep_time;
+                        if (rsleep_time > 0 && (last50MHzTime != 0) && (get50MHzTime(aPmt) != 0)) {
+                            usleep_ph(rsleep_time);
                         }
                         last50MHzTime = get50MHzTime(aPmt);
                     }
