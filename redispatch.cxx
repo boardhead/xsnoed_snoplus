@@ -366,7 +366,7 @@ int main (int argc, char *argv[])
             disp_queue = x;
 
             if (x->socket < 0) {
-                rPrintf("Could not connect to destination dispatcher %s -- will keep trying\n",host);
+                rPrintf("Could not connect to target dispatcher %s -- will keep trying\n",host);
                 x->retry_time = double_time() + CONNECT_DST_RETRY;
             } else if (dispsend(x->socket,DISPTAG_MyId,dstid,strlen(dstid)) <= 0) {
                 broken(x);
