@@ -10,7 +10,7 @@
 **                                - truncate extended PMT event records
 **              07/03/03 (2.4) PH - specify subscription string on command line
 **              02/04/04 (2.5) PH - modify for redispatching NCD data
-**              10/11/18 (2.6) T.Latorre - add some command line options
+**              10/11/18 (2.6) A.Latorre - add some command line options
 **                             PH - change default dispatch time to 0 sec
 **                                - don't abort on startup if source dispatcher not available
 **

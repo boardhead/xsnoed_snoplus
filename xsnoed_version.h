@@ -165,7 +165,7 @@
 ** 4.2.2 (06/09/00) - PH Fixed bug where 'next' time sometimes wasn't updating properly.
 **                       Save the filename for each event so the main window title always
 **                       shows the proper filename for the currently displayed event.
-** 4.2.3 (07/07/00) - PH Minor improvements to Monte Carlo data display.  Avoid unecessary
+** 4.2.3 (07/07/00) - PH Minor improvements to Monte Carlo data display.  Avoid unnecessary
 **                       updates of Event Info Prev/Next field.  Change continuous update
 **                       strategy to always try to show next event matching trigger settings
 **                       (this means that XSNOED may lag the live data by 100 events if
@@ -251,7 +251,7 @@
 **                       Updated Sudbury DST changeover times (in Mar and Nov since 2007)
 ** 5.0.3 (03/24/14) - PH Added resource names to CAEN channel menu.  Added Full and Auto
 **                       buttons to histogram scales dialog.  Fixed quirk with drawing bars
-**                       of supressed-zero histogram.  
+**                       of suppressed-zero histogram.  
 ** 5.0.4 (12/19/16) - PH Added TUBII trigger info and hotkey for "Clear Event" menu item
 ** 5.0.5 (01/11/17) - PH Use SNO+ time zero of Jan 1, 2010
 ** 5.0.6 (04/07/17) - Ben Land - Patch race condition in dispatcher thread
