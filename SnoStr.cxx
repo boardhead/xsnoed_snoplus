@@ -79,7 +79,7 @@ char *SnoStr::sRunType[32] = {
 	"ECA TSlope",		"<17>",			    "<18>",				"<19>",
 	"<20>",		    	"DCR Activity",		"Coils Off",		"PMT Off",
 	"Bubbler",			"Recirc",			"SL Assay",			"Unusual Activity",
- 	"<28>",				"<29>",				"<30>",				"<31>"
+ 	"AV Recirc",    	"Scint Fill",		"<30>",				"<31>"
 #else
 	"Neutrino",			"Source",			"Calib",			"NCD",
 	"Salt",				"Poison",			"Partial",			"Air",
