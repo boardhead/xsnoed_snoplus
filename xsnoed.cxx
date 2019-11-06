@@ -2162,6 +2162,7 @@ static int showEvent(ImageData *data, HistoryEntry *event_buff)
 		data->sum_sub_run = pmtRecord->DaqStatus;
 		data->sum_event_id = pmtRecord->TriggerCardData.BcGT;
 		data->sum_fecdTrig = 0;
+#ifdef SNOPLUS
 		if (tubii) {
 		    data->sum_tubiiGT = tubii->GTID;
 		    data->sum_tubiiTrig = tubii->TrigWord;
@@ -2169,6 +2170,7 @@ static int showEvent(ImageData *data, HistoryEntry *event_buff)
 		    data->sum_tubiiGT = 0;
 		    data->sum_tubiiTrig = 0;
 		}
+#endif
 		data->sum_time = ((double) 4294967296.0 * pmtRecord->TriggerCardData.Bc10_2 + 
 							 pmtRecord->TriggerCardData.Bc10_1) * 1e-7;
 		data->sum_filename.SetString(event_buff->filename);
@@ -2313,6 +2315,7 @@ fclose(fp);
 		data->sub_run = pmtRecord->DaqStatus;
 		data->event_id  = pmtRecord->TriggerCardData.BcGT;
 		data->fecdTrig = 0;
+#ifdef SNOPLUS
         if (tubii) {
             data->tubiiTrig = tubii->TrigWord;
             data->tubiiGT = tubii->GTID;
@@ -2320,6 +2323,7 @@ fclose(fp);
             data->tubiiTrig = 0;
             data->tubiiGT = 0;
         }
+#endif
 		// set currently displayed filename for this event
 		data->mDispFile.SetString(event_buff->filename);
 	
