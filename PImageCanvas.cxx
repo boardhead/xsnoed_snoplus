@@ -12,7 +12,7 @@
 #include "XSnoedWindow.h"
 #include "xsnoed.h"
 
-const short	kPrintScaling		= 10;	// coordinate scaling for printed images
+const short	kPrintScaling		= 5;	// coordinate scaling for printed images
 const short kLabelClickMargin	= 8;
 
 

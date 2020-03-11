@@ -267,7 +267,8 @@
 ** 5.1.6 (11/21/17) - PH Updated manipulator rope names and added CAEN Log Color Sum option
 ** 5.1.7 (06/20/18) - PH Updated Record Info window to show new CAST sourceOffset
 ** 5.1.8 (11/06/19) - PH Added definitions for new run type bits
+** 5.1.9 (03/11/20) - PH Changed print scaling so "Print Image" works with larger windows
 */
 
-#define XSNOED_VERSION      "5.1.8"     // xsnoed version number
+#define XSNOED_VERSION      "5.1.9"     // xsnoed version number
 
