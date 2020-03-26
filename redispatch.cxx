@@ -13,6 +13,7 @@
 **              10/11/18 (2.6) A.Latorre - add some command line options
 **                             PH - change default dispatch time to 0 sec
 **                                - don't abort on startup if source dispatcher not available
+**              03/26/20 (2.7) PH - --min-nhit now also works for dispatched data
 **
 ** Description: program to redistribute SNO data to outside listeners
 **              Sends max one event per second (the largest NHIT event that
@@ -26,11 +27,12 @@
 **              -r  repeat source file indefinitely (only valid for file source)
 **              -s  subscription string (default "w RAWDATA w CMOSDATA w RECHDR w REDCMD")
 **              -h  show this help information
-**              <source>  ZDAB file name or dispatcher address
-**              <target>  dispatcher address
+**              --min-nhit  minimum nhit to redispatch
+**              <source>    ZDAB file name or dispatcher address
+**              <target>    dispatcher address
 **              <time>  floating point number of seconds
 */
-#define VERSION                 "2.6"       /* redispatcher version number */
+#define VERSION                 "2.7"       /* redispatcher version number */
 
 #include <time.h>
 #include <signal.h>
@@ -378,6 +380,7 @@ int main (int argc, char *argv[])
             /* Long option. */
             if ((i+1 < argc) && !strcmp(argv[i]+2, "min-nhit")) {
                 min_nhit = atoi(argv[++i]);
+                rPrintf("Minimum NHIT set to %d\n", min_nhit);
             } else if ((i+1 < argc) && !strcmp(argv[i]+2, "max-sleep-time")) {
                 max_sleep_time = atof(argv[++i])*1e6;
             } else if (!strcmp(argv[i]+2, "skip-pedestals")) {
@@ -490,6 +493,8 @@ int main (int argc, char *argv[])
                     memcpy(per,aPmt,n);
                     // swap event to network byte-ordering
                     SWAP_INT32(per, (n + sizeof(u_int32) - 1) / sizeof(u_int32));
+                                        // (below was added by Tony, but shouldn't these tests
+                                        //  be done before the byte swapping? - PH)
                                         if (min_nhit > 0 && aPmt->NPmtHit < min_nhit) continue;
                                         if (skip_pedestals > 0 && aPmt->TriggerCardData.Pedestal) continue;
                     sendToAll("RAWDATA",buffer,n+sizeof(aGenericRecordHeader));
@@ -676,7 +681,10 @@ int main (int argc, char *argv[])
             if (!strcmp(htag,"RAWDATA") && hsize<=EVENT_BUFFSIZE) {
                 // give the PmtEventRecord to the target dispatchers
                 for (x=disp_queue; x; x=x->next) {
-                    if (hsize > x->event_size) {
+                    if (hsize > x->event_size &&
+                        // NPmtHit starts at byte 26 in the network-byte-order dispatched data
+                        (!min_nhit || buffer[26]*256+buffer[27] >= min_nhit))
+                    {
                         // are we sending at full speed?
                         if (!x->dispatch_time) {
                             // Yes: send event immediately
